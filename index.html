@@ -522,14 +522,14 @@
   }
 
   /* Le logo animé ne descend en bas à droite qu'une fois qu'un lien a été ouvert. */
-  body.lien-ouvert .header {
+body.lien-ouvert .header {
     position: fixed;
     bottom: 24px;
-    right: 24px;
+    left: 24px;
     margin: 0;
-    z-index: 20;
+    z-index: 5;
     pointer-events: none;
-  }
+}
   body.lien-ouvert .crest {
     width: 90px;
     height: 90px;
