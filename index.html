@@ -1690,6 +1690,7 @@
     { cle: 'edition_effectif', label: "Édition de l'effectif", description: 'Modifier grade / rapport / médaille dans le tableau Effectif.' },
     { cle: 'validerRapports', label: 'Valider les rapports', description: "Voir la file d'attente et valider les rapports envoyés par les médecins." },
     { cle: 'supprimerRapports', label: 'Supprimer les rapports', description: 'Voir la file d\'attente / archives et supprimer un rapport (en attente ou déjà validé).' },
+    { cle: 'gererSuggestions', label: 'Gérer les suggestions MDC', description: "Voir la file d'attente et valider ou refuser les suggestions envoyées par les médecins." },
   ];
 
   // Amorce : ces matricules gardent TOUJOURS la permission "administration",
@@ -1948,7 +1949,8 @@
     { label: 'Effectif MDC GDA', url: 'https://docs.google.com/spreadsheets/d/13a2F3iQ0vSmZx9X_JcTss6KZJRHy0YyQy8GO4I7kBi0/edit?usp=sharing' },
     { label: 'Réglement GDA', url: 'LIEN_A_COMPLETER_REGLEMENT_GDA' },
     { label: 'Matériel MDC GDA', url: 'LIEN_A_COMPLETER_MATERIEL_MDC_GDA' },
-    { label: 'Rapport MDC GDA', url: '' }
+    { label: 'Rapport MDC GDA', url: '' },
+    { label: 'Suggestion MDC', url: '' }
   ];
 
   let matriculeActif = null; // matricule de la personne actuellement connectée sur le dashboard
@@ -3032,6 +3034,242 @@
     } catch { return date || '—'; }
   }
 
+  // === Salon Suggestion MDC : même logique que Rapport MDC (cache local +
+  // synchronisation Sheet), mais avec une seule permission ('gererSuggestions')
+  // qui donne le droit de valider ET de refuser (pas deux permissions séparées
+  // comme pour les rapports, cf. FONCTIONS_PERMISSION plus haut). ===
+  const CLE_SUGGESTIONS_MDC_CACHE = 'gdaSuggestionsMdcCache';
+  const CLE_SUGGESTIONS_MASQUEES_LOCAL = 'gdaSuggestionsMdcMasqueesLocalement';
+
+  function aAccesGestionSuggestions(matricule) {
+    return aPermission(matricule, 'gererSuggestions');
+  }
+
+  function lireSuggestionsMasqueesLocalement() {
+    try { return new Set(JSON.parse(localStorage.getItem(CLE_SUGGESTIONS_MASQUEES_LOCAL) || '[]')); }
+    catch (e) { return new Set(); }
+  }
+
+  function suggestionEstMasqueeLocalement(suggestion) {
+    return lireSuggestionsMasqueesLocalement().has(String(suggestion.id || ''));
+  }
+
+  function masquerSuggestionLocalement(id, bouton) {
+    if (!confirm('Masquer cette suggestion sur cet appareil ? Elle restera dans le Google Sheet.')) return;
+    const masquees = lireSuggestionsMasqueesLocalement();
+    masquees.add(String(id));
+    localStorage.setItem(CLE_SUGGESTIONS_MASQUEES_LOCAL, JSON.stringify([...masquees]));
+    const ligne = bouton && bouton.closest('.rapport-validation-item');
+    if (ligne) ligne.remove();
+  }
+
+  function lireSuggestionsMdc() {
+    try {
+      const suggestions = JSON.parse(localStorage.getItem(CLE_SUGGESTIONS_MDC_CACHE) || '[]');
+      return Array.isArray(suggestions) ? suggestions : [];
+    } catch { return []; }
+  }
+
+  function ecrireSuggestionsMdc(suggestions) {
+    localStorage.setItem(CLE_SUGGESTIONS_MDC_CACHE, JSON.stringify(suggestions.slice(0, 200)));
+  }
+
+  async function chargerSuggestionsMdc() {
+    try {
+      const resultat = await appelerWebApp('listeMesSuggestions', { matricule: matriculeActif });
+      if (Array.isArray(resultat.suggestions)) {
+        ecrireSuggestionsMdc(resultat.suggestions);
+        return resultat.suggestions;
+      }
+    } catch (erreur) {
+      console.warn('Historique des suggestions indisponible :', erreur);
+    }
+    return lireSuggestionsMdc().filter(suggestion => suggestion.matricule === matriculeActif);
+  }
+
+  function classeStatutSuggestion(statut) {
+    if (statut === 'Validée') return 'log-action-valide';
+    if (statut === 'Refusée') return 'log-action-refuse';
+    return '';
+  }
+
+  async function dessinerHistoriqueSuggestions() {
+    const zone = document.getElementById('suggestionHistorique');
+    const total = document.getElementById('suggestionTotal');
+    if (!zone) return;
+    const suggestions = (await chargerSuggestionsMdc()).sort((a, b) => new Date(b.date) - new Date(a.date));
+    if (total) total.textContent = suggestions.length;
+    zone.innerHTML = suggestions.length ? suggestions.map(suggestion => `
+      <article class="rapport-history-item">
+        <div class="rapport-history-top"><span>${formaterDateRapport(suggestion.date)}</span><span class="${classeStatutSuggestion(suggestion.statut)}">${echapperHtml(suggestion.statut || 'En attente')}</span></div>
+        <div class="rapport-history-comment"><strong>${echapperHtml(suggestion.titre || 'Sans titre')}</strong><br>${echapperHtml(suggestion.texte || '')}</div>
+        ${suggestion.traitePar ? `<div class="rapport-history-comment">Traité par ${echapperHtml(suggestion.traitePar)} · ${formaterDateRapport(suggestion.dateTraitement)}</div>` : ''}
+        ${suggestion.nonSynchronise ? '<div class="rapport-history-sync">⚠ En attente de synchronisation</div>' : ''}
+      </article>
+    `).join('') : '<div class="rapport-history-empty"><span class="empty-icon">💡</span><strong>Aucune suggestion envoyée</strong><br>Votre première suggestion apparaîtra ici.</div>';
+  }
+
+  function boutonsActionsSuggestion(suggestion) {
+    const boutons = [];
+    if (suggestion.statut === 'En attente' && aAccesGestionSuggestions(matriculeActif)) {
+      boutons.push(`<button class="rapport-validation-btn" onclick="validerSuggestionMDC('${echapperAttr(suggestion.id)}', this)">Valider</button>`);
+      boutons.push(`<button class="rapport-validation-btn" style="border-color:#e38a83; background:rgba(160,49,49,.2); color:#ffd0cc;" onclick="refuserSuggestionMDC('${echapperAttr(suggestion.id)}', this)">Refuser</button>`);
+    }
+    return boutons.length ? `<div class="rapport-validation-actions">${boutons.join('')}</div>` : '';
+  }
+
+  function boutonMasquerSuggestion(suggestion) {
+    return `<div class="rapport-validation-actions"><button class="rapport-validation-btn" style="border-color:#e38a83; background:rgba(160,49,49,.2); color:#ffd0cc;" onclick="masquerSuggestionLocalement('${echapperAttr(suggestion.id)}', this)">Masquer localement</button></div>`;
+  }
+
+  async function dessinerValidationSuggestions() {
+    const zone = document.getElementById('suggestionValidation');
+    if (!zone || !aAccesGestionSuggestions(matriculeActif)) return;
+    zone.innerHTML = '<div class="rapport-history-empty">Chargement des suggestions en attente…</div>';
+    try {
+      const resultat = await appelerWebApp('listeSuggestionsEnAttente', { validateur: matriculeActif });
+      const suggestions = (Array.isArray(resultat.suggestions) ? resultat.suggestions : []).filter(s => !suggestionEstMasqueeLocalement(s));
+      zone.innerHTML = suggestions.length ? `
+        <div class="rapport-validation"><div class="rapport-validation-head">${suggestions.length} suggestion(s) à traiter</div>
+          ${suggestions.map(suggestion => `<div class="rapport-validation-item">
+            <strong>${echapperHtml(suggestion.matricule)} · ${echapperHtml(suggestion.grade)}</strong>
+            <p><strong>${echapperHtml(suggestion.titre || 'Sans titre')}</strong></p>
+            <p>${echapperHtml(suggestion.texte || '')}</p>
+            ${boutonsActionsSuggestion(suggestion)}
+            ${boutonMasquerSuggestion(suggestion)}
+          </div>`).join('')}
+        </div>` : '<div class="rapport-history-empty"><strong>Aucune suggestion en attente</strong><br>Les nouvelles suggestions apparaîtront ici.</div>';
+    } catch (erreur) {
+      console.warn('File de validation des suggestions indisponible :', erreur);
+      zone.innerHTML = '<div class="rapport-history-empty"><strong>File indisponible</strong><br>Publiez la nouvelle version Apps Script.</div>';
+    }
+  }
+
+  async function validerSuggestionMDC(id, bouton) {
+    if (!confirm('Valider cette suggestion ?')) return;
+    bouton.disabled = true;
+    bouton.textContent = 'Validation…';
+    try {
+      await appelerWebApp('validerSuggestion', { id, validateur: matriculeActif });
+      await Promise.all([dessinerHistoriqueSuggestions(), dessinerValidationSuggestions()]);
+    } catch (erreur) {
+      bouton.disabled = false;
+      bouton.textContent = 'Échec — réessayer';
+      alert(erreur.message || 'Impossible de valider la suggestion.');
+    }
+  }
+
+  async function refuserSuggestionMDC(id, bouton) {
+    if (!confirm('Refuser cette suggestion ?')) return;
+    bouton.disabled = true;
+    bouton.textContent = 'Refus…';
+    try {
+      await appelerWebApp('refuserSuggestion', { id, validateur: matriculeActif });
+      await Promise.all([dessinerHistoriqueSuggestions(), dessinerValidationSuggestions()]);
+    } catch (erreur) {
+      bouton.disabled = false;
+      bouton.textContent = 'Échec — réessayer';
+      alert(erreur.message || 'Impossible de refuser la suggestion.');
+    }
+  }
+
+  function afficherSuggestionMDC() {
+    const zone = document.getElementById('contenuLienMDC');
+    if (!zone) return;
+    document.body.classList.add('lien-ouvert');
+    arreterAutoRefreshEffectif();
+
+    // Les comptes ayant la permission 'gererSuggestions' accèdent uniquement
+    // à la file de validation (même logique que Rapport MDC).
+    if (aAccesGestionSuggestions(matriculeActif)) {
+      zone.innerHTML = `
+        <section class="rapport-mdc-wrap">
+          <header class="rapport-mdc-header">
+            <div>
+              <div class="rapport-mdc-kicker">Espace double verification</div>
+              <h2>Validation des suggestions MDC</h2>
+              <p class="rapport-mdc-subtitle">Suggestions en attente de traitement.</p>
+            </div>
+          </header>
+          <div class="rapport-mdc-grid" style="grid-template-columns: minmax(0, 1fr);">
+            <section class="rapport-mdc-card">
+              <div class="rapport-mdc-card-head"><span>Gestion des suggestions</span><h3>Suggestions en attente</h3></div>
+              <div id="suggestionValidation"></div>
+            </section>
+          </div>
+        </section>
+      `;
+      dessinerValidationSuggestions();
+      return;
+    }
+
+    const nom = matriculeActif || '—';
+    const grade = gradeActif || 'Grade non renseigné';
+    const initiale = nom.charAt(0).toUpperCase() || '?';
+    zone.innerHTML = `
+      <section class="rapport-mdc-wrap">
+        <header class="rapport-mdc-header">
+          <div><div class="rapport-mdc-kicker">Espace GDA</div><h2>💡 Suggestion MDC</h2><p class="rapport-mdc-subtitle">Proposez une idée et suivez son traitement.</p></div>
+          <div class="rapport-mdc-stats"><div class="rapport-stat"><strong id="suggestionTotal">0</strong><span>Suggestions</span></div></div>
+        </header>
+        <div class="rapport-mdc-grid">
+          <section class="rapport-mdc-card">
+            <div class="rapport-mdc-card-head"><span>Nouvelle suggestion</span><h3>Proposer une idée</h3></div>
+            <form class="rapport-mdc-form" id="suggestionMdcForm">
+              <div class="rapport-identite"><div class="rapport-identite-icon">${echapperHtml(initiale)}</div><div><strong>${echapperHtml(nom)}</strong><span>${echapperHtml(grade)} · identité verrouillée par la connexion</span></div></div>
+              <div class="rapport-fields">
+                <div class="rapport-field full"><label for="suggestionTitre">Titre</label><input id="suggestionTitre" type="text" maxlength="150" placeholder="Résumez votre idée en quelques mots…" required></div>
+                <div class="rapport-field full"><label for="suggestionTexte">Détail de la suggestion</label><textarea id="suggestionTexte" maxlength="2000" placeholder="Expliquez votre suggestion…" required></textarea></div>
+              </div>
+              <button class="rapport-submit" type="submit">Envoyer la suggestion</button>
+              <div class="rapport-feedback" id="suggestionFeedback"></div>
+            </form>
+          </section>
+          <section class="rapport-mdc-card">
+            <div class="rapport-mdc-card-head"><span>Historique personnel</span><h3>Mes suggestions envoyées</h3></div>
+            <div class="rapport-history" id="suggestionHistorique"></div>
+          </section>
+        </div>
+      </section>
+    `;
+    document.getElementById('suggestionMdcForm').addEventListener('submit', envoyerSuggestionMDC);
+    dessinerHistoriqueSuggestions();
+  }
+
+  async function envoyerSuggestionMDC(event) {
+    event.preventDefault();
+    const bouton = event.currentTarget.querySelector('.rapport-submit');
+    const feedback = document.getElementById('suggestionFeedback');
+    const titre = document.getElementById('suggestionTitre').value.trim();
+    const texte = document.getElementById('suggestionTexte').value.trim();
+    if (!titre || !texte) {
+      feedback.className = 'rapport-feedback fail';
+      feedback.textContent = 'Renseigne un titre et le détail de ta suggestion.';
+      return;
+    }
+    const suggestion = { matricule: matriculeActif, grade: gradeActif, titre, texte, date: new Date().toISOString(), statut: 'En attente' };
+    const suggestions = lireSuggestionsMdc();
+    suggestions.unshift(suggestion);
+    ecrireSuggestionsMdc(suggestions);
+    bouton.disabled = true;
+    bouton.textContent = 'Envoi…';
+    try {
+      await appelerWebApp('soumettreSuggestion', suggestion);
+      feedback.className = 'rapport-feedback ok';
+      feedback.textContent = 'Suggestion envoyée : en attente de traitement.';
+    } catch (erreur) {
+      suggestion.nonSynchronise = true;
+      ecrireSuggestionsMdc(suggestions);
+      feedback.className = 'rapport-feedback fail';
+      feedback.textContent = 'Suggestion conservée sur cet appareil, en attente de synchronisation.';
+    } finally {
+      event.currentTarget.reset();
+      bouton.disabled = false;
+      bouton.textContent = 'Envoyer la suggestion';
+      dessinerHistoriqueSuggestions();
+    }
+  }
+
   async function chargerRapportsMdc() {
     try {
       const resultat = await appelerWebApp('listeMesRapports', { matricule: matriculeActif });
@@ -3358,6 +3596,11 @@
 
     if (bouton.label === 'Rapport MDC GDA') {
       afficherRapportMDC();
+      return;
+    }
+
+    if (bouton.label === 'Suggestion MDC') {
+      afficherSuggestionMDC();
       return;
     }
 
