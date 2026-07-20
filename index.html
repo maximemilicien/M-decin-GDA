@@ -2047,12 +2047,12 @@ body.lien-ouvert .header {
     return GALONS_GRADE[cle] || '';
   }
 
-  function construireInsigneGrade(grade) {
+function construireInsigneGrade(grade) {
     const src = obtenirGalonGrade(grade);
     if (!src) return '';
     const alt = (grade || '').toString().trim();
-    return `<img class="grade-insigne" src="${src}" alt="Galon ${alt}">`;
-  }
+    return `<img class="grade-insigne" src="${src}" alt="Galon ${alt}" onerror="this.remove()">`;
+}
 
   function classeRapport(rapport) {
     const val = (rapport || '').toString().trim();
