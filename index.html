@@ -487,19 +487,19 @@
   body.mode-boutons #contenuLienMDC { margin-left: 300px; width: calc(100% - 300px); }
 
   @media (max-width: 900px) {
-    body.mode-boutons .menu-boutons {
-      position: static;
-      top: auto;
-      left: auto;
-      transform: none;
-      width: 100%;
-      max-width: 100%;
-      flex-direction: row;
-      flex-wrap: wrap;
-      gap: 8px;
-      z-index: auto;
-      margin: 0 0 16px 0;
-    }
+body.mode-boutons .menu-boutons {
+  position: static;
+  top: auto;
+  left: auto;
+  transform: none;
+  width: 100%;
+  max-width: 100%;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 8px;
+  z-index: auto;
+  margin: 150px 0 16px 0;
+}
     body.mode-boutons .btn-lien-mdc {
       flex: 1 1 calc(50% - 4px);
       padding: 14px 10px;
@@ -551,6 +551,15 @@ body.lien-ouvert .header {
     border: none;
     display: block;
   }
+  .badge-corner {
+  padding: 8px 12px;
+}
+.badge-corner .grade-insigne {
+  height: 40px;
+}
+.badge-corner .badge-insigne {
+  margin-top: 6px;
+}
 
   /* === Salon Rapport MDC GDA === */
   .rapport-mdc-wrap {
