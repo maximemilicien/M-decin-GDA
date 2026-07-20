@@ -1737,7 +1737,7 @@ body.mode-boutons #contenuLienMDC{margin-top:140px;}
     { cle: 'edition_effectif', label: "Édition de l'effectif", description: 'Modifier grade / rapport / médaille dans le tableau Effectif.' },
     { cle: 'validerRapports', label: 'Valider les rapports', description: "Voir la file d'attente et valider les rapports envoyés par les médecins." },
     { cle: 'supprimerRapports', label: 'Supprimer les rapports', description: 'Voir la file d\'attente / archives et supprimer un rapport (en attente ou déjà validé).' },
-    { cle: 'gererSuggestions', label: 'Gérer les suggestions MDC', description: "Voir la file d'attente et valider ou refuser les suggestions envoyées par les médecins." },
+    { cle: 'gererSuggestions', label: 'Gérer les demandes d\'entraînement MDC', description: "Voir la file d'attente et valider ou refuser les demandes d'entraînement envoyées par les médecins." },
   ];
 
   // Amorce : ces matricules gardent TOUJOURS la permission "administration",
@@ -1997,7 +1997,7 @@ body.mode-boutons #contenuLienMDC{margin-top:140px;}
     { label: 'Réglement GDA', url: 'LIEN_A_COMPLETER_REGLEMENT_GDA' },
     { label: 'Matériel MDC GDA', url: 'LIEN_A_COMPLETER_MATERIEL_MDC_GDA' },
     { label: 'Rapport MDC GDA', url: '' },
-    { label: 'Suggestion MDC', url: '' }
+    { label: 'Demande d\'entraînement MDC', url: '' }
   ];
 
   let matriculeActif = null; // matricule de la personne actuellement connectée sur le dashboard
@@ -3081,11 +3081,11 @@ function construireInsigneGrade(grade) {
     } catch { return date || '—'; }
   }
 
-  // === Salon Suggestion MDC : consultation publique en 3 files (attente /
-  // validées / refusées) + un bouton dédié pour poster une nouvelle
-  // suggestion. Tout le monde voit les 3 files ; seuls les comptes ayant la
-  // permission 'gererSuggestions' voient les boutons Valider/Refuser sur les
-  // suggestions en attente. ===
+  // === Salon Demande d'entraînement MDC : consultation publique en 3 files
+  // (attente / validées / refusées) + un bouton dédié pour poster une
+  // nouvelle demande d'entraînement. Tout le monde voit les 3 files ; seuls
+  // les comptes ayant la permission 'gererSuggestions' voient les boutons
+  // Valider/Refuser sur les demandes en attente. ===
   const CLE_SUGGESTIONS_MDC_CACHE = 'gdaSuggestionsMdcCache';
   const CLE_SUGGESTIONS_MASQUEES_LOCAL = 'gdaSuggestionsMdcMasqueesLocalement';
 
@@ -3103,7 +3103,7 @@ function construireInsigneGrade(grade) {
   }
 
   function masquerSuggestionLocalement(id, bouton) {
-    if (!confirm('Masquer cette suggestion sur cet appareil ? Elle restera dans le Google Sheet.')) return;
+    if (!confirm('Masquer cette demande d\'entraînement sur cet appareil ? Elle restera dans le Google Sheet.')) return;
     const masquees = lireSuggestionsMasqueesLocalement();
     masquees.add(String(id));
     localStorage.setItem(CLE_SUGGESTIONS_MASQUEES_LOCAL, JSON.stringify([...masquees]));
@@ -3141,7 +3141,7 @@ function construireInsigneGrade(grade) {
     return `<div class="rapport-validation-actions"><button class="rapport-validation-btn" style="border-color:#e38a83; background:rgba(160,49,49,.2); color:#ffd0cc;" onclick="masquerSuggestionLocalement('${echapperAttr(suggestion.id)}', this)">Masquer localement</button></div>`;
   }
 
-  // Vue actuellement affichée dans le salon Suggestion MDC :
+  // Vue actuellement affichée dans le salon Demande d'entraînement MDC :
   // 'attente' | 'validees' | 'refusees' | 'form'
   let vueSuggestionActive = 'attente';
 
@@ -3184,8 +3184,8 @@ function construireInsigneGrade(grade) {
     if (!contenu) return;
 
     if (vue === 'form') {
-      if (label) label.textContent = 'Nouvelle suggestion';
-      if (titre) titre.textContent = 'Proposer une idée';
+      if (label) label.textContent = 'Nouvelle demande';
+      if (titre) titre.textContent = 'Demander un entraînement';
       const nom = matriculeActif || '—';
       const grade = gradeActif || 'Grade non renseigné';
       const initiale = nom.charAt(0).toUpperCase() || '?';
@@ -3193,10 +3193,14 @@ function construireInsigneGrade(grade) {
         <form class="rapport-mdc-form" id="suggestionMdcForm">
           <div class="rapport-identite"><div class="rapport-identite-icon">${echapperHtml(initiale)}</div><div><strong>${echapperHtml(nom)}</strong><span>${echapperHtml(grade)} · identité verrouillée par la connexion</span></div></div>
           <div class="rapport-fields">
-            <div class="rapport-field full"><label for="suggestionTitre">Titre</label><input id="suggestionTitre" type="text" maxlength="150" placeholder="Résumez votre idée en quelques mots…" required></div>
-            <div class="rapport-field full"><label for="suggestionTexte">Détail de la suggestion</label><textarea id="suggestionTexte" maxlength="2000" placeholder="Expliquez votre suggestion…" required></textarea></div>
+            <div class="rapport-field full"><label for="suggestionType">Type d'entraînement</label><input id="suggestionType" type="text" maxlength="150" placeholder="GF, Cour, Formation…" required></div>
+            <div class="rapport-field full"><label for="suggestionDateHeure">Date &amp; Heure</label><input id="suggestionDateHeure" type="text" maxlength="150" placeholder="Ex : 25/07/2026 à 20h00" required></div>
+            <div class="rapport-field full"><label for="suggestionTexte">Description de l'entraînement</label><textarea id="suggestionTexte" maxlength="2000" placeholder="Décrivez le déroulé de l'entraînement…" required></textarea></div>
+            <div class="rapport-field full"><label for="suggestionRoles">Description des rôles</label><textarea id="suggestionRoles" maxlength="2000" placeholder="Rôles attribués pendant l'entraînement…"></textarea></div>
+            <div class="rapport-field full"><label for="suggestionLieux">Lieux</label><input id="suggestionLieux" type="text" maxlength="200" placeholder="Lieu de l'entraînement" required></div>
+            <div class="rapport-field full"><label for="suggestionPersonnel">Personnel invité</label><textarea id="suggestionPersonnel" maxlength="1000" placeholder="Personnel invité à l'entraînement…"></textarea></div>
           </div>
-          <button class="rapport-submit" type="submit">Envoyer la suggestion</button>
+          <button class="rapport-submit" type="submit">Envoyer la demande</button>
           <div class="rapport-feedback" id="suggestionFeedback"></div>
         </form>
       `;
@@ -3205,9 +3209,9 @@ function construireInsigneGrade(grade) {
     }
 
     const titresParVue = {
-      attente: ['File d\'attente', 'Suggestions en attente'],
-      validees: ['Historique', 'Suggestions validées'],
-      refusees: ['Historique', 'Suggestions refusées']
+      attente: ['File d\'attente', 'Demandes d\'entraînement en attente'],
+      validees: ['Historique', 'Demandes d\'entraînement validées'],
+      refusees: ['Historique', 'Demandes d\'entraînement refusées']
     };
     const [labelTexte, titreTexte] = titresParVue[vue] || ['', ''];
     if (label) label.textContent = labelTexte;
@@ -3231,15 +3235,17 @@ function construireInsigneGrade(grade) {
       contenu.innerHTML = suggestions.length ? suggestions.map(suggestion => `
         <div class="rapport-validation-item">
           <strong>${echapperHtml(suggestion.matricule)} · ${echapperHtml(suggestion.grade)}</strong>
-          <p><strong>${echapperHtml(suggestion.titre || 'Sans titre')}</strong></p>
+          <p><strong>${echapperHtml(suggestion.titre || 'Type non renseigné')}</strong>${suggestion.dateHeure ? ` — ${echapperHtml(suggestion.dateHeure)}` : ''}${suggestion.lieux ? ` — ${echapperHtml(suggestion.lieux)}` : ''}</p>
           <p>${echapperHtml(suggestion.texte || '')}</p>
+          ${suggestion.roles ? `<p><strong>Rôles :</strong> ${echapperHtml(suggestion.roles)}</p>` : ''}
+          ${suggestion.personnel ? `<p><strong>Personnel invité :</strong> ${echapperHtml(suggestion.personnel)}</p>` : ''}
           ${suggestion.traitePar ? `<p>Traité par ${echapperHtml(suggestion.traitePar)} · ${formaterDateRapport(suggestion.dateTraitement)}</p>` : `<p>Envoyée le ${formaterDateRapport(suggestion.date)}</p>`}
           ${vue === 'attente' ? boutonsActionsSuggestion(suggestion) : ''}
           ${boutonMasquerSuggestion(suggestion)}
         </div>
-      `).join('') : '<div class="rapport-history-empty"><span class="empty-icon">💡</span><strong>Rien pour le moment</strong></div>';
+      `).join('') : '<div class="rapport-history-empty"><span class="empty-icon">🎯</span><strong>Rien pour le moment</strong></div>';
     } catch (erreur) {
-      console.warn('Liste des suggestions indisponible :', erreur);
+      console.warn('Liste des demandes d\'entraînement indisponible :', erreur);
       const total = document.getElementById('suggestionTotal');
       if (total) total.textContent = '0';
       contenu.innerHTML = `<div class="rapport-history-empty"><strong>Liste indisponible</strong><br>Publiez la nouvelle version Apps Script (action '${action}').</div>`;
@@ -3247,7 +3253,7 @@ function construireInsigneGrade(grade) {
   }
 
   async function validerSuggestionMDC(id, bouton) {
-    if (!confirm('Valider cette suggestion ?')) return;
+    if (!confirm('Valider cette demande d\'entraînement ?')) return;
     bouton.disabled = true;
     bouton.textContent = 'Validation…';
     try {
@@ -3256,12 +3262,12 @@ function construireInsigneGrade(grade) {
     } catch (erreur) {
       bouton.disabled = false;
       bouton.textContent = 'Échec — réessayer';
-      alert(erreur.message || 'Impossible de valider la suggestion.');
+      alert(erreur.message || 'Impossible de valider la demande.');
     }
   }
 
   async function refuserSuggestionMDC(id, bouton) {
-    if (!confirm('Refuser cette suggestion ?')) return;
+    if (!confirm('Refuser cette demande d\'entraînement ?')) return;
     bouton.disabled = true;
     bouton.textContent = 'Refus…';
     try {
@@ -3270,7 +3276,7 @@ function construireInsigneGrade(grade) {
     } catch (erreur) {
       bouton.disabled = false;
       bouton.textContent = 'Échec — réessayer';
-      alert(erreur.message || 'Impossible de refuser la suggestion.');
+      alert(erreur.message || 'Impossible de refuser la demande.');
     }
   }
 
@@ -3285,20 +3291,20 @@ function construireInsigneGrade(grade) {
         <header class="rapport-mdc-header">
           <div>
             <div class="rapport-mdc-kicker">Espace GDA</div>
-            <h2>💡 Suggestions MDC</h2>
-            <p class="rapport-mdc-subtitle">Consultez les suggestions et proposez les vôtres.</p>
+            <h2>🎯 Demande d'entraînement MDC</h2>
+            <p class="rapport-mdc-subtitle">Consultez les demandes d'entraînement et proposez les vôtres.</p>
           </div>
           <div class="rapport-mdc-stats"><div class="rapport-stat"><strong id="suggestionTotal">0</strong><span>Affichées</span></div></div>
         </header>
         <div style="display:flex; gap:8px; margin-top:16px; flex-wrap:wrap;">
-          <button id="boutonSuggestionPoster" class="rapport-validation-btn" onclick="afficherSuggestionVue('form')">Poster une suggestion</button>
-          <button id="boutonSuggestionAttente" class="rapport-validation-btn" onclick="afficherSuggestionVue('attente')">Suggestions en attente</button>
-          <button id="boutonSuggestionValidees" class="rapport-validation-btn" style="border-color:#67dcb0; background:rgba(49,160,113,.2); color:#b6ffdc;" onclick="afficherSuggestionVue('validees')">Suggestions validées</button>
-          <button id="boutonSuggestionRefusees" class="rapport-validation-btn" style="border-color:#e38a83; background:rgba(160,49,49,.2); color:#ffd0cc;" onclick="afficherSuggestionVue('refusees')">Suggestions refusées</button>
+          <button id="boutonSuggestionPoster" class="rapport-validation-btn" onclick="afficherSuggestionVue('form')">Demander un entraînement</button>
+          <button id="boutonSuggestionAttente" class="rapport-validation-btn" onclick="afficherSuggestionVue('attente')">Demandes en attente</button>
+          <button id="boutonSuggestionValidees" class="rapport-validation-btn" style="border-color:#67dcb0; background:rgba(49,160,113,.2); color:#b6ffdc;" onclick="afficherSuggestionVue('validees')">Demandes validées</button>
+          <button id="boutonSuggestionRefusees" class="rapport-validation-btn" style="border-color:#e38a83; background:rgba(160,49,49,.2); color:#ffd0cc;" onclick="afficherSuggestionVue('refusees')">Demandes refusées</button>
         </div>
         <div class="rapport-mdc-grid" style="grid-template-columns: minmax(0, 1fr); margin-top:14px;">
           <section class="rapport-mdc-card">
-            <div class="rapport-mdc-card-head"><span id="suggestionZoneLabel">Vue</span><h3 id="suggestionZoneTitre">Suggestions</h3></div>
+            <div class="rapport-mdc-card-head"><span id="suggestionZoneLabel">Vue</span><h3 id="suggestionZoneTitre">Demandes d'entraînement</h3></div>
             <div id="suggestionZoneContenu"></div>
           </section>
         </div>
@@ -3311,14 +3317,18 @@ function construireInsigneGrade(grade) {
     event.preventDefault();
     const bouton = event.currentTarget.querySelector('.rapport-submit');
     const feedback = document.getElementById('suggestionFeedback');
-    const titre = document.getElementById('suggestionTitre').value.trim();
+    const titre = document.getElementById('suggestionType').value.trim();
+    const dateHeure = document.getElementById('suggestionDateHeure').value.trim();
     const texte = document.getElementById('suggestionTexte').value.trim();
-    if (!titre || !texte) {
+    const roles = document.getElementById('suggestionRoles').value.trim();
+    const lieux = document.getElementById('suggestionLieux').value.trim();
+    const personnel = document.getElementById('suggestionPersonnel').value.trim();
+    if (!titre || !dateHeure || !texte || !lieux) {
       feedback.className = 'rapport-feedback fail';
-      feedback.textContent = 'Renseigne un titre et le détail de ta suggestion.';
+      feedback.textContent = 'Renseigne au minimum le type, la date & heure, la description et le lieu.';
       return;
     }
-    const suggestion = { matricule: matriculeActif, grade: gradeActif, titre, texte, date: new Date().toISOString(), statut: 'En attente' };
+    const suggestion = { matricule: matriculeActif, grade: gradeActif, titre, dateHeure, texte, roles, lieux, personnel, date: new Date().toISOString(), statut: 'En attente' };
     const suggestions = lireSuggestionsMdc();
     suggestions.unshift(suggestion);
     ecrireSuggestionsMdc(suggestions);
@@ -3327,16 +3337,16 @@ function construireInsigneGrade(grade) {
     try {
       await appelerWebApp('soumettreSuggestion', suggestion);
       feedback.className = 'rapport-feedback ok';
-      feedback.textContent = 'Suggestion envoyée : en attente de traitement.';
+      feedback.textContent = 'Demande envoyée : en attente de traitement.';
     } catch (erreur) {
       suggestion.nonSynchronise = true;
       ecrireSuggestionsMdc(suggestions);
       feedback.className = 'rapport-feedback fail';
-      feedback.textContent = 'Suggestion conservée sur cet appareil, en attente de synchronisation.';
+      feedback.textContent = 'Demande conservée sur cet appareil, en attente de synchronisation.';
     } finally {
       event.currentTarget.reset();
       bouton.disabled = false;
-      bouton.textContent = 'Envoyer la suggestion';
+      bouton.textContent = 'Envoyer la demande';
     }
   }
 
@@ -3669,7 +3679,7 @@ function construireInsigneGrade(grade) {
       return;
     }
 
-    if (bouton.label === 'Suggestion MDC') {
+    if (bouton.label === 'Demande d\'entraînement MDC') {
       afficherSuggestionMDC();
       return;
     }
