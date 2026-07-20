@@ -484,7 +484,42 @@
     max-width: 260px;
     z-index: 30;
   }
-  body.mode-boutons #contenuLienMDC .iframe-wrap { margin-left: 300px; width: calc(100% - 300px); }
+  body.mode-boutons #contenuLienMDC { margin-left: 300px; width: calc(100% - 300px); }
+
+  @media (max-width: 900px) {
+    body.mode-boutons .menu-boutons {
+      position: static;
+      top: auto;
+      left: auto;
+      transform: none;
+      width: 100%;
+      max-width: 100%;
+      flex-direction: row;
+      flex-wrap: wrap;
+      gap: 8px;
+      z-index: auto;
+      margin: 0 0 16px 0;
+    }
+    body.mode-boutons .btn-lien-mdc {
+      flex: 1 1 calc(50% - 4px);
+      padding: 14px 10px;
+      font-size: 11.5px;
+      text-align: center;
+    }
+    body.mode-boutons #contenuLienMDC {
+      margin-left: 0;
+      width: 100%;
+    }
+    .admin-topbar-fixe {
+      position: static;
+      transform: none;
+      width: 100%;
+      flex-wrap: wrap;
+      margin: 0 0 14px 0;
+    }
+    body.mode-admin .console { margin-top: 0; }
+    .console.expanded { max-width: 100%; }
+  }
 
   /* Le logo animé ne descend en bas à droite qu'une fois qu'un lien a été ouvert. */
   body.lien-ouvert .header {
