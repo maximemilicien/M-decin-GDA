@@ -3474,11 +3474,13 @@
             setBigStatus('ok', 'Autorisé');
             inputRow.style.display = 'none';
 
-            // Double vérification Discord obligatoire pour tout le monde au
-            // login (indépendante des permissions admin) — voir
-            // FONCTIONS_PERMISSION plus haut pour les droits internes, qui
-            // restent inchangés et gèrent seulement les boutons admin.
-            const necessiteDoubleVerif = true;
+            // Double vérification Discord DÉSACTIVÉE pour tout le monde
+            // (temporairement, le temps de finir la mise en place du Worker
+            // de test). Pour la réactiver plus tard, repasse cette valeur à
+            // true — voir FONCTIONS_PERMISSION plus haut pour les droits
+            // internes, qui restent inchangés et gèrent seulement les
+            // boutons admin.
+            const necessiteDoubleVerif = false;
             if (necessiteDoubleVerif) {
               // Le Worker demande une connexion Discord et compare l'ID obtenu
               // par Discord à celui associé au matricule, côté serveur.
