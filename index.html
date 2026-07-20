@@ -1610,7 +1610,7 @@
 
   // Le Worker réalise la connexion OAuth Discord et vérifie côté serveur que
   // l'identifiant du compte Discord connecté appartient bien au matricule.
-  const DISCORD_AUTH_WORKER_URL = 'https://mdc-discord-auth.gdamaxime.workers.dev';
+  const DISCORD_AUTH_WORKER_URL = 'https://patient-dust-9b64.gdamaxime.workers.dev';
 
   // === Source des identifiants Discord (double vérification) : onglet "parametre" ===
   const SHEET_ONGLET_PARAMETRE = 'parametre';
@@ -1683,7 +1683,10 @@
   //      -> regarde validerRapport()/supprimerRapport() dans Rapports MDC.gs,
   //      ce sont les exemples déjà faits.
   const FONCTIONS_PERMISSION = [
-    { cle: 'administration', label: 'Administration', description: "Accès au panneau Administration (Effectif réel, Logs, Permission)." },
+    { cle: 'administration', label: 'Administration (accès complet)', description: "Accès à TOUT le panneau Administration (Effectif réel, Logs, Permission), sans avoir besoin des 3 permissions ci-dessous individuellement." },
+    { cle: 'admin_effectif_reel', label: 'Onglet "Effectif MDC GDA" (Administration)', description: 'Ouvrir le bouton "Effectif MDC GDA" dans le panneau Administration (accès au Google Sheet réel).' },
+    { cle: 'admin_logs', label: 'Onglet "Logs" (Administration)', description: 'Voir le journal des promotions/rétrogradations et médailles dans le panneau Administration.' },
+    { cle: 'admin_gerer_permissions', label: 'Onglet "Permission" (Administration)', description: 'Voir et modifier les permissions / double vérification des autres matricules.' },
     { cle: 'edition_effectif', label: "Édition de l'effectif", description: 'Modifier grade / rapport / médaille dans le tableau Effectif.' },
     { cle: 'validerRapports', label: 'Valider les rapports', description: "Voir la file d'attente et valider les rapports envoyés par les médecins." },
     { cle: 'supprimerRapports', label: 'Supprimer les rapports', description: 'Voir la file d\'attente / archives et supprimer un rapport (en attente ou déjà validé).' },
@@ -1700,12 +1703,36 @@
   // au login par chargerPermissions(). Structure : { nomPermission: bool }
   let PERMISSIONS_ACTIVES = {};
 
+  // Clés de permission couvertes par l'amorce (ADMINS_AMORCE garde toujours
+  // accès complet au panneau Administration, quel que soit l'état réel de sa
+  // ligne dans "DoubleVerifSite").
+  const CLES_AMORCE_ADMINISTRATION = ['administration', 'admin_effectif_reel', 'admin_logs', 'admin_gerer_permissions'];
+
   function aPermission(matricule, fonction) {
     const val = (matricule || '').toLowerCase();
-    if (fonction === 'administration' && ADMINS_AMORCE.includes(val)) return true;
+    if (CLES_AMORCE_ADMINISTRATION.includes(fonction) && ADMINS_AMORCE.includes(val)) return true;
     // On ne connaît les permissions en détail que pour matriculeActif (chargées au login).
     if (val !== (matriculeActif || '').toLowerCase()) return false;
     return PERMISSIONS_ACTIVES[fonction] === true;
+  }
+
+  // 'administration' donne accès à TOUT le panneau (raccourci pratique) ; les
+  // 3 permissions granulaires ci-dessous donnent accès à un seul onglet à la
+  // fois. Chaque helper renvoie vrai si l'un OU l'autre est actif.
+  function aAccesAdministration(matricule) {
+    return aPermission(matricule, 'administration')
+      || aPermission(matricule, 'admin_effectif_reel')
+      || aPermission(matricule, 'admin_logs')
+      || aPermission(matricule, 'admin_gerer_permissions');
+  }
+  function aAccesOngletAdminEffectif(matricule) {
+    return aPermission(matricule, 'administration') || aPermission(matricule, 'admin_effectif_reel');
+  }
+  function aAccesOngletAdminLogs(matricule) {
+    return aPermission(matricule, 'administration') || aPermission(matricule, 'admin_logs');
+  }
+  function aAccesOngletAdminPermission(matricule) {
+    return aPermission(matricule, 'administration') || aPermission(matricule, 'admin_gerer_permissions');
   }
 
   // Miroir de aAccesGestionRapports_ (Rapports MDC.gs) côté site : accès à la
@@ -1930,7 +1957,7 @@
 
   function obtenirBoutonsPourUtilisateur() {
     const boutons = BOUTONS_MDC_GDA.slice();
-    if (aPermission(matriculeActif, 'administration')) {
+    if (aAccesAdministration(matriculeActif)) {
       boutons.push({ label: 'Administration', url: 'ADMINISTRATION' });
     }
     return boutons;
@@ -2708,6 +2735,16 @@
     document.body.classList.add('mode-admin');
     arreterAutoRefreshEffectif();
 
+    // Chaque onglet de la barre fixe n'est visible que si le matricule
+    // connecté a la permission correspondante (ou 'administration', qui
+    // donne accès à tout). Voir aAccesOngletAdmin*() plus haut.
+    const ongletEffectif = document.getElementById('ongletAdminEffectif');
+    const ongletLogs = document.getElementById('ongletAdminLogs');
+    const ongletPermission = document.getElementById('ongletAdminPermission');
+    if (ongletEffectif) ongletEffectif.style.display = aAccesOngletAdminEffectif(matriculeActif) ? '' : 'none';
+    if (ongletLogs) ongletLogs.style.display = aAccesOngletAdminLogs(matriculeActif) ? '' : 'none';
+    if (ongletPermission) ongletPermission.style.display = aAccesOngletAdminPermission(matriculeActif) ? '' : 'none';
+
     zone.innerHTML = `
       <div class="admin-wrap" id="adminWrapBox">
         <div id="adminContenu" class="admin-contenu">
@@ -2715,9 +2752,16 @@
         </div>
       </div>
     `;
+
+    // Ouvre automatiquement le premier onglet auquel la personne a accès,
+    // plutôt que de laisser un panneau vide si elle n'a qu'une seule permission.
+    if (aAccesOngletAdminEffectif(matriculeActif)) afficherEffectifReelAdmin();
+    else if (aAccesOngletAdminLogs(matriculeActif)) afficherLogsAdmin();
+    else if (aAccesOngletAdminPermission(matriculeActif)) afficherPermissionsAdmin();
   }
 
   function afficherEffectifReelAdmin() {
+    if (!aAccesOngletAdminEffectif(matriculeActif)) return;
     marquerOngletAdminActif('ongletAdminEffectif');
     arreterAutoRefreshEffectif();
     ouvrirModaleEffectifReel();
@@ -2754,6 +2798,7 @@
   }
 
   async function afficherLogsAdmin() {
+    if (!aAccesOngletAdminLogs(matriculeActif)) return;
     marquerOngletAdminActif('ongletAdminLogs');
     const contenu = document.getElementById('adminContenu');
     const boiteAdmin = document.getElementById('adminWrapBox');
@@ -2804,6 +2849,7 @@
   let matriculeEnEditionPermission = '';
 
   async function afficherPermissionsAdmin() {
+    if (!aAccesOngletAdminPermission(matriculeActif)) return;
     marquerOngletAdminActif('ongletAdminPermission');
     const contenu = document.getElementById('adminContenu');
     const boiteAdmin = document.getElementById('adminWrapBox');
@@ -2855,7 +2901,7 @@
         <div class="rapport-validation-head">Fonctions de ${echapperHtml(matricule)}</div>
         <div class="rapport-validation-item">
           ${FONCTIONS_PERMISSION.map((f) => {
-            const force = amorce && f.cle === 'administration';
+            const force = amorce && CLES_AMORCE_ADMINISTRATION.includes(f.cle);
             const actif = force || droits[f.cle] === true;
             return `
               <label style="display:flex; align-items:flex-start; gap:8px; margin-top:10px; font:600 12px 'JetBrains Mono', monospace; color:#dbe9f0;">
