@@ -350,6 +350,16 @@
   }
   .action-zone.open { max-height: 900px; }
 
+  /* Une fois connecté (mode-boutons actif), le contenu peut dépasser 900px
+     (Administration > Permission, formulaires longs, etc.) — on ne le limite
+     donc plus, sinon il est coupé sans pouvoir défiler. Les 900px ne servent
+     qu'à l'animation d'ouverture juste après la connexion. */
+  body.mode-boutons .action-zone,
+  body.mode-boutons .action-zone.open {
+    max-height: none;
+    overflow: visible;
+  }
+
   .id-card {
     background: var(--bg-panel-raised);
     border: 1px solid rgba(74, 157, 111, 0.3);
