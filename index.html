@@ -1751,25 +1751,19 @@ body.mode-boutons #contenuLienMDC{margin-top:140px;}
     { cle: 'gererEntrainements', label: "Gérer les demandes d'entraînement", description: "Voir la file d'attente et valider ou refuser les demandes d'entraînement envoyées par les médecins." },
   ];
 
-  // Amorce : ces matricules gardent TOUJOURS la permission "administration",
-  // même si leur ligne dans "DoubleVerifSite" est vide, injoignable, ou pas
-  // encore créée. Ça évite de se retrouver bloqué·e dehors du panneau
-  // Permission (sinon personne ne pourrait plus jamais accorder de permission
-  // à personne). Ajoute/retire des matricules ici si besoin.
-  const ADMINS_AMORCE = ['foxtrot', 'beta', 'milo', 'echo', 'walkyrie', 'misfit'];
+  // Il n'y a plus de liste de matricules codée en dur ici : les grades qui
+  // doivent avoir accès à tout (Lieutenant-Colonel, Commandant, Vice-Commandant,
+  // Gérant Médecin, Co-Gérant Médecin) sont gérés uniquement côté serveur
+  // (CONFIG.GRADES_ACCES_COMPLET dans Config.gs) — lireDoubleVerifSite()
+  // renvoie déjà toutes les permissions à true pour ces grades, donc le site
+  // n'a besoin d'aucune règle particulière ici.
 
   // Permissions du matricule actuellement connecté (matriculeActif), chargées
   // au login par chargerPermissions(). Structure : { nomPermission: bool }
   let PERMISSIONS_ACTIVES = {};
 
-  // Clés de permission couvertes par l'amorce (ADMINS_AMORCE garde toujours
-  // accès complet au panneau Administration, quel que soit l'état réel de sa
-  // ligne dans "DoubleVerifSite").
-  const CLES_AMORCE_ADMINISTRATION = ['administration', 'admin_effectif_reel', 'admin_logs', 'admin_gerer_permissions'];
-
   function aPermission(matricule, fonction) {
     const val = (matricule || '').toLowerCase();
-    if (CLES_AMORCE_ADMINISTRATION.includes(fonction) && ADMINS_AMORCE.includes(val)) return true;
     // On ne connaît les permissions en détail que pour matriculeActif (chargées au login).
     if (val !== (matriculeActif || '').toLowerCase()) return false;
     return PERMISSIONS_ACTIVES[fonction] === true;
@@ -1805,7 +1799,6 @@ body.mode-boutons #contenuLienMDC{margin-top:140px;}
   // backend puisqu'à ce stade matriculeActif n'est pas encore défini.
   async function aAuMoinsUnePermission(matricule) {
     const val = (matricule || '').toLowerCase();
-    if (ADMINS_AMORCE.includes(val)) return true;
     try {
       const resultat = await appelerWebApp('lireDoubleVerifSite', { matricule: val });
       return Object.values(resultat.permissions || {}).some((actif) => actif === true);
@@ -1817,15 +1810,14 @@ body.mode-boutons #contenuLienMDC{margin-top:140px;}
 
   // Charge les permissions du matricule connecté (matriculeActif) depuis le
   // Sheet. Si l'appel échoue (action pas encore déployée côté Apps Script),
-  // on continue avec des permissions vides + l'amorce ADMINS_AMORCE, sans
-  // bloquer la connexion.
+  // on continue avec des permissions vides, sans bloquer la connexion.
   async function chargerPermissions() {
     PERMISSIONS_ACTIVES = {};
     try {
       const resultat = await appelerWebApp('lireDoubleVerifSite', { matricule: matriculeActif });
       PERMISSIONS_ACTIVES = resultat.permissions || {};
     } catch (erreur) {
-      console.warn("Permissions : lecture impossible pour l'instant, seule l'amorce ADMINS_AMORCE est active.", erreur);
+      console.warn("Permissions : lecture impossible pour l'instant.", erreur);
     }
   }
 
@@ -2920,7 +2912,7 @@ function construireInsigneGrade(grade) {
 
     contenu.innerHTML = `
       <div class="admin-liste-titre">Permission</div>
-      <div class="admin-liste-vide" style="margin-bottom:14px;">Cherche un matricule pour voir et modifier ses fonctions activées. L'amorce (${ADMINS_AMORCE.join(', ')}) garde toujours "Administration", même décochée.</div>
+      <div class="admin-liste-vide" style="margin-bottom:14px;">Cherche un matricule pour voir et modifier ses fonctions activées. Les grades Lieutenant-Colonel, Commandant, Vice-Commandant, Gérant Médecin et Co-Gérant Médecin ont toujours accès à tout, automatiquement (géré côté serveur, indépendamment des cases ci-dessous).</div>
       <div class="rapport-validation" style="margin-bottom:14px;">
         <div class="rapport-validation-head">Rechercher un matricule</div>
         <div class="rapport-validation-item">
@@ -2956,18 +2948,16 @@ function construireInsigneGrade(grade) {
   }
 
   function construireBlocDroitsMatricule(matricule, droits) {
-    const amorce = ADMINS_AMORCE.includes(matricule);
     return `
       <div class="rapport-validation">
         <div class="rapport-validation-head">Fonctions de ${echapperHtml(matricule)}</div>
         <div class="rapport-validation-item">
           ${FONCTIONS_PERMISSION.map((f) => {
-            const force = amorce && CLES_AMORCE_ADMINISTRATION.includes(f.cle);
-            const actif = force || droits[f.cle] === true;
+            const actif = droits[f.cle] === true;
             return `
               <label style="display:flex; align-items:flex-start; gap:8px; margin-top:10px; font:600 12px 'JetBrains Mono', monospace; color:#dbe9f0;">
-                <input type="checkbox" id="permissionCase_${f.cle}" ${actif ? 'checked' : ''} ${force ? 'disabled title="Amorce : toujours actif"' : ''}>
-                <span>${f.label}${force ? ' (amorce)' : ''}<br><span style="font-weight:400; color:#9fb4bd; text-transform:none; letter-spacing:0;">${f.description}</span></span>
+                <input type="checkbox" id="permissionCase_${f.cle}" ${actif ? 'checked' : ''}>
+                <span>${f.label}<br><span style="font-weight:400; color:#9fb4bd; text-transform:none; letter-spacing:0;">${f.description}</span></span>
               </label>
             `;
           }).join('')}
