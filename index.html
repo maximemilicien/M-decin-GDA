@@ -3422,7 +3422,8 @@ function construireInsigneGrade(grade) {
     refusees: 'listeEntrainementsRefusees'
   };
 
-  const TYPES_ENTRAINEMENT = ['GF', 'Cours', 'Formation', 'Autre'];
+  const TYPES_ENTRAINEMENT = ['Médecin'];
+  const GROUPES_INVITES_ENTRAINEMENT = ['BPM', 'MDC AIT', 'MDC GI', 'MDC FIM'];
 
   function marquerBoutonEntrainementActif(vue) {
     ['boutonEntrainementPoster', 'boutonEntrainementAttente', 'boutonEntrainementValidees', 'boutonEntrainementRefusees'].forEach((id) => {
@@ -3469,7 +3470,16 @@ function construireInsigneGrade(grade) {
             <div class="rapport-field full"><label for="entrainementDescription">Description de l'entraînement</label><textarea id="entrainementDescription" maxlength="2000" placeholder="Déroulé, objectifs…" required></textarea></div>
             <div class="rapport-field full"><label for="entrainementRoles">Description des rôles</label><textarea id="entrainementRoles" maxlength="2000" placeholder="Qui fait quoi…" required></textarea></div>
             <div class="rapport-field"><label for="entrainementLieu">Lieux</label><input id="entrainementLieu" type="text" maxlength="150" placeholder="Lieu de l'entraînement" required></div>
-            <div class="rapport-field"><label for="entrainementInvites">Personnel invité</label><input id="entrainementInvites" type="text" maxlength="300" placeholder="Matricules / grades invités"></div>
+            <div class="rapport-field full">
+              <label>Personnel invité</label>
+              <div style="display:flex; flex-wrap:wrap; gap:14px; margin-top:6px;">
+                ${GROUPES_INVITES_ENTRAINEMENT.map(g => `
+                  <label style="display:flex; align-items:center; gap:7px; font:600 12.5px 'JetBrains Mono', monospace; color:#dbe9f0; cursor:pointer;">
+                    <input type="checkbox" class="entrainement-invite-case" value="${g}"> ${g}
+                  </label>
+                `).join('')}
+              </div>
+            </div>
           </div>
           <button class="rapport-submit" type="submit">Envoyer la demande</button>
           <div class="rapport-feedback" id="entrainementFeedback"></div>
@@ -3593,7 +3603,7 @@ function construireInsigneGrade(grade) {
     const description = document.getElementById('entrainementDescription').value.trim();
     const roles = document.getElementById('entrainementRoles').value.trim();
     const lieu = document.getElementById('entrainementLieu').value.trim();
-    const invites = document.getElementById('entrainementInvites').value.trim();
+    const invites = Array.from(document.querySelectorAll('.entrainement-invite-case:checked')).map(c => c.value).join(', ');
 
     if (!dateHeure || !description || !roles || !lieu) {
       feedback.className = 'rapport-feedback fail';
