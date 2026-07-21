@@ -1661,13 +1661,13 @@ body.mode-boutons #contenuLienMDC{margin-top:140px;}
 
 <script>
   // === Source des matricules : Google Sheet en direct ===
-  const SHEET_ID = '13a2F3iQ0vSmZx9X_JcTss6KZJRHy0YyQy8GO4I7kBi0';
+  const SHEET_ID = '1dzJuItFv1XKjbhuyz-qkrWLdWkA-T1aY2vDWmCw36Ew';
   const SHEET_NOM_ONGLET = 'Feuille 1';
   const SHEET_JSON_URL = `https://opensheet.elk.sh/${SHEET_ID}/${encodeURIComponent(SHEET_NOM_ONGLET)}`;
 
   // Le Worker réalise la connexion OAuth Discord et vérifie côté serveur que
   // l'identifiant du compte Discord connecté appartient bien au matricule.
-  const DISCORD_AUTH_WORKER_URL = 'https://patient-dust-9b64.gdamaxime.workers.dev';
+  const DISCORD_AUTH_WORKER_URL = 'https://mdc-discord-auth.gdamaxime.workers.dev';
 
   // === Source des identifiants Discord (double vérification) : onglet "parametre" ===
   const SHEET_ONGLET_PARAMETRE = 'parametre';
@@ -2004,7 +2004,7 @@ body.mode-boutons #contenuLienMDC{margin-top:140px;}
 
   // === Menu de boutons (remplace le site Genially direct pour tout le monde) ===
   const BOUTONS_MDC_GDA = [
-    { label: 'Effectif MDC GDA', url: 'https://docs.google.com/spreadsheets/d/13a2F3iQ0vSmZx9X_JcTss6KZJRHy0YyQy8GO4I7kBi0/edit?usp=sharing' },
+    { label: 'Effectif MDC GDA', url: 'https://docs.google.com/spreadsheets/d/1dzJuItFv1XKjbhuyz-qkrWLdWkA-T1aY2vDWmCw36Ew/edit?usp=sharing' },
     { label: 'Réglement GDA', url: 'LIEN_A_COMPLETER_REGLEMENT_GDA' },
     { label: 'Matériel MDC GDA', url: 'LIEN_A_COMPLETER_MATERIEL_MDC_GDA' },
     { label: 'Rapport MDC GDA', url: '' },
@@ -2777,7 +2777,7 @@ function construireInsigneGrade(grade) {
   }
 
   // URL du vrai document Google Sheet (accessible uniquement via Administration)
-  const URL_EFFECTIF_REEL = 'https://docs.google.com/spreadsheets/d/13a2F3iQ0vSmZx9X_JcTss6KZJRHy0YyQy8GO4I7kBi0/edit?usp=sharing';
+  const URL_EFFECTIF_REEL = 'https://docs.google.com/spreadsheets/d/1dzJuItFv1XKjbhuyz-qkrWLdWkA-T1aY2vDWmCw36Ew/edit?usp=sharing';
 
   function marquerOngletAdminActif(idOnglet) {
     ['ongletAdminEffectif', 'ongletAdminLogs', 'ongletAdminPermission'].forEach((id) => {
