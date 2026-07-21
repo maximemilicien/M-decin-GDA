@@ -647,6 +647,46 @@ body.lien-ouvert .header {
   @media (max-width: 850px) { .rapport-mdc-grid { grid-template-columns: 1fr; }.rapport-mdc-wrap { padding: 15px; }.rapport-mdc-header { align-items: flex-start; flex-direction: column; }.rapport-mdc-stats { width: 100%; }.rapport-stat { flex: 1; } }
   @media (max-width: 460px) { .rapport-fields { grid-template-columns: 1fr; }.rapport-mdc-header h2 { font-size: 21px; }.rapport-mdc-wrap { padding: 10px; } }
 
+  /* === Classement MDC (réanimations) === */
+  .classement-row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 12px 14px;
+    border-bottom: 1px solid rgba(73, 153, 202, 0.16);
+  }
+  .classement-row:last-child { border-bottom: 0; }
+  .classement-rang {
+    width: 34px;
+    height: 34px;
+    flex: 0 0 auto;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: rgba(91, 155, 240, 0.14);
+    border: 1px solid #2c4a78;
+    color: #bcd4f7;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 800;
+    font-size: 13px;
+  }
+  .classement-row.classement-or .classement-rang { background: rgba(224, 176, 79, 0.22); border-color: #e0b04f; color: #ffe08a; }
+  .classement-row.classement-argent .classement-rang { background: rgba(200, 210, 220, 0.18); border-color: #c8d2dc; color: #e9eef3; }
+  .classement-row.classement-bronze .classement-rang { background: rgba(196, 130, 74, 0.2); border-color: #c4824a; color: #f0b98a; }
+  .classement-infos { flex: 1; min-width: 0; }
+  .classement-infos strong { display: block; font: 700 13.5px 'JetBrains Mono', monospace; color: #f8fbff; }
+  .classement-infos span { display: block; margin-top: 2px; color: #8faec4; font-size: 11px; }
+  .classement-valeur {
+    flex: 0 0 auto;
+    text-align: center;
+    padding: 6px 12px;
+    border-radius: 8px;
+    background: rgba(36, 116, 156, .28);
+    color: #cceeff;
+    font: 800 15px 'JetBrains Mono', monospace;
+  }
+  .classement-valeur span { display: block; margin-top: 1px; font: 700 8px 'JetBrains Mono', monospace; letter-spacing: .08em; color: #9fd3ee; text-transform: uppercase; }
+
   /* === Tableau Effectif recréé (pour tout le monde sauf double vérification) === */
   .effectif-wrap {
     width: 100%;
@@ -1749,6 +1789,7 @@ body.mode-boutons #contenuLienMDC{margin-top:140px;}
     { cle: 'supprimerRapports', label: 'Supprimer les rapports', description: 'Voir la file d\'attente / archives et supprimer un rapport (en attente ou déjà validé).' },
     { cle: 'gererSuggestions', label: 'Gérer les suggestions MDC', description: "Voir la file d'attente et valider ou refuser les suggestions envoyées par les médecins." },
     { cle: 'gererEntrainements', label: "Gérer les demandes d'entraînement", description: "Voir la file d'attente et valider ou refuser les demandes d'entraînement envoyées par les médecins." },
+    { cle: 'gererClassement', label: 'Réinitialiser le classement', description: "Réinitialiser le classement des réanimations de tout l'effectif MDC GDA." },
   ];
 
   // Il n'y a plus de liste de matricules codée en dur ici : les grades qui
@@ -2001,7 +2042,8 @@ body.mode-boutons #contenuLienMDC{margin-top:140px;}
     { label: 'Matériel MDC GDA', url: 'LIEN_A_COMPLETER_MATERIEL_MDC_GDA' },
     { label: 'Rapport MDC GDA', url: '' },
     { label: 'Suggestion MDC', url: '' },
-    { label: 'Demande d\'entraînement', url: '' }
+    { label: 'Demande d\'entraînement', url: '' },
+    { label: 'Classement', url: '' }
   ];
 
   let matriculeActif = null; // matricule de la personne actuellement connectée sur le dashboard
@@ -2214,6 +2256,9 @@ function construireInsigneGrade(grade) {
       if (document.querySelector('#contenuLienMDC .effectif-table')) {
         // Vue "Effectif MDC GDA" ouverte : ne recharge que le tableau.
         await rafraichirTableauEffectif();
+      } else if (document.getElementById('classementListe')) {
+        // Vue "Classement" ouverte : ne recharge que le classement.
+        await dessinerClassementMDC();
       } else if (document.getElementById('ongletAdminLogs')?.classList.contains('actif')) {
         // Panneau Administration > Logs : ne recharge que la liste des logs.
         await afficherLogsAdmin();
@@ -3081,6 +3126,105 @@ function construireInsigneGrade(grade) {
     try {
       return new Intl.DateTimeFormat('fr-FR', { dateStyle: 'short', timeStyle: 'short' }).format(new Date(date));
     } catch { return date || '—'; }
+  }
+
+  // === Classement MDC GDA (réanimations) ===
+  // Calcule le classement à partir des rapports MDC validés (colonne
+  // "réanimations" de chaque rapport, additionnée par matricule). Le backend
+  // expose cette agrégation via l'action 'classementReanimations' pour ne pas
+  // avoir à retélécharger tous les rapports individuels côté client.
+  // Actions Web App attendues côté Apps Script :
+  //   - 'classementReanimations' { validateur } -> { ok, classement: [{ matricule, grade, totalReanimations }, ...] }
+  //   - 'reinitialiserClassement' { validateur } -> { ok } — remet tous les compteurs à 0
+  function aAccesReinitialiserClassement(matricule) {
+    return aPermission(matricule, 'gererClassement');
+  }
+
+  async function afficherClassementMDC() {
+    const zone = document.getElementById('contenuLienMDC');
+    if (!zone) return;
+    document.body.classList.add('lien-ouvert');
+    arreterAutoRefreshEffectif();
+
+    const peutReinitialiser = aAccesReinitialiserClassement(matriculeActif);
+
+    zone.innerHTML = `
+      <section class="rapport-mdc-wrap">
+        <header class="rapport-mdc-header">
+          <div>
+            <div class="rapport-mdc-kicker">Espace GDA</div>
+            <h2>🏆 Classement MDC GDA</h2>
+            <p class="rapport-mdc-subtitle">Nombre de réanimations effectuées, tout l'effectif confondu.</p>
+          </div>
+          <div class="rapport-mdc-stats"><div class="rapport-stat"><strong id="classementTotalMembres">0</strong><span>Membres</span></div></div>
+        </header>
+        ${peutReinitialiser ? `
+          <div style="display:flex; gap:8px; margin-top:16px; flex-wrap:wrap;">
+            <button class="rapport-validation-btn" style="border-color:#e38a83; background:rgba(160,49,49,.2); color:#ffd0cc;" onclick="reinitialiserClassementMDC()">Réinitialiser le classement</button>
+          </div>
+        ` : ''}
+        <div class="rapport-mdc-grid" style="grid-template-columns: minmax(0, 1fr); margin-top:14px;">
+          <section class="rapport-mdc-card">
+            <div class="rapport-mdc-card-head"><span>Classement</span><h3>Réanimations effectuées</h3></div>
+            <div id="classementListe"></div>
+          </section>
+        </div>
+      </section>
+    `;
+
+    await dessinerClassementMDC();
+  }
+
+  async function dessinerClassementMDC() {
+    const zone = document.getElementById('classementListe');
+    if (!zone) return;
+    zone.innerHTML = '<div class="rapport-history-empty">Chargement du classement…</div>';
+
+    try {
+      const resultat = await appelerWebApp('classementReanimations', { validateur: matriculeActif });
+      const classement = (Array.isArray(resultat.classement) ? resultat.classement : [])
+        .slice()
+        .sort((a, b) => Number(b.totalReanimations || 0) - Number(a.totalReanimations || 0));
+
+      const total = document.getElementById('classementTotalMembres');
+      if (total) total.textContent = classement.length;
+
+      if (!classement.length) {
+        zone.innerHTML = '<div class="rapport-history-empty"><span class="empty-icon">🏆</span><strong>Aucune réanimation enregistrée pour le moment</strong></div>';
+        return;
+      }
+
+      const classesRang = ['classement-or', 'classement-argent', 'classement-bronze'];
+      zone.innerHTML = classement.map((m, i) => `
+        <div class="classement-row ${classesRang[i] || ''}">
+          <div class="classement-rang">${i + 1}</div>
+          <div class="classement-infos">
+            <strong>${echapperHtml(m.matricule)}</strong>
+            <span>${echapperHtml(m.grade || 'Grade non renseigné')}</span>
+          </div>
+          <div class="classement-valeur">${Number(m.totalReanimations || 0)}<span>réa.</span></div>
+        </div>
+      `).join('');
+    } catch (erreur) {
+      console.warn('Classement indisponible :', erreur);
+      zone.innerHTML = `<div class="rapport-history-empty"><strong>Classement indisponible</strong><br>Publiez la nouvelle version Apps Script (action 'classementReanimations').</div>`;
+    }
+  }
+
+  async function reinitialiserClassementMDC() {
+    if (!aAccesReinitialiserClassement(matriculeActif)) return;
+    if (!confirm('Réinitialiser le classement ? Le nombre de réanimations de tout le monde repassera à 0. Cette action est irréversible.')) return;
+
+    const bouton = event?.target;
+    if (bouton) { bouton.disabled = true; bouton.textContent = 'Réinitialisation…'; }
+    try {
+      await appelerWebApp('reinitialiserClassement', { validateur: matriculeActif });
+      await dessinerClassementMDC();
+      if (bouton) { bouton.disabled = false; bouton.textContent = 'Réinitialiser le classement'; }
+    } catch (erreur) {
+      if (bouton) { bouton.disabled = false; bouton.textContent = 'Échec — réessayer'; }
+      alert(erreur.message || 'Impossible de réinitialiser le classement pour le moment. Vérifie que l\'action \'reinitialiserClassement\' est bien déployée côté Apps Script.');
+    }
   }
 
   // === Salon Suggestion MDC : consultation publique en 3 files (attente /
@@ -3962,6 +4106,11 @@ function construireInsigneGrade(grade) {
 
     if (bouton.label === 'Demande d\'entraînement') {
       afficherEntrainementMDC();
+      return;
+    }
+
+    if (bouton.label === 'Classement') {
+      afficherClassementMDC();
       return;
     }
 
