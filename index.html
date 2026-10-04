@@ -5,22 +5,28 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>MDC — Accès Console</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&family=Inter:wght@400;500;600;700&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
 
+  /* THEME "Baie de triage" — clinique, apaisant, arrondi. Remplace l'ancien
+     thème sombre tactique (bleu-nuit/or/monospace terminal anguleux). */
   :root {
-    --bg-void: #0a0d12;
-    --bg-panel: #12161d;
-    --bg-panel-raised: #171c25;
-    --line: #232935;
-    --line-bright: #333c4d;
-    --red: #c23b3b;
-    --red-glow: #e0524f;
-    --green: #4a9d6f;
-    --blue: #2f5fa8;
-    --blue-glow: #5b9bf0;
-    --text-primary: #e8ebf0;
-    --text-dim: #7a8494;
-    --text-faint: #4a5262;
+    --bg-void: #071a1c;
+    --bg-panel: #0d2528;
+    --bg-panel-raised: #123134;
+    --line: #1c3a3c;
+    --line-bright: #2f5e5f;
+    --red: #e11d48;
+    --red-glow: #fb7185;
+    --green: #10b981;
+    --blue: #0ea5e9;
+    --blue-glow: #5fd4fb;
+    --text-primary: #eafaf6;
+    --text-dim: #80aca9;
+    --text-faint: #3f6b69;
+    --amber: #f5a524;
+    --amber-glow: #fcd34d;
+    --radius-card: 18px;
+    --shadow-panel: 0 18px 44px rgba(0, 0, 0, 0.45);
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -29,7 +35,7 @@
     height: 100%;
     background: var(--bg-void);
     color: var(--text-primary);
-    font-family: 'Inter', sans-serif;
+    font-family: 'Plus Jakarta Sans', sans-serif;
     overflow-x: hidden;
   }
 
@@ -57,8 +63,11 @@
     padding: 24px;
     position: relative;
 
-    /* Fond d'écran MDC */
-    background-image: url("image/fond d'écrant mdc.png");
+    /* Fond clinique : dégradé radial + grille (plus d'image externe). */
+    background-image:
+      radial-gradient(ellipse 80% 60% at 50% 0%, rgba(14, 165, 233, 0.16), transparent 60%),
+      radial-gradient(ellipse 60% 50% at 85% 90%, rgba(16, 185, 129, 0.12), transparent 60%),
+      linear-gradient(180deg, #071a1c 0%, #051314 100%);
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -171,11 +180,11 @@
   }
 
   .header-text .eyebrow {
-    font-family: 'JetBrains Mono', monospace;
+    font-family: 'IBM Plex Mono', monospace;
     font-size: 10.5px;
-    letter-spacing: 0.18em;
+    letter-spacing: 0.01em;
     color: var(--red-glow);
-    text-transform: uppercase;
+    text-transform: none;
     font-weight: 700;
   }
   .header-text h1 {
@@ -189,7 +198,7 @@
   .panel {
     background: transparent;
     border: none;
-    border-radius: 4px;
+    border-radius: 12px;
     overflow: hidden;
     backdrop-filter: none;
   }
@@ -203,10 +212,10 @@
   .panel-body { padding: 32px 28px; }
 
   .field-label {
-    font-family: 'JetBrains Mono', monospace;
+    font-family: 'IBM Plex Mono', monospace;
     font-size: 10.5px;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
+    letter-spacing: 0.01em;
+    text-transform: none;
     color: var(--text-dim);
     display: block;
     margin-bottom: 10px;
@@ -226,12 +235,12 @@
     width: 100%;
     background: var(--bg-void);
     border: 1px solid var(--line-bright);
-    border-radius: 3px;
+    border-radius: 10px;
     padding: 14px 16px;
-    font-family: 'JetBrains Mono', monospace;
+    font-family: 'IBM Plex Mono', monospace;
     font-size: 16px;
     font-weight: 500;
-    letter-spacing: 0.06em;
+    letter-spacing: 0.01em;
     color: var(--text-primary);
     outline: none;
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
@@ -245,14 +254,14 @@
   .btn-verify {
     background: var(--bg-panel-raised);
     border: 1px solid var(--line-bright);
-    border-radius: 3px;
+    border-radius: 10px;
     padding: 0 20px;
     color: var(--text-primary);
-    font-family: 'JetBrains Mono', monospace;
+    font-family: 'IBM Plex Mono', monospace;
     font-size: 12px;
     font-weight: 700;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
+    letter-spacing: 0.01em;
+    text-transform: none;
     cursor: pointer;
     transition: all 0.15s ease;
     white-space: nowrap;
@@ -264,11 +273,11 @@
   /* Status area */
   .big-status {
     text-align: center;
-    font-family: 'JetBrains Mono', monospace;
+    font-family: 'IBM Plex Mono', monospace;
     font-size: 34px;
     font-weight: 800;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
+    letter-spacing: 0.01em;
+    text-transform: none;
     margin: 18px 0 4px;
     opacity: 0;
     transform: scale(0.9);
@@ -290,10 +299,10 @@
     display: flex;
     align-items: center;
     gap: 10px;
-    font-family: 'JetBrains Mono', monospace;
+    font-family: 'IBM Plex Mono', monospace;
     font-size: 12px;
     padding: 12px 14px;
-    border-radius: 3px;
+    border-radius: 10px;
     border: 1px solid var(--line);
     background: var(--bg-void);
     opacity: 0;
@@ -319,7 +328,7 @@
     margin-top: 14px;
   }
   .scan-percent {
-    font-family: 'JetBrains Mono', monospace;
+    font-family: 'IBM Plex Mono', monospace;
     font-size: 11px;
     color: var(--text-dim);
     min-width: 34px;
@@ -330,14 +339,14 @@
     flex: 1;
     height: 2px;
     background: var(--bg-void);
-    border-radius: 2px;
+    border-radius: 8px;
     overflow: hidden;
   }
   .scan-bar-fill {
     height: 100%;
     width: 0%;
     background: var(--red-glow);
-    border-radius: 2px;
+    border-radius: 8px;
   }
   /* Le remplissage de la barre est piloté en JS pour rester synchronisé avec le %. */
 
@@ -363,7 +372,7 @@
   .id-card {
     background: var(--bg-panel-raised);
     border: 1px solid rgba(74, 157, 111, 0.3);
-    border-radius: 3px;
+    border-radius: 10px;
     padding: 16px 18px;
     display: flex;
     align-items: center;
@@ -375,7 +384,7 @@
   .action-zone.open .id-card { animation: statusIn 0.4s ease 0.1s forwards; }
 
   .id-card-info .id-name {
-    font-family: 'JetBrains Mono', monospace;
+    font-family: 'IBM Plex Mono', monospace;
     font-size: 15px;
     font-weight: 700;
     color: var(--text-primary);
@@ -390,13 +399,13 @@
     background: var(--green);
     color: #0a0d12;
     border: none;
-    border-radius: 3px;
+    border-radius: 10px;
     padding: 11px 18px;
-    font-family: 'JetBrains Mono', monospace;
+    font-family: 'IBM Plex Mono', monospace;
     font-size: 12px;
     font-weight: 800;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
+    letter-spacing: 0.01em;
+    text-transform: none;
     cursor: pointer;
     flex-shrink: 0;
     transition: filter 0.15s ease, transform 0.1s ease;
@@ -412,13 +421,13 @@
     background: var(--green);
     color: #0a0d12;
     text-decoration: none;
-    border-radius: 3px;
+    border-radius: 10px;
     padding: 14px 18px;
-    font-family: 'JetBrains Mono', monospace;
+    font-family: 'IBM Plex Mono', monospace;
     font-size: 13px;
     font-weight: 800;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
+    letter-spacing: 0.01em;
+    text-transform: none;
     cursor: pointer;
     transition: filter 0.15s ease, transform 0.1s ease;
   }
@@ -431,10 +440,10 @@
     border-top: 1px dashed var(--line-bright);
   }
   .docs-panel .docs-title {
-    font-family: 'JetBrains Mono', monospace;
+    font-family: 'IBM Plex Mono', monospace;
     font-size: 10.5px;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
+    letter-spacing: 0.01em;
+    text-transform: none;
     color: var(--text-dim);
     margin-bottom: 10px;
   }
@@ -445,7 +454,7 @@
     gap: 10px;
     background: var(--bg-panel-raised);
     border: 1px solid var(--line);
-    border-radius: 3px;
+    border-radius: 10px;
     padding: 10px 14px;
     margin-bottom: 8px;
     color: var(--text-primary);
@@ -454,7 +463,7 @@
     transition: border-color 0.15s ease;
   }
   .doc-link:hover { border-color: var(--red); color: var(--red-glow); }
-  .doc-link .arrow { color: var(--text-dim); font-family: 'JetBrains Mono', monospace; }
+  .doc-link .arrow { color: var(--text-dim); font-family: 'IBM Plex Mono', monospace; }
 
   .menu-boutons {
     display: flex;
@@ -465,36 +474,185 @@
     margin: 0 auto;
   }
   .btn-lien-mdc {
+    display: flex;
+    align-items: center;
+    gap: 12px;
     background: rgba(20, 40, 74, 0.92);
     border: 1px solid var(--blue);
-    border-radius: 4px;
+    border-radius: 12px;
     padding: 22px 24px;
     color: var(--text-primary);
-    font-family: 'JetBrains Mono', monospace;
+    font-family: 'IBM Plex Mono', monospace;
     font-size: 14px;
     font-weight: 700;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
+    letter-spacing: 0.01em;
+    text-transform: none;
     cursor: pointer;
     transition: all 0.15s ease;
+    text-align: left;
   }
+  .btn-lien-icone { font-size: 16px; flex: none; line-height: 1; filter: grayscale(0.15); }
   .btn-lien-mdc:hover { border-color: var(--blue-glow); color: var(--blue-glow); box-shadow: 0 0 0 3px rgba(91, 155, 240, 0.18); }
   .btn-lien-mdc:active { transform: scale(0.98); }
 
-  /* Mode "menu de boutons" (Milo / Foxtrot / Beta / Echo) :
-     boutons fixés en haut à gauche, les boutons restent visibles
-     même après avoir ouvert un lien. */
+  /* ==== Dashboard : barre du haut ==== */
+  body.mode-boutons::after {
+    content: '';
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: 64px;
+    background: linear-gradient(180deg, #0e1726, #0a121e);
+    border-bottom: 1px solid var(--line-bright);
+    z-index: 8;
+    pointer-events: none;
+  }
+  body.mode-boutons .btn-refresh-corner { top: 15px; left: 296px; }
+  body.mode-boutons .badge-corner { top: 12px; z-index: 12; background: rgba(194, 59, 59, 0.16); border-color: rgba(224, 82, 79, 0.5); border-radius: 10px; }
+  @media (max-width: 900px) {
+    body.mode-boutons .btn-refresh-corner { left: 20px; }
+  }
+
+  /* Marque + horloge dans la barre du haut du dashboard */
+  .topbar-brand-mdc {
+    display: none;
+    position: fixed;
+    top: 0; left: 0;
+    height: 64px;
+    width: 280px;
+    align-items: center;
+    gap: 10px;
+    padding-left: 22px;
+    z-index: 9;
+    pointer-events: none;
+  }
+  .topbar-brand-croix {
+    display: grid;
+    place-items: center;
+    width: 34px;
+    height: 34px;
+    position: relative;
+    perspective: 300px;
+    flex-shrink: 0;
+  }
+  .topbar-brand-croix .coin {
+    width: 100%;
+    height: 100%;
+  }
+  .topbar-brand-texte {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12.5px;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+    color: var(--text-primary);
+  }
+  .topbar-horloge {
+    display: none;
+    position: fixed;
+    top: 0; left: 50%;
+    transform: translateX(-50%);
+    height: 64px;
+    align-items: center;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 13px;
+    letter-spacing: 0.01em;
+    color: var(--text-dim);
+    z-index: 9;
+    pointer-events: none;
+  }
+  body.mode-boutons .topbar-brand-mdc,
+  body.mode-boutons .topbar-horloge { display: flex; }
+  @media (max-width: 900px) {
+    .topbar-brand-mdc, .topbar-horloge { display: none !important; }
+  }
+
+  /* Mode "dashboard" : barre latérale fixe pleine hauteur, contenu à droite. */
+  .sidebar-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 16px 18px;
+    border-bottom: 1px solid var(--line-bright);
+    margin-bottom: 10px;
+    perspective: 400px;
+  }
+  .sidebar-header img {
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    animation: spinY 6s linear infinite;
+    filter: drop-shadow(0 0 8px rgba(224, 82, 79, 0.5));
+  }
+  .sidebar-header span {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+    text-transform: none;
+    color: var(--text-primary);
+    line-height: 1.3;
+  }
   body.mode-boutons .menu-boutons {
     position: fixed;
-    top: 50%;
-    left: 24px;
-    transform: translateY(-50%);
-    padding: 0;
+    top: 64px;
+    left: 0;
+    height: calc(100vh - 64px);
+    width: 280px;
+    background: linear-gradient(180deg, #0d1626, #0a1220);
+    border-right: 1px solid var(--line-bright);
+    padding: 0 16px 16px;
     margin: 0;
-    max-width: 260px;
-    z-index: 30;
+    max-width: none;
+    gap: 10px;
+    overflow-y: auto;
+    z-index: 20;
   }
-  body.mode-boutons #contenuLienMDC { margin-left: 300px; width: calc(100% - 300px); margin-top:140px; }
+  body.mode-boutons .btn-lien-mdc {
+    background: rgba(20, 40, 74, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.09);
+    border-radius: 12px;
+    padding: 14px 16px;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 13.5px;
+    font-weight: 600;
+    letter-spacing: 0;
+    text-transform: none;
+    text-align: left;
+  }
+  body.mode-boutons .btn-lien-mdc.actif {
+    background: rgba(58, 123, 213, 0.16);
+    border-color: rgba(91, 155, 240, 0.55);
+    color: var(--blue-glow);
+    box-shadow: inset 0 0 0 1px rgba(91, 155, 240, 0.2);
+  }
+  body.mode-boutons .btn-lien-admin {
+    border-color: rgba(224, 82, 79, 0.55);
+    background: rgba(194, 59, 59, 0.16);
+    color: #ffb4b0;
+  }
+  body.mode-boutons .btn-lien-admin:hover { border-color: var(--red-glow); color: var(--red-glow); box-shadow: 0 0 0 3px rgba(224, 82, 79, 0.18); }
+  .btn-admin-corner {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    z-index: 20;
+    padding: 14px 22px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.4);
+  }
+  /* Dossiers de boutons (menu de gauche) : quand un dossier est ouvert, le
+     bouton "Administration" en bas à gauche disparaît, et le bouton
+     "← Retour" (généré dans la liste elle-même) prend sa place visuelle. */
+  body.dossier-ouvert .btn-admin-corner { display: none; }
+  .btn-lien-retour-dossier {
+    border-color: rgba(224, 82, 79, 0.55);
+    background: rgba(194, 59, 59, 0.16);
+    color: #ffb4b0;
+    margin-bottom: 6px;
+  }
+  body.mode-boutons #contenuLienMDC { margin-left: 300px; width: calc(100% - 300px - 24px); margin-top: 88px; margin-right: 24px; }
+  body.mode-boutons .footer-note,
+  body.mode-boutons .panel-strip { display: none; }
+  body.mode-boutons .panel { background: transparent; }
+  body.mode-boutons .docs-panel { position: fixed; left: 16px; bottom: 16px; width: 248px; z-index: 20; border-top: none; margin: 0; }
 
   @media (max-width: 900px) {
 body.mode-boutons .menu-boutons {
@@ -503,21 +661,26 @@ body.mode-boutons .menu-boutons {
   left: auto;
   transform: none;
   width: 100%;
+  height: auto;
   max-width: 100%;
   flex-direction: row;
   flex-wrap: wrap;
   gap: 8px;
   z-index: auto;
   margin: 150px 0 16px 0;
+  border-right: none;
 }
+    body.mode-boutons .sidebar-header { width: 100%; }
     body.mode-boutons .btn-lien-mdc {
       flex: 1 1 calc(50% - 4px);
       padding: 14px 10px;
       font-size: 11.5px;
       text-align: center;
+      justify-content: center;
     }
     body.mode-boutons #contenuLienMDC {
       margin-left: 0;
+      margin-right: 0;
       width: 100%;
     }
     .admin-topbar-fixe {
@@ -551,7 +714,7 @@ body.lien-ouvert .header {
   .iframe-wrap {
     width: 100%;
     height: 88vh;
-    border-radius: 3px;
+    border-radius: 10px;
     overflow: hidden;
     border: 1px solid var(--line-bright);
   }
@@ -590,59 +753,60 @@ body.lien-ouvert .header {
     align-items: center;
     justify-content: space-between;
     gap: 18px;
-    padding: 19px 21px;
-    border: 1px solid rgba(74, 178, 224, 0.36);
+    padding: 19px 22px;
+    border: 1px solid rgba(91, 155, 240, 0.35);
     border-radius: 13px;
-    background: rgba(4, 20, 35, 0.62);
+    background: linear-gradient(90deg, #19335a, #152b4b 62%, #163d4a);
+    box-shadow: 0 8px 18px rgba(5, 12, 24, 0.25);
   }
-  .rapport-mdc-kicker { font: 700 10px 'JetBrains Mono', monospace; letter-spacing: .16em; color: #70c9f5; text-transform: uppercase; }
+  .rapport-mdc-kicker { font: 700 10px 'IBM Plex Mono', monospace; letter-spacing: 0.01em; color: #70c9f5; text-transform: none; }
   .rapport-mdc-header h2 { margin-top: 4px; font-size: 25px; letter-spacing: -.03em; }
   .rapport-mdc-subtitle { margin-top: 4px; color: #8faec4; font-size: 12px; }
   .rapport-mdc-stats { display: flex; gap: 9px; }
   .rapport-stat { min-width: 76px; padding: 9px 12px; border: 1px solid rgba(94, 185, 229, 0.3); border-radius: 9px; background: rgba(17, 50, 75, 0.45); text-align: center; }
-  .rapport-stat strong { display: block; font: 800 19px 'JetBrains Mono', monospace; color: #d9f3ff; }
-  .rapport-stat span { display: block; margin-top: 2px; font: 700 8px 'JetBrains Mono', monospace; letter-spacing: .08em; color: #78a9c7; text-transform: uppercase; }
+  .rapport-stat strong { display: block; font: 800 19px 'IBM Plex Mono', monospace; color: #d9f3ff; }
+  .rapport-stat span { display: block; margin-top: 2px; font: 700 8px 'IBM Plex Mono', monospace; letter-spacing: 0.01em; color: #78a9c7; text-transform: none; }
   .rapport-mdc-grid { display: grid; grid-template-columns: minmax(0, 1.12fr) minmax(300px, .88fr); gap: 18px; margin-top: 18px; }
   .rapport-mdc-card { border: 1px solid rgba(73, 153, 202, 0.3); border-radius: 13px; background: rgba(5, 21, 35, 0.64); overflow: hidden; }
   .rapport-mdc-card-head { padding: 16px 19px; border-bottom: 1px solid rgba(73, 153, 202, 0.22); background: rgba(10, 38, 60, 0.45); }
-  .rapport-mdc-card-head span { font: 700 9px 'JetBrains Mono', monospace; letter-spacing: .13em; color: #76c8f5; text-transform: uppercase; }
+  .rapport-mdc-card-head span { font: 700 9px 'IBM Plex Mono', monospace; letter-spacing: 0.01em; color: #76c8f5; text-transform: none; }
   .rapport-mdc-card-head h3 { margin-top: 4px; font-size: 16px; }
   .rapport-mdc-form { padding: 18px; }
   .rapport-identite { display: flex; align-items: center; gap: 12px; padding: 13px; margin-bottom: 17px; border: 1px solid rgba(85, 180, 227, 0.28); border-radius: 10px; background: linear-gradient(90deg, rgba(13, 61, 90, 0.62), rgba(10, 33, 52, 0.62)); }
-  .rapport-identite-icon { width: 39px; height: 39px; display: grid; place-items: center; border-radius: 10px; background: #125188; border: 1px solid #3184bd; font: 800 16px 'JetBrains Mono', monospace; color: #dff5ff; }
-  .rapport-identite strong { display: block; font: 700 14px 'JetBrains Mono', monospace; color: #f0f8ff; }
+  .rapport-identite-icon { width: 39px; height: 39px; display: grid; place-items: center; border-radius: 10px; background: #125188; border: 1px solid #3184bd; font: 800 16px 'IBM Plex Mono', monospace; color: #dff5ff; }
+  .rapport-identite strong { display: block; font: 700 14px 'IBM Plex Mono', monospace; color: #f0f8ff; }
   .rapport-identite span { display: block; margin-top: 3px; color: #a5cee5; font-size: 11px; }
   .rapport-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
   .rapport-field { display: flex; flex-direction: column; gap: 7px; }
   .rapport-field.full { grid-column: 1 / -1; }
-  .rapport-field label { font: 700 10px 'JetBrains Mono', monospace; letter-spacing: .08em; color: #a9d7ef; text-transform: uppercase; }
-  .rapport-field input, .rapport-field textarea { width: 100%; border: 1px solid rgba(111, 181, 211, 0.35); border-radius: 8px; background: rgba(1, 13, 23, 0.72); padding: 11px 12px; color: #edf8ff; font: 13px 'Inter', sans-serif; outline: none; transition: border-color .16s ease, box-shadow .16s ease; }
-  .rapport-field input { font: 700 18px 'JetBrains Mono', monospace; }
+  .rapport-field label { font: 700 10px 'IBM Plex Mono', monospace; letter-spacing: 0.01em; color: #a9d7ef; text-transform: none; }
+  .rapport-field input, .rapport-field textarea { width: 100%; border: 1px solid rgba(111, 181, 211, 0.35); border-radius: 8px; background: rgba(1, 13, 23, 0.72); padding: 11px 12px; color: #edf8ff; font: 13px 'Plus Jakarta Sans', sans-serif; outline: none; transition: border-color .16s ease, box-shadow .16s ease; }
+  .rapport-field input { font: 700 18px 'IBM Plex Mono', monospace; }
   .rapport-field textarea { min-height: 123px; resize: vertical; line-height: 1.45; }
   .rapport-field input:focus, .rapport-field textarea:focus { border-color: #5dc9f7; box-shadow: 0 0 0 3px rgba(93, 201, 247, .12); }
-  .rapport-submit { width: 100%; margin-top: 16px; border: 1px solid #45b5e4; border-radius: 8px; padding: 12px 15px; background: linear-gradient(135deg, #1982ba, #13518e); color: #fff; font: 800 12px 'JetBrains Mono', monospace; letter-spacing: .06em; text-transform: uppercase; cursor: pointer; box-shadow: 0 8px 18px rgba(17, 111, 169, .28); transition: transform .16s ease, filter .16s ease; }
+  .rapport-submit { width: 100%; margin-top: 16px; border: 1px solid #45b5e4; border-radius: 8px; padding: 12px 15px; background: linear-gradient(135deg, #1982ba, #13518e); color: #fff; font: 800 12px 'IBM Plex Mono', monospace; letter-spacing: 0.01em; text-transform: none; cursor: pointer; box-shadow: 0 8px 18px rgba(17, 111, 169, .28); transition: transform .16s ease, filter .16s ease; }
   .rapport-submit:hover { filter: brightness(1.14); transform: translateY(-1px); }
   .rapport-submit:disabled { opacity: .6; cursor: wait; transform: none; }
-  .rapport-feedback { min-height: 16px; margin-top: 10px; font: 11px 'JetBrains Mono', monospace; color: #8db5ca; }
+  .rapport-feedback { min-height: 16px; margin-top: 10px; font: 11px 'IBM Plex Mono', monospace; color: #8db5ca; }
   .rapport-feedback.ok { color: #76e3b2; }.rapport-feedback.fail { color: #ff9d99; }
   .rapport-history { max-height: 430px; overflow-y: auto; padding: 5px 16px 16px; }
   .rapport-history-empty { padding: 74px 18px; text-align: center; color: #7da0b5; font-size: 12px; }
   .rapport-history-empty .empty-icon { display: block; margin-bottom: 10px; font-size: 31px; }
   .rapport-history-item { position: relative; padding: 15px 0 15px 17px; border-bottom: 1px solid rgba(99, 166, 195, .16); }
   .rapport-history-item::before { content: ''; position: absolute; left: 0; top: 20px; width: 7px; height: 7px; border-radius: 50%; background: #5bc4ee; box-shadow: 0 0 10px #5bc4ee; }
-  .rapport-history-top { display: flex; justify-content: space-between; gap: 8px; color: #a4c9dd; font: 10px 'JetBrains Mono', monospace; }
+  .rapport-history-top { display: flex; justify-content: space-between; gap: 8px; color: #a4c9dd; font: 10px 'IBM Plex Mono', monospace; }
   .rapport-history-values { display: flex; gap: 7px; margin-top: 8px; }
-  .rapport-history-values span { padding: 4px 7px; border-radius: 5px; background: rgba(36, 116, 156, .28); color: #cceeff; font: 700 10px 'JetBrains Mono', monospace; }
+  .rapport-history-values span { padding: 4px 7px; border-radius: 5px; background: rgba(36, 116, 156, .28); color: #cceeff; font: 700 10px 'IBM Plex Mono', monospace; }
   .rapport-history-comment { margin-top: 8px; color: #e2f0f7; font-size: 12px; line-height: 1.45; white-space: pre-wrap; }
-  .rapport-history-sync { margin-top: 7px; color: #ffac9f; font: 700 9px 'JetBrains Mono', monospace; letter-spacing: .06em; text-transform: uppercase; }
+  .rapport-history-sync { margin-top: 7px; color: #ffac9f; font: 700 9px 'IBM Plex Mono', monospace; letter-spacing: 0.01em; text-transform: none; }
   .rapport-validation { margin-top: 18px; border: 1px solid rgba(237, 183, 77, .34); border-radius: 11px; background: rgba(83, 57, 11, .13); overflow: hidden; }
-  .rapport-validation-head { padding: 12px 14px; border-bottom: 1px solid rgba(237, 183, 77, .22); color: #ffe6a1; font: 800 10px 'JetBrains Mono', monospace; letter-spacing: .08em; text-transform: uppercase; }
+  .rapport-validation-head { padding: 12px 14px; border-bottom: 1px solid rgba(237, 183, 77, .22); color: #ffe6a1; font: 800 10px 'IBM Plex Mono', monospace; letter-spacing: 0.01em; text-transform: none; }
   .rapport-validation-item { padding: 12px 14px; border-bottom: 1px solid rgba(237, 183, 77, .13); }
   .rapport-validation-item:last-child { border-bottom: 0; }
   .rapport-validation-item strong { color: #f8fbff; font-size: 13px; }
   .rapport-validation-item p { margin-top: 6px; color: #bdd0d9; font-size: 11px; line-height: 1.4; white-space: pre-wrap; }
   .rapport-validation-actions { display: flex; gap: 8px; margin-top: 10px; }
-  .rapport-validation-btn { border: 1px solid #67dcb0; border-radius: 6px; padding: 7px 9px; background: rgba(49, 160, 113, .2); color: #b6ffdc; font: 800 10px 'JetBrains Mono', monospace; letter-spacing: .04em; text-transform: uppercase; cursor: pointer; }
+  .rapport-validation-btn { border: 1px solid #67dcb0; border-radius: 6px; padding: 7px 9px; background: rgba(49, 160, 113, .2); color: #b6ffdc; font: 800 10px 'IBM Plex Mono', monospace; letter-spacing: 0.005em; text-transform: none; cursor: pointer; }
   .rapport-validation-btn:hover { background: rgba(49, 160, 113, .36); }
   @media (max-width: 850px) { .rapport-mdc-grid { grid-template-columns: 1fr; }.rapport-mdc-wrap { padding: 15px; }.rapport-mdc-header { align-items: flex-start; flex-direction: column; }.rapport-mdc-stats { width: 100%; }.rapport-stat { flex: 1; } }
   @media (max-width: 460px) { .rapport-fields { grid-template-columns: 1fr; }.rapport-mdc-header h2 { font-size: 21px; }.rapport-mdc-wrap { padding: 10px; } }
@@ -666,7 +830,7 @@ body.lien-ouvert .header {
     background: rgba(91, 155, 240, 0.14);
     border: 1px solid #2c4a78;
     color: #bcd4f7;
-    font-family: 'JetBrains Mono', monospace;
+    font-family: 'IBM Plex Mono', monospace;
     font-weight: 800;
     font-size: 13px;
   }
@@ -674,7 +838,7 @@ body.lien-ouvert .header {
   .classement-row.classement-argent .classement-rang { background: rgba(200, 210, 220, 0.18); border-color: #c8d2dc; color: #e9eef3; }
   .classement-row.classement-bronze .classement-rang { background: rgba(196, 130, 74, 0.2); border-color: #c4824a; color: #f0b98a; }
   .classement-infos { flex: 1; min-width: 0; }
-  .classement-infos strong { display: block; font: 700 13.5px 'JetBrains Mono', monospace; color: #f8fbff; }
+  .classement-infos strong { display: block; font: 700 13.5px 'IBM Plex Mono', monospace; color: #f8fbff; }
   .classement-infos span { display: block; margin-top: 2px; color: #8faec4; font-size: 11px; }
   .classement-valeur {
     flex: 0 0 auto;
@@ -683,9 +847,9 @@ body.lien-ouvert .header {
     border-radius: 8px;
     background: rgba(36, 116, 156, .28);
     color: #cceeff;
-    font: 800 15px 'JetBrains Mono', monospace;
+    font: 800 15px 'IBM Plex Mono', monospace;
   }
-  .classement-valeur span { display: block; margin-top: 1px; font: 700 8px 'JetBrains Mono', monospace; letter-spacing: .08em; color: #9fd3ee; text-transform: uppercase; }
+  .classement-valeur span { display: block; margin-top: 1px; font: 700 8px 'IBM Plex Mono', monospace; letter-spacing: 0.01em; color: #9fd3ee; text-transform: none; }
 
   /* === Tableau Effectif recréé (pour tout le monde sauf double vérification) === */
   .effectif-wrap {
@@ -714,14 +878,14 @@ body.lien-ouvert .header {
     box-shadow: 0 8px 18px rgba(5, 12, 24, 0.25);
   }
   .effectif-header h2 {
-    font-family: 'JetBrains Mono', monospace;
+    font-family: 'IBM Plex Mono', monospace;
     font-size: 14px;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
+    letter-spacing: 0.01em;
+    text-transform: none;
     color: var(--text-primary);
   }
   .effectif-count {
-    font-family: 'JetBrains Mono', monospace;
+    font-family: 'IBM Plex Mono', monospace;
     font-size: 11px;
     color: #bbf2dc;
     background: rgba(74, 157, 111, 0.16);
@@ -733,16 +897,16 @@ body.lien-ouvert .header {
   .effectif-loading {
     padding: 60px 20px;
     text-align: center;
-    font-family: 'JetBrains Mono', monospace;
+    font-family: 'IBM Plex Mono', monospace;
     font-size: 12px;
     color: #a9c7f2;
-    letter-spacing: 0.06em;
+    letter-spacing: 0.01em;
   }
   table.effectif-table {
     width: 100%;
     border-collapse: separate;
     border-spacing: 0;
-    font-family: 'Inter', sans-serif;
+    font-family: 'Plus Jakarta Sans', sans-serif;
     font-size: 13px;
   }
   table.effectif-table thead th {
@@ -751,10 +915,10 @@ body.lien-ouvert .header {
     background: #102440;
     text-align: left;
     padding: 12px 18px;
-    font-family: 'JetBrains Mono', monospace;
+    font-family: 'IBM Plex Mono', monospace;
     font-size: 10.5px;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
+    letter-spacing: 0.01em;
+    text-transform: none;
     color: #a9c7f2;
     border-bottom: 1px solid rgba(91, 155, 240, 0.38);
     white-space: nowrap;
@@ -775,8 +939,8 @@ body.lien-ouvert .header {
   }
   table.effectif-table tbody tr:hover td:first-child { box-shadow: inset 3px 0 0 #5b9bf0; }
   table.effectif-table tbody tr:last-child td { border-bottom: none; }
-  .effectif-table .cell-matricule { font-family: 'JetBrains Mono', monospace; font-weight: 700; color: #eaf3ff; letter-spacing: 0.025em; }
-  .effectif-table .cell-dim { color: #8eadd8; font-family: 'JetBrains Mono', monospace; font-size: 12px; }
+  .effectif-table .cell-matricule { font-family: 'IBM Plex Mono', monospace; font-weight: 700; color: #eaf3ff; letter-spacing: 0.025em; }
+  .effectif-table .cell-dim { color: #8eadd8; font-family: 'IBM Plex Mono', monospace; font-size: 12px; }
 
   .effectif-wrap::-webkit-scrollbar { width: 10px; height: 10px; }
   .effectif-wrap::-webkit-scrollbar-track { background: #0b1526; }
@@ -797,25 +961,32 @@ body.lien-ouvert .header {
     width: 100%;
     max-height: 88vh;
     overflow: auto;
-    border-radius: 4px;
+    border-radius: var(--radius-card);
     border: 1px solid #2c4a78;
     background: linear-gradient(180deg, #101d33, #0b1526);
+    box-shadow: var(--shadow-panel);
   }
   .reglement-header {
-    padding: 16px 20px;
-    border-bottom: 1px solid #2c4a78;
+    padding: 18px 22px;
+    border-bottom: 1px solid rgba(91, 155, 240, 0.35);
     position: sticky;
     top: 0;
-    background: #16294a;
+    background: linear-gradient(90deg, #19335a, #152b4b 62%, #163d4a);
+    box-shadow: 0 8px 18px rgba(5, 12, 24, 0.25);
     z-index: 2;
+    border-radius: var(--radius-card) var(--radius-card) 0 0;
   }
   .reglement-header h2 {
-    font-family: 'JetBrains Mono', monospace;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: 'IBM Plex Mono', monospace;
     font-size: 13px;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
+    letter-spacing: 0.01em;
+    text-transform: none;
     color: var(--text-primary);
   }
+  .reglement-header h2::before { content: '📖'; font-size: 15px; }
   .reglement-list {
     list-style: none;
     counter-reset: reglement-compteur;
@@ -829,7 +1000,7 @@ body.lien-ouvert .header {
     counter-increment: reglement-compteur;
     position: relative;
     padding-left: 34px;
-    font-family: 'Inter', sans-serif;
+    font-family: 'Plus Jakarta Sans', sans-serif;
     font-size: 14px;
     line-height: 1.5;
     font-weight: 600;
@@ -840,7 +1011,7 @@ body.lien-ouvert .header {
     position: absolute;
     left: 0;
     top: 0;
-    font-family: 'JetBrains Mono', monospace;
+    font-family: 'IBM Plex Mono', monospace;
     font-weight: 700;
     color: #8fb2e6;
   }
@@ -851,40 +1022,47 @@ body.lien-ouvert .header {
     width: 100%;
     max-height: 88vh;
     overflow: auto;
-    border-radius: 4px;
+    border-radius: var(--radius-card);
     border: 1px solid #2c4a78;
     background: linear-gradient(180deg, #101d33, #0b1526);
+    box-shadow: var(--shadow-panel);
   }
   .materiel-header {
-    padding: 16px 20px;
-    border-bottom: 1px solid #2c4a78;
+    padding: 18px 22px;
+    border-bottom: 1px solid rgba(91, 155, 240, 0.35);
     position: sticky;
     top: 0;
-    background: #16294a;
+    background: linear-gradient(90deg, #19335a, #152b4b 62%, #163d4a);
+    box-shadow: 0 8px 18px rgba(5, 12, 24, 0.25);
     z-index: 2;
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 12px;
+    border-radius: var(--radius-card) var(--radius-card) 0 0;
   }
   .materiel-header h2 {
-    font-family: 'JetBrains Mono', monospace;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: 'IBM Plex Mono', monospace;
     font-size: 13px;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
+    letter-spacing: 0.01em;
+    text-transform: none;
     color: var(--text-primary);
   }
+  .materiel-header h2::before { content: '🩺'; font-size: 15px; }
   .btn-materiel-retour {
     background: transparent;
     border: 1px solid var(--blue);
-    border-radius: 3px;
+    border-radius: 10px;
     padding: 7px 12px;
     color: #8fb2e6;
-    font-family: 'JetBrains Mono', monospace;
+    font-family: 'IBM Plex Mono', monospace;
     font-size: 10.5px;
     font-weight: 700;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
+    letter-spacing: 0.01em;
+    text-transform: none;
     cursor: pointer;
     transition: all 0.15s ease;
     white-space: nowrap;
@@ -902,14 +1080,14 @@ body.lien-ouvert .header {
   .btn-materiel-item {
     background: rgba(20, 40, 74, 0.92);
     border: 1px solid var(--blue);
-    border-radius: 4px;
+    border-radius: 12px;
     padding: 20px 22px;
     color: var(--text-primary);
-    font-family: 'JetBrains Mono', monospace;
+    font-family: 'IBM Plex Mono', monospace;
     font-size: 13.5px;
     font-weight: 700;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
+    letter-spacing: 0.01em;
+    text-transform: none;
     cursor: pointer;
     transition: all 0.15s ease;
     text-align: left;
@@ -921,28 +1099,28 @@ body.lien-ouvert .header {
     padding: 24px 28px 32px;
   }
   .materiel-titre {
-    font-family: 'JetBrains Mono', monospace;
+    font-family: 'IBM Plex Mono', monospace;
     font-size: 16px;
     font-weight: 800;
-    letter-spacing: 0.04em;
+    letter-spacing: 0.005em;
     color: var(--blue-glow);
     margin-bottom: 18px;
-    text-transform: uppercase;
+    text-transform: none;
   }
   .materiel-section {
     margin-bottom: 18px;
   }
   .materiel-section-titre {
-    font-family: 'JetBrains Mono', monospace;
+    font-family: 'IBM Plex Mono', monospace;
     font-size: 11px;
     font-weight: 700;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
+    letter-spacing: 0.01em;
+    text-transform: none;
     color: #8fb2e6;
     margin-bottom: 8px;
   }
   .materiel-texte {
-    font-family: 'Inter', sans-serif;
+    font-family: 'Plus Jakarta Sans', sans-serif;
     font-size: 14px;
     line-height: 1.55;
     color: var(--text-primary);
@@ -958,7 +1136,7 @@ body.lien-ouvert .header {
   .materiel-liste li {
     position: relative;
     padding-left: 20px;
-    font-family: 'Inter', sans-serif;
+    font-family: 'Plus Jakarta Sans', sans-serif;
     font-size: 14px;
     line-height: 1.5;
     color: var(--text-primary);
@@ -1018,7 +1196,7 @@ body.lien-ouvert .header {
     text-align: center;
     padding: 3px 9px;
     border-radius: 20px;
-    font-family: 'JetBrains Mono', monospace;
+    font-family: 'IBM Plex Mono', monospace;
     font-size: 12px;
     font-weight: 700;
     background: rgba(255,255,255,0.08);
@@ -1078,11 +1256,11 @@ body.lien-ouvert .header {
   .effectif-table tbody td::before {
     content: attr(data-label);
     color: #7495bf;
-    font-family: 'JetBrains Mono', monospace;
+    font-family: 'IBM Plex Mono', monospace;
     font-size: 8px;
     font-weight: 700;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
+    letter-spacing: 0.01em;
+    text-transform: none;
   }
   .effectif-table tbody .cell-action { align-items: flex-end; }
   @media (max-width: 900px) {
@@ -1096,7 +1274,7 @@ body.lien-ouvert .header {
   /* === Édition directe de l'effectif (double vérification) === */
   .effectif-note {
     padding: 10px 20px;
-    font-family: 'JetBrains Mono', monospace;
+    font-family: 'IBM Plex Mono', monospace;
     font-size: 11px;
     letter-spacing: 0.02em;
     color: #8fe0af;
@@ -1108,9 +1286,9 @@ body.lien-ouvert .header {
     min-width: 90px;
     background: var(--bg-void);
     border: 1px solid var(--line-bright);
-    border-radius: 3px;
+    border-radius: 10px;
     padding: 7px 9px;
-    font-family: 'Inter', sans-serif;
+    font-family: 'Plus Jakarta Sans', sans-serif;
     font-size: 12.5px;
     color: var(--text-primary);
     outline: none;
@@ -1125,13 +1303,13 @@ body.lien-ouvert .header {
     background: rgba(91, 155, 240, 0.16);
     color: #bcd8ff;
     border: 1px solid var(--blue-glow);
-    border-radius: 3px;
+    border-radius: 10px;
     padding: 8px 14px;
-    font-family: 'JetBrains Mono', monospace;
+    font-family: 'IBM Plex Mono', monospace;
     font-size: 11px;
     font-weight: 800;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
+    letter-spacing: 0.01em;
+    text-transform: none;
     cursor: pointer;
     transition: all 0.15s ease;
   }
@@ -1140,13 +1318,13 @@ body.lien-ouvert .header {
     background: transparent;
     color: var(--text-dim);
     border: 1px solid var(--line-bright);
-    border-radius: 3px;
+    border-radius: 10px;
     padding: 8px 12px;
-    font-family: 'JetBrains Mono', monospace;
+    font-family: 'IBM Plex Mono', monospace;
     font-size: 11px;
     font-weight: 700;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
+    letter-spacing: 0.01em;
+    text-transform: none;
     cursor: pointer;
     transition: all 0.15s ease;
   }
@@ -1155,13 +1333,13 @@ body.lien-ouvert .header {
     background: var(--green);
     color: #0a0d12;
     border: none;
-    border-radius: 3px;
+    border-radius: 10px;
     padding: 8px 14px;
-    font-family: 'JetBrains Mono', monospace;
+    font-family: 'IBM Plex Mono', monospace;
     font-size: 11px;
     font-weight: 800;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
+    letter-spacing: 0.01em;
+    text-transform: none;
     cursor: pointer;
     white-space: nowrap;
     transition: filter 0.15s ease, transform 0.1s ease;
@@ -1179,11 +1357,12 @@ body.lien-ouvert .header {
   /* === Panneau Administration === */
   .admin-wrap {
     width: 100%;
-    max-width: 560px;
+    max-width: 760px;
     margin: 0 auto;
-    border-radius: 4px;
+    border-radius: var(--radius-card);
     border: 1px solid #2c4a78;
     background: linear-gradient(180deg, #101d33, #0b1526);
+    box-shadow: var(--shadow-panel);
     transition: max-width 0.3s ease;
   }
   .admin-wrap.admin-wrap-large {
@@ -1193,23 +1372,38 @@ body.lien-ouvert .header {
     height: 76vh;
   }
   .admin-header {
-    padding: 16px 20px;
+    padding: 18px 22px;
     border-bottom: 1px solid #2c4a78;
     background: #16294a;
+    border-radius: var(--radius-card) var(--radius-card) 0 0;
   }
   .admin-header h2 {
-    font-family: 'JetBrains Mono', monospace;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: 'IBM Plex Mono', monospace;
     font-size: 13px;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
+    letter-spacing: 0.01em;
+    text-transform: none;
     color: var(--text-primary);
   }
+  .admin-header h2::before {
+    content: '📋';
+    font-size: 15px;
+  }
+  /* Icône propre à chaque section, déduite de l'onglet Administration actif */
+  body:has(#ongletAdminLogs.actif) .admin-header h2::before { content: '🕘'; }
+  body:has(#ongletAdminGrades.actif) .admin-header h2::before { content: '🎖️'; }
+  body:has(#ongletAdminBoutons.actif) .admin-header h2::before { content: '🧭'; }
+  body:has(#ongletAdminTextes.actif) .admin-header h2::before { content: '🗒️'; }
+  body:has(#ongletAdminMateriel.actif) .admin-header h2::before { content: '🩺'; }
+  body:has(#ongletAdminPermission.actif) .admin-header h2::before { content: '🔐'; }
   .admin-body { padding: 22px 24px 26px; }
   .admin-body .field-label { display: block; margin-bottom: 10px; }
   .admin-message {
     margin-top: 12px;
     min-height: 16px;
-    font-family: 'JetBrains Mono', monospace;
+    font-family: 'IBM Plex Mono', monospace;
     font-size: 11.5px;
     letter-spacing: 0.02em;
   }
@@ -1224,10 +1418,10 @@ body.lien-ouvert .header {
     border: 1px solid rgba(85, 238, 189, 0.22);
     border-radius: 999px;
     background: rgba(8, 21, 32, 0.7);
-    font-family: 'JetBrains Mono', monospace;
+    font-family: 'IBM Plex Mono', monospace;
     font-size: 10px;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
+    letter-spacing: 0.01em;
+    text-transform: none;
     color: #b8f5df;
   }
   .admin-liste-titre::before {
@@ -1257,7 +1451,7 @@ body.lien-ouvert .header {
   .admin-liste li {
     background: var(--bg-panel-raised);
     border: 1px solid var(--line);
-    border-radius: 3px;
+    border-radius: 10px;
     padding: 9px 12px;
     font-size: 13px;
     color: var(--text-primary);
@@ -1310,7 +1504,7 @@ body.lien-ouvert .header {
     border-radius: 50%;
     background: radial-gradient(circle at 34% 28%, #336c65, #163641 72%);
     color: #caffeb;
-    font-family: 'JetBrains Mono', monospace;
+    font-family: 'IBM Plex Mono', monospace;
     font-size: 14px;
     font-weight: 800;
     box-shadow: 0 0 0 4px rgba(85, 220, 169, 0.06);
@@ -1324,7 +1518,7 @@ body.lien-ouvert .header {
     border: 1px solid rgba(126, 180, 194, 0.25);
     border-radius: 50%;
     color: #8fb6bf;
-    font-family: 'JetBrains Mono', monospace;
+    font-family: 'IBM Plex Mono', monospace;
     font-size: 16px;
     line-height: 1;
     transition: transform 0.18s ease, color 0.18s ease, background 0.18s ease;
@@ -1339,15 +1533,24 @@ body.lien-ouvert .header {
     border-radius: 999px;
     padding: 7px 13px;
     color: #ffaba6;
-    font-family: 'JetBrains Mono', monospace;
+    font-family: 'IBM Plex Mono', monospace;
     font-size: 10px;
     font-weight: 700;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
+    letter-spacing: 0.01em;
+    text-transform: none;
     cursor: pointer;
   }
   .log-entry .log-delete-btn:hover { background: rgba(194, 59, 59, 0.2); border-style: solid; border-color: var(--red-glow); color: #fff; }
   .log-entry.log-ouvert .log-delete-btn { display: block; }
+  /* FIX : Boutons du menu / Grades réutilisent .log-entry pour le style mais
+     n'ont pas de mécanisme "déplier" (pas de classe .log-ouvert) -> leur
+     bouton Supprimer restait invisible en permanence. On le rend visible en
+     permanence pour ces deux listes précises, sans toucher au Journal. */
+  #adminBoutonsListe .log-delete-btn,
+  #adminGradesListe .log-delete-btn {
+    display: inline-block;
+    margin: 10px 13px 13px 0;
+  }
   .log-entry .log-texte { color: #d8e9ea; line-height: 1.4; font-size: 12.5px; }
   .log-entry .log-texte strong { color: #fff; font-size: 14px; }
   .log-entry .log-non-sync {
@@ -1357,30 +1560,30 @@ body.lien-ouvert .header {
     border-radius: 10px;
     font-size: 10px;
     font-weight: 700;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
+    letter-spacing: 0.005em;
+    text-transform: none;
     background: rgba(194, 59, 59, 0.18);
     border: 1px solid rgba(224, 82, 79, 0.5);
     color: #ff8f8c;
     white-space: nowrap;
   }
   .log-entry .log-meta {
-    font-family: 'JetBrains Mono', monospace;
+    font-family: 'IBM Plex Mono', monospace;
     font-size: 10px;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
+    letter-spacing: 0.01em;
+    text-transform: none;
     color: #78a7ad;
   }
   .log-action-badge {
     display: inline-block;
     padding: 3px 7px;
     border: 0;
-    border-radius: 4px;
-    font-family: 'JetBrains Mono', monospace;
+    border-radius: 12px;
+    font-family: 'IBM Plex Mono', monospace;
     font-size: 10px;
     font-weight: 700;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
+    letter-spacing: 0.01em;
+    text-transform: none;
     margin-right: 5px;
     vertical-align: 1px;
   }
@@ -1395,7 +1598,7 @@ body.lien-ouvert .header {
     .admin-liste li.log-entry::before { left: -17px; }
     .log-entry-main { gap: 9px; padding-right: 8px; }
     .log-avatar { width: 33px; height: 33px; font-size: 12px; }
-    .log-entry .log-meta { font-size: 9px; letter-spacing: 0.04em; }
+    .log-entry .log-meta { font-size: 9px; letter-spacing: 0.005em; }
     .log-entry .log-delete-btn { margin-left: 42px; }
   }
 
@@ -1418,7 +1621,7 @@ body.lien-ouvert .header {
     border: 1px solid rgba(128, 184, 192, 0.38);
     border-radius: 8px;
     padding: 9px 10px;
-    font-family: 'JetBrains Mono', monospace;
+    font-family: 'IBM Plex Mono', monospace;
     font-size: 12px;
     color: var(--text-primary);
     outline: none;
@@ -1433,46 +1636,70 @@ body.lien-ouvert .header {
     box-shadow: 0 5px 12px rgba(33, 140, 111, 0.25);
   }
   .log-add-msg {
-    font-family: 'JetBrains Mono', monospace;
+    font-family: 'IBM Plex Mono', monospace;
     font-size: 11px;
-    letter-spacing: 0.04em;
+    letter-spacing: 0.005em;
     margin-bottom: 10px;
   }
   .log-add-msg.ok { color: #8fe0af; }
   .log-add-msg.fail { color: #ff9c99; }
 
+  /* FIX (demande utilisateur) : la barre d'onglets Administration devient un
+     menu latéral (comme le menu principal à gauche) au lieu d'une barre
+     horizontale en haut. Le menu principal (.menu-boutons) et le bouton
+     "Administration" (.btn-admin-corner) sont masqués pendant le mode-admin
+     ; "← Retour" (dernier bouton de la barre) les fait réapparaître. */
   .admin-topbar-fixe {
-    position: fixed;
-    top: 22px;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 25;
     display: none;
-    gap: 10px;
-    background: rgba(18, 22, 29, 0.94);
-    border: 1px solid var(--line-bright);
-    border-radius: 4px;
-    padding: 10px 14px;
-    backdrop-filter: blur(6px);
-    box-shadow: 0 4px 18px rgba(0,0,0,0.4);
   }
-  body.mode-admin .admin-topbar-fixe { display: flex; }
-  body.mode-admin .console { margin-top: 140px; }
-body.mode-boutons #contenuLienMDC{margin-top:140px;}
+  body.mode-admin .admin-topbar-fixe {
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 64px;
+    left: 0;
+    width: 280px;
+    height: calc(100vh - 64px);
+    justify-content: flex-start;
+    align-items: stretch;
+    z-index: 20;
+    gap: 10px;
+    background: linear-gradient(180deg, #0d1626, #0a1220);
+    border: none;
+    border-right: 1px solid var(--line-bright);
+    border-radius: 0;
+    padding: 16px;
+    backdrop-filter: none;
+    box-shadow: none;
+    overflow-y: auto;
+  }
+  body.mode-admin .menu-boutons,
+  body.mode-admin .btn-admin-corner {
+    display: none;
+  }
+  body.mode-admin #contenuLienMDC { margin-top: 88px; }
+  body.mode-admin .btn-admin-retour {
+    margin-top: auto;
+    border-color: rgba(224, 82, 79, 0.55);
+    background: rgba(194, 59, 59, 0.16);
+    color: #ffb4b0;
+  }
   .btn-admin-tab {
-    background: rgba(255,255,255,0.04);
-    border: 1px solid var(--line-bright);
-    border-radius: 3px;
-    padding: 9px 16px;
+    background: rgba(20, 40, 74, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.09);
+    border-radius: 12px;
+    padding: 14px 16px;
     color: var(--text-primary);
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 11.5px;
-    font-weight: 700;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 13.5px;
+    font-weight: 600;
+    letter-spacing: 0;
+    text-transform: none;
+    text-align: left;
     cursor: pointer;
     transition: all 0.15s ease;
-    white-space: nowrap;
+    white-space: normal;
+    width: 100%;
   }
   .btn-admin-tab:hover { border-color: var(--blue-glow); color: var(--blue-glow); }
   .btn-admin-tab.actif {
@@ -1483,7 +1710,7 @@ body.mode-boutons #contenuLienMDC{margin-top:140px;}
   .admin-contenu { padding: 22px 24px 26px; }
   .admin-placeholder {
     color: var(--text-dim);
-    font-family: 'JetBrains Mono', monospace;
+    font-family: 'IBM Plex Mono', monospace;
     font-size: 12px;
     letter-spacing: 0.03em;
   }
@@ -1521,22 +1748,22 @@ body.mode-boutons #contenuLienMDC{margin-top:140px;}
     background: #16294a;
   }
   .effectif-modal-header h2 {
-    font-family: 'JetBrains Mono', monospace;
+    font-family: 'IBM Plex Mono', monospace;
     font-size: 13px;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
+    letter-spacing: 0.01em;
+    text-transform: none;
     color: var(--text-primary);
   }
   .effectif-modal-close {
     background: rgba(255,255,255,0.06);
     border: 1px solid var(--line-bright);
-    border-radius: 3px;
+    border-radius: 10px;
     color: var(--text-primary);
-    font-family: 'JetBrains Mono', monospace;
+    font-family: 'IBM Plex Mono', monospace;
     font-size: 11px;
     font-weight: 700;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
+    letter-spacing: 0.01em;
+    text-transform: none;
     padding: 7px 12px;
     cursor: pointer;
     transition: all 0.15s ease;
@@ -1546,11 +1773,11 @@ body.mode-boutons #contenuLienMDC{margin-top:140px;}
 
   .footer-note {
     margin-top: 18px;
-    font-family: 'JetBrains Mono', monospace;
+    font-family: 'IBM Plex Mono', monospace;
     font-size: 10px;
     color: var(--text-faint);
     text-align: center;
-    letter-spacing: 0.04em;
+    letter-spacing: 0.005em;
   }
   .badge-corner {
     position: fixed;
@@ -1559,7 +1786,7 @@ body.mode-boutons #contenuLienMDC{margin-top:140px;}
     z-index: 10;
     background: rgba(18, 22, 29, 0.92);
     border: 1px solid var(--line-bright);
-    border-radius: 4px;
+    border-radius: 12px;
     padding: 12px 16px;
     backdrop-filter: blur(6px);
     box-shadow: 0 4px 18px rgba(0,0,0,0.4);
@@ -1578,16 +1805,16 @@ body.mode-boutons #contenuLienMDC{margin-top:140px;}
     gap: 7px;
     background: rgba(18, 22, 29, 0.92);
     border: 1px solid var(--line-bright);
-    border-radius: 4px;
+    border-radius: 12px;
     padding: 10px 14px;
     backdrop-filter: blur(6px);
     box-shadow: 0 4px 18px rgba(0,0,0,0.4);
     color: var(--text-primary);
-    font-family: 'JetBrains Mono', monospace;
+    font-family: 'IBM Plex Mono', monospace;
     font-size: 11.5px;
     font-weight: 700;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
+    letter-spacing: 0.01em;
+    text-transform: none;
     cursor: pointer;
     opacity: 0;
     transform: translateY(-6px);
@@ -1612,7 +1839,7 @@ body.mode-boutons #contenuLienMDC{margin-top:140px;}
     display: flex;
     align-items: center;
     gap: 8px;
-    font-family: 'JetBrains Mono', monospace;
+    font-family: 'IBM Plex Mono', monospace;
     font-size: 12px;
     white-space: nowrap;
   }
@@ -1620,8 +1847,8 @@ body.mode-boutons #contenuLienMDC{margin-top:140px;}
   .badge-line .badge-label {
     color: var(--text-dim);
     font-size: 10px;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
+    letter-spacing: 0.01em;
+    text-transform: none;
   }
   .badge-line .badge-value {
     color: var(--text-primary);
@@ -1633,6 +1860,12 @@ body.mode-boutons #contenuLienMDC{margin-top:140px;}
 </head>
 <body>
 
+<div class="topbar-brand-mdc" id="topbarBrandMdc">
+  <span class="topbar-brand-croix"><span class="coin" id="coinLogoTopbar"><div class="coin-layer coin-front"><img src="image/MDC GDA.png" alt="Blason M.D.C / G.D.A"></div></span></span>
+  <span class="topbar-brand-texte">M.D.C — G.D.A</span>
+</div>
+<div class="topbar-horloge" id="topbarHorloge">--:--:--</div>
+
 <button class="btn-refresh-corner" id="btnRefreshCorner" onclick="rafraichirSite()" title="Recharger la page">
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 4v6h-6"></path><path d="M1 20v-6h6"></path><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg>
   Actualiser
@@ -1641,17 +1874,19 @@ body.mode-boutons #contenuLienMDC{margin-top:140px;}
 <div class="badge-corner" id="badgeCorner">
   <div class="badge-line"><span class="badge-label">Matricule</span><span class="badge-value" id="badgeMatricule">—</span></div>
   <div class="badge-line"><span class="badge-label">Grade MDC</span><span class="badge-value" id="badgeGrade">—</span></div>
-  <div class="badge-insigne" id="badgeInsigne"></div>
 </div>
 
 <div class="admin-topbar-fixe" id="adminTopbarFixe">
   <button class="btn-admin-tab" id="ongletAdminEffectif" onclick="afficherEffectifReelAdmin()">Effectif MDC GDA</button>
   <button class="btn-admin-tab" id="ongletAdminLogs" onclick="afficherLogsAdmin()">Logs</button>
+  <button class="btn-admin-tab" id="ongletAdminGrades" onclick="afficherGradesAdmin()">Grades</button>
+  <button class="btn-admin-tab" id="ongletAdminBoutons" onclick="afficherBoutonsAdmin()">Boutons du menu</button>
+  <button class="btn-admin-tab" id="ongletAdminTextes" onclick="afficherTextesAdmin()">Textes du site</button>
+  <button class="btn-admin-tab" id="ongletAdminMateriel" onclick="afficherMaterielAdmin()">Matériel</button>
   <button class="btn-admin-tab" id="ongletAdminPermission" onclick="afficherPermissionsAdmin()">Permission</button>
+  <button class="btn-admin-tab btn-admin-retour" id="btnRetourAdmin" onclick="afficherAccueilMDCGDA()">← Retour</button>
 </div>
 
-<div class="side-img left"></div>
-<div class="side-img right"></div>
 
 <div class="console">
   <div class="header">
@@ -1676,13 +1911,6 @@ body.mode-boutons #contenuLienMDC{margin-top:140px;}
         <button class="btn-verify" id="verifyBtn">Vérifier</button>
       </div>
 
-      <div class="input-row" id="discordRow" style="display:none; margin-top:14px;">
-        <div class="input-scan">
-          <input type="text" inputmode="numeric" id="discordIdVerif" placeholder="Identifiant Discord" autocomplete="off" spellcheck="false">
-        </div>
-        <button class="btn-verify" id="discordVerifyBtn">Confirmer</button>
-      </div>
-
       <div class="scan-bar-wrap" id="scanBar" style="display:none;">
         <div class="scan-bar">
           <div class="scan-bar-fill" id="scanBarFill"></div>
@@ -1700,57 +1928,40 @@ body.mode-boutons #contenuLienMDC{margin-top:140px;}
 </div>
 
 <script>
-  // === Source des matricules : Google Sheet en direct ===
-  const SHEET_ID = '1dzJuItFv1XKjbhuyz-qkrWLdWkA-T1aY2vDWmCw36Ew';
-  const SHEET_NOM_ONGLET = 'Feuille 1';
-  const SHEET_JSON_URL = `https://opensheet.elk.sh/${SHEET_ID}/${encodeURIComponent(SHEET_NOM_ONGLET)}`;
-
   // Le Worker réalise la connexion OAuth Discord et vérifie côté serveur que
   // l'identifiant du compte Discord connecté appartient bien au matricule.
   const DISCORD_AUTH_WORKER_URL = 'https://mdc-discord-auth.gdamaxime.workers.dev';
 
-  // === Source des identifiants Discord (double vérification) : onglet "parametre" ===
-  const SHEET_ONGLET_PARAMETRE = 'parametre';
-  const SHEET_JSON_URL_PARAMETRE = `https://opensheet.elk.sh/${SHEET_ID}/${encodeURIComponent(SHEET_ONGLET_PARAMETRE)}`;
+  // === API MDC GDA (Cloudflare Worker + D1) — remplace entièrement le Google
+  // Sheet et l'Apps Script : effectif, grades, boutons, textes, permissions,
+  // matériel, logs, suggestions, entraînements, rapports et classement. ===
+  // Déployée séparément (projet "mdc-effectif-api"). Les écritures nécessitent
+  // la clé définie côté serveur avec `wrangler secret put ADMIN_API_KEY` :
+  // colle EXACTEMENT la même valeur ci-dessous.
+  const EFFECTIF_API_URL = 'https://mdc-effectif-api.maximemilicien.workers.dev';
+  const EFFECTIF_API_KEY = 'lesgdacestlesgoatpssurtoutlesmdc';
 
-  // === Écriture dans le Google Sheet (ajout de nom + modification de l'effectif) ===
-  // opensheet.elk.sh ne permet que la LECTURE. Pour écrire dans le Sheet depuis le
-  // site, il faut déployer le petit script "Apps Script" fourni séparément
-  // (AppsScript_MDC_GDA.gs) en tant que Web App, puis coller son URL ci-dessous.
-  // Tant que cette URL n'est pas renseignée, l'ajout de nom et la modification de
-  // l'effectif afficheront un message d'erreur au lieu d'écrire dans le Sheet.
-    const WEBAPP_URL = 'https://script.google.com/macros/s/AKfycbxPBG6GhUG01SJ3eAVRB3CdS-bbfxLSNBIhojLShje-ViBRL1iEQeujVvKLj3IT4SqE1Q/exec';
-
-  async function appelerWebApp(action, donnees) {
-    if (!WEBAPP_URL || WEBAPP_URL.startsWith('COLLEZ_ICI')) {
-      throw new Error("L'URL de l'Apps Script n'a pas été configurée (voir WEBAPP_URL dans le code).");
-    }
-    const reponse = await fetch(WEBAPP_URL, {
-      method: 'POST',
-      // Content-Type text/plain évite le pré-vol CORS (requête simple),
-      // le Apps Script lit quand même du JSON dans e.postData.contents.
-      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-      body: JSON.stringify({ action, ...donnees })
-    });
+  async function appelerEffectifApi(chemin, options = {}) {
+    const reponse = await fetch(`${EFFECTIF_API_URL}${chemin}`, options);
     const texte = await reponse.text();
     let resultat;
     try {
       resultat = JSON.parse(texte);
     } catch (e) {
-      throw new Error('Réponse invalide du serveur de mise à jour.');
+      throw new Error("Réponse invalide de l'API effectif.");
     }
-    if (!resultat.ok) {
-      throw new Error(resultat.erreur || "Échec de l'opération.");
+    if (!reponse.ok || !resultat.ok) {
+      throw new Error(resultat.erreur || "Échec de l'opération sur l'effectif.");
     }
     return resultat;
   }
 
   async function envoyerMiseAJourEffectif(matricule, champs) {
-    return appelerWebApp('modifierEffectif', { matricule, champs });
-  }
-
-  async function ajouterNomParametre(nom) {
-    return appelerWebApp('ajouterNom', { nom });
+    return appelerEffectifApi('/effectif/modifier', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'X-Api-Key': EFFECTIF_API_KEY },
+      body: JSON.stringify({ matricule, champs })
+    });
   }
 
   // === Documents supplémentaires par matricule (double vérification requise) ===
@@ -1780,10 +1991,13 @@ body.mode-boutons #contenuLienMDC{margin-top:140px;}
   //      -> regarde validerRapport()/supprimerRapport() dans Rapports MDC.gs,
   //      ce sont les exemples déjà faits.
   const FONCTIONS_PERMISSION = [
-    { cle: 'administration', label: 'Administration (accès complet)', description: "Accès à TOUT le panneau Administration (Effectif réel, Logs, Permission), sans avoir besoin des 3 permissions ci-dessous individuellement." },
-    { cle: 'admin_effectif_reel', label: 'Onglet "Effectif MDC GDA" (Administration)', description: 'Ouvrir le bouton "Effectif MDC GDA" dans le panneau Administration (accès au Google Sheet réel).' },
+    { cle: 'administration', label: 'Administration (accès complet)', description: "Accès à TOUT le panneau Administration (Logs, Permission), sans avoir besoin des permissions ci-dessous individuellement." },
     { cle: 'admin_logs', label: 'Onglet "Logs" (Administration)', description: 'Voir le journal des promotions/rétrogradations et médailles dans le panneau Administration.' },
     { cle: 'admin_gerer_permissions', label: 'Onglet "Permission" (Administration)', description: 'Voir et modifier les permissions / double vérification des autres matricules.' },
+    { cle: 'admin_grades', label: 'Onglet "Grades" (Administration)', description: 'Créer, modifier ou supprimer un grade.' },
+    { cle: 'admin_boutons', label: 'Onglet "Boutons du menu" (Administration)', description: 'Créer, modifier ou supprimer un bouton du menu latéral.' },
+    { cle: 'admin_textes', label: 'Onglet "Textes du site" (Administration)', description: 'Modifier les textes du site (règlement, matériel, etc.).' },
+    { cle: 'admin_materiel', label: 'Onglet "Matériel" (Administration)', description: 'Créer, modifier ou supprimer une fiche matériel MDC GDA.' },
     { cle: 'edition_effectif', label: "Édition de l'effectif", description: 'Modifier grade / rapport / médaille dans le tableau Effectif.' },
     { cle: 'validerRapports', label: 'Valider les rapports', description: "Voir la file d'attente et valider les rapports envoyés par les médecins." },
     { cle: 'supprimerRapports', label: 'Supprimer les rapports', description: 'Voir la file d\'attente / archives et supprimer un rapport (en attente ou déjà validé).' },
@@ -1802,11 +2016,17 @@ body.mode-boutons #contenuLienMDC{margin-top:140px;}
   // Permissions du matricule actuellement connecté (matriculeActif), chargées
   // au login par chargerPermissions(). Structure : { nomPermission: bool }
   let PERMISSIONS_ACTIVES = {};
+  // true si le grade de matriculeActif a acces_complet = 1 dans la table
+  // "grades" (Lieutenant-Colonel, Commandant, Vice-Commandant, Gérant Médecin,
+  // Co-Gérant Médecin) : dans ce cas toutes les permissions sont accordées,
+  // sans avoir besoin de la moindre case cochée dans permissions_matricule.
+  let ACCES_COMPLET_GRADE = false;
 
   function aPermission(matricule, fonction) {
     const val = (matricule || '').toLowerCase();
     // On ne connaît les permissions en détail que pour matriculeActif (chargées au login).
     if (val !== (matriculeActif || '').toLowerCase()) return false;
+    if (ACCES_COMPLET_GRADE) return true;
     return PERMISSIONS_ACTIVES[fonction] === true;
   }
 
@@ -1815,18 +2035,36 @@ body.mode-boutons #contenuLienMDC{margin-top:140px;}
   // fois. Chaque helper renvoie vrai si l'un OU l'autre est actif.
   function aAccesAdministration(matricule) {
     return aPermission(matricule, 'administration')
-      || aPermission(matricule, 'admin_effectif_reel')
       || aPermission(matricule, 'admin_logs')
       || aPermission(matricule, 'admin_gerer_permissions');
   }
+  // FIX : cette fonction n'existait pas du tout -> ReferenceError dès
+  // l'ouverture du panneau Administration, qui empêchait la création de la
+  // zone #adminContenu et donc bloquait TOUS les onglets (Logs, Grades,
+  // Boutons du menu, etc.), pas seulement "Effectif". Il n'existe pas de
+  // permission dédiée "admin_effectif" dans FONCTIONS_PERMISSION, donc seul
+  // 'administration' (accès complet) donne accès à cet onglet, comme pour
+  // aAccesAdministration() juste au-dessus.
   function aAccesOngletAdminEffectif(matricule) {
-    return aPermission(matricule, 'administration') || aPermission(matricule, 'admin_effectif_reel');
+    return aPermission(matricule, 'administration');
   }
   function aAccesOngletAdminLogs(matricule) {
     return aPermission(matricule, 'administration') || aPermission(matricule, 'admin_logs');
   }
   function aAccesOngletAdminPermission(matricule) {
     return aPermission(matricule, 'administration') || aPermission(matricule, 'admin_gerer_permissions');
+  }
+  function aAccesOngletAdminGrades(matricule) {
+    return aPermission(matricule, 'administration') || aPermission(matricule, 'admin_grades');
+  }
+  function aAccesOngletAdminBoutons(matricule) {
+    return aPermission(matricule, 'administration') || aPermission(matricule, 'admin_boutons');
+  }
+  function aAccesOngletAdminTextes(matricule) {
+    return aPermission(matricule, 'administration') || aPermission(matricule, 'admin_textes');
+  }
+  function aAccesOngletAdminMateriel(matricule) {
+    return aPermission(matricule, 'administration') || aPermission(matricule, 'admin_materiel');
   }
 
   // Miroir de aAccesGestionRapports_ (Rapports MDC.gs) côté site : accès à la
@@ -1835,27 +2073,39 @@ body.mode-boutons #contenuLienMDC{margin-top:140px;}
     return aPermission(matricule, 'validerRapports') || aPermission(matricule, 'supprimerRapports');
   }
 
-  // Vrai si le matricule a au moins une permission active (déclenche la
-  // double vérification Discord à la connexion). Interroge directement le
-  // backend puisqu'à ce stade matriculeActif n'est pas encore défini.
-  async function aAuMoinsUnePermission(matricule) {
-    const val = (matricule || '').toLowerCase();
-    try {
-      const resultat = await appelerWebApp('lireDoubleVerifSite', { matricule: val });
-      return Object.values(resultat.permissions || {}).some((actif) => actif === true);
-    } catch (erreur) {
-      console.warn('Lecture des permissions impossible, double vérification non déclenchée pour ce matricule.', erreur);
-      return false;
-    }
-  }
-
   // Charge les permissions du matricule connecté (matriculeActif) depuis le
   // Sheet. Si l'appel échoue (action pas encore déployée côté Apps Script),
   // on continue avec des permissions vides, sans bloquer la connexion.
+  // Caches simples (rechargés à chaque appel des panneaux admin concernés,
+  // mais réutilisés tel quel pour les vérifications de permission au login).
+  let CACHE_GRADES = null;
+  let CACHE_CATALOGUE_PERMISSIONS = null;
+
+  async function chargerGrades(forcer = false) {
+    if (CACHE_GRADES && !forcer) return CACHE_GRADES;
+    const resultat = await appelerEffectifApi('/grades');
+    CACHE_GRADES = resultat.grades || [];
+    return CACHE_GRADES;
+  }
+
+  async function chargerCataloguePermissions(forcer = false) {
+    if (CACHE_CATALOGUE_PERMISSIONS && !forcer) return CACHE_CATALOGUE_PERMISSIONS;
+    const resultat = await appelerEffectifApi('/permissions');
+    CACHE_CATALOGUE_PERMISSIONS = resultat.permissions || [];
+    return CACHE_CATALOGUE_PERMISSIONS;
+  }
+
   async function chargerPermissions() {
     PERMISSIONS_ACTIVES = {};
+    ACCES_COMPLET_GRADE = false;
     try {
-      const resultat = await appelerWebApp('lireDoubleVerifSite', { matricule: matriculeActif });
+      const grades = await chargerGrades();
+      const grade = grades.find(g => (g.nom || '').toLowerCase() === (gradeActif || '').toLowerCase());
+      if (grade && grade.accesComplet) {
+        ACCES_COMPLET_GRADE = true;
+        return;
+      }
+      const resultat = await appelerEffectifApi(`/permissions/matricule/${encodeURIComponent(matriculeActif)}`);
       PERMISSIONS_ACTIVES = resultat.permissions || {};
     } catch (erreur) {
       console.warn("Permissions : lecture impossible pour l'instant.", erreur);
@@ -1865,14 +2115,18 @@ body.mode-boutons #contenuLienMDC{margin-top:140px;}
   // Lit les permissions d'un matricule QUELCONQUE (utilisé par le panneau
   // Administration > Permission pour gérer les droits des AUTRES).
   async function lireDroitsMatricule(matricule) {
-    const resultat = await appelerWebApp('lireDoubleVerifSite', { matricule: (matricule || '').toLowerCase() });
+    const resultat = await appelerEffectifApi(`/permissions/matricule/${encodeURIComponent((matricule || '').toLowerCase())}`);
     return resultat.permissions || {};
   }
 
   // Écrit plusieurs permissions d'un coup pour un matricule.
   // permissions = { validerRapports: true, supprimerRapports: false, ... }
   async function enregistrerDroitsMatricule(matricule, permissions) {
-    await appelerWebApp('majDoubleVerifSite', { matricule: (matricule || '').toLowerCase(), permissions });
+    await appelerEffectifApi('/permissions/matricule/modifier', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'X-Api-Key': EFFECTIF_API_KEY },
+      body: JSON.stringify({ matricule: (matricule || '').toLowerCase(), permissions })
+    });
     if ((matricule || '').toLowerCase() === (matriculeActif || '').toLowerCase()) {
       PERMISSIONS_ACTIVES = { ...PERMISSIONS_ACTIVES, ...permissions };
     }
@@ -1897,14 +2151,12 @@ body.mode-boutons #contenuLienMDC{margin-top:140px;}
   };
 
   async function chargerMatriculesDepuisSheet() {
-    const reponse = await fetch(SHEET_JSON_URL, { cache: 'no-store' });
-    if (!reponse.ok) throw new Error(`Statut HTTP ${reponse.status} pour l'onglet "${SHEET_NOM_ONGLET}"`);
-    const lignes = await reponse.json();
+    const resultat = await appelerEffectifApi('/effectif', { cache: 'no-store' });
     // Retourne une Map : nom (en minuscule) -> grade
     const map = new Map();
-    lignes.forEach(ligne => {
-      const nom = (ligne['Matricule'] || '').trim();
-      const grade = (ligne['Grade'] || '').trim();
+    (resultat.effectif || []).forEach(ligne => {
+      const nom = (ligne.matricule || '').trim();
+      const grade = (ligne.grade || '').trim();
       if (nom.length > 0) {
         map.set(nom.toLowerCase(), grade);
       }
@@ -1914,52 +2166,32 @@ body.mode-boutons #contenuLienMDC{margin-top:140px;}
 
   /**
    * Charge la liste complète de l'effectif (toutes les colonnes) pour construire
-   * un tableau recréé côté interface, sans exposer le vrai document Google Sheet.
+   * un tableau recréé côté interface, depuis l'API effectif (D1).
    */
   async function chargerEffectifComplet() {
-    const reponse = await fetch(SHEET_JSON_URL, { cache: 'no-store' });
-    if (!reponse.ok) throw new Error(`Statut HTTP ${reponse.status} pour l'onglet "${SHEET_NOM_ONGLET}"`);
-    const lignes = await reponse.json();
-    return lignes
+    const resultat = await appelerEffectifApi('/effectif', { cache: 'no-store' });
+    return (resultat.effectif || [])
       .map(ligne => ({
-        matricule: (ligne['Matricule'] || '').trim(),
-        grade: (ligne['Grade'] || '').trim(),
-        steamId: (ligne['Steam ID'] || '').trim(),
-        rapport: (ligne['Rapport'] || '').toString().trim(),
-        medaille: (ligne['Médaille'] || '').trim()
+        matricule: (ligne.matricule || '').trim(),
+        grade: (ligne.grade || '').trim(),
+        steamId: (ligne.steamId || '').trim(),
+        rapport: (ligne.rapport || '').toString().trim(),
+        medaille: (ligne.medaille || '').trim()
       }))
       .filter(l => l.matricule.length > 0);
-  }
-
-  async function chargerDiscordIdsDepuisSheet() {
-    try {
-      const reponse = await fetch(SHEET_JSON_URL_PARAMETRE, { cache: 'no-store' });
-      if (!reponse.ok) throw new Error('Impossible de lire la feuille des identifiants Discord.');
-      const lignes = await reponse.json();
-      // Retourne une Map : nom (en minuscule) -> identifiant Discord.
-      // La colonne H doit être nommée "Discord ID" et la colonne I
-      // "Attribué à Discord" (pour éviter le doublon avec la colonne F).
-      const map = new Map();
-      lignes.forEach(ligne => {
-        const nom = (ligne['Attribué à Discord'] || '').trim();
-        const discordId = (ligne['Discord ID'] || '').trim();
-        if (nom.length > 0 && discordId.length > 0) {
-          map.set(nom.toLowerCase(), discordId);
-        }
-      });
-      return map;
-    } catch (e) {
-      console.warn('Identifiants Discord indisponibles :', e);
-      return new Map();
-    }
   }
 
   const input = document.getElementById('matricule');
   const verifyBtn = document.getElementById('verifyBtn');
   const inputRow = document.getElementById('inputRow');
-  const discordRow = document.getElementById('discordRow');
-  const discordInput = document.getElementById('discordIdVerif');
-  const discordVerifyBtn = document.getElementById('discordVerifyBtn');
+  (function demarrerHorlogeTopbar() {
+    const el = document.getElementById('topbarHorloge');
+    if (!el) return;
+    const majHeure = () => { el.textContent = new Date().toLocaleTimeString('fr-FR'); };
+    majHeure();
+    setInterval(majHeure, 1000);
+  })();
+
   const badgeCorner = document.getElementById('badgeCorner');
   const badgeMatricule = document.getElementById('badgeMatricule');
   const badgeGrade = document.getElementById('badgeGrade');
@@ -1972,7 +2204,6 @@ body.mode-boutons #contenuLienMDC{margin-top:140px;}
   const scanBarFill = document.getElementById('scanBarFill');
   const scanPercent = document.getElementById('scanPercent');
 
-  let contexteEnAttente = null; // { valeur, discordIdAttendu, grade }
   let intervalleScan = null;
   let fenetreConnexionDiscord = null;
 
@@ -2025,37 +2256,67 @@ body.mode-boutons #contenuLienMDC{margin-top:140px;}
     scanBar.style.display = 'none';
     scanBarFill.style.width = '0%';
     scanPercent.textContent = '0%';
-    discordRow.style.display = 'none';
-    discordInput.value = '';
-    contexteEnAttente = null;
     document.body.classList.remove('mode-boutons');
     document.body.classList.remove('lien-ouvert');
     document.body.classList.remove('mode-admin');
+    document.body.classList.remove('dossier-ouvert');
     arreterAutoRefreshEffectif();
-    fermerModaleEffectifReel();
+    if (intervalleAutoRefreshBoutons) { clearInterval(intervalleAutoRefreshBoutons); intervalleAutoRefreshBoutons = null; }
   }
 
   // === Menu de boutons (remplace le site Genially direct pour tout le monde) ===
-  const BOUTONS_MDC_GDA = [
-    { label: 'Effectif MDC GDA', url: 'https://docs.google.com/spreadsheets/d/1dzJuItFv1XKjbhuyz-qkrWLdWkA-T1aY2vDWmCw36Ew/edit?usp=sharing' },
-    { label: 'Réglement GDA', url: 'LIEN_A_COMPLETER_REGLEMENT_GDA' },
-    { label: 'Matériel MDC GDA', url: 'LIEN_A_COMPLETER_MATERIEL_MDC_GDA' },
-    { label: 'Rapport MDC GDA', url: '' },
-    { label: 'Suggestion MDC', url: '' },
-    { label: 'Demande d\'entraînement', url: '' },
-    { label: 'Classement', url: '' }
-  ];
+  // Les boutons viennent désormais de D1 (table boutons_menu, gérable depuis
+  // Administration > Boutons du menu) au lieu d'être codés en dur ici. Le
+  // ROUTAGE (quelle vue afficher) reste basé sur le label exact du bouton —
+  // voir ouvrirLienMDC() plus bas — donc renommer un bouton "Rapport MDC GDA"
+  // par exemple casserait son comportement spécial.
+  let CACHE_BOUTONS_MENU = null;
+
+  async function chargerBoutonsMenu(forcer = false) {
+    if (CACHE_BOUTONS_MENU && !forcer) return CACHE_BOUTONS_MENU;
+    try {
+      const resultat = await appelerEffectifApi('/boutons');
+      CACHE_BOUTONS_MENU = resultat.boutons || [];
+    } catch (erreur) {
+      console.warn('Boutons du menu : lecture impossible, menu vide.', erreur);
+      CACHE_BOUTONS_MENU = [];
+    }
+    return CACHE_BOUTONS_MENU;
+  }
 
   let matriculeActif = null; // matricule de la personne actuellement connectée sur le dashboard
   let gradeActif = ''; // grade associé au matricule connecté, affiché en lecture seule dans les rapports
   let boutonsActifs = []; // liste des boutons réellement affichés pour l'utilisateur courant
+  let dossierOuvertId = null; // id du bouton "dossier" actuellement ouvert dans le menu de gauche (null = niveau racine)
 
-  function obtenirBoutonsPourUtilisateur() {
-    const boutons = BOUTONS_MDC_GDA.slice();
+  async function obtenirBoutonsPourUtilisateur(forcer = false) {
+    const tous = await chargerBoutonsMenu(forcer);
+    // Un bouton avec une "permission" définie n'est visible que si le
+    // matricule a cette permission précise, ou l'accès complet ('administration').
+    const boutons = tous.filter(b => !b.permission || aPermission(matriculeActif, b.permission) || aPermission(matriculeActif, 'administration'));
     if (aAccesAdministration(matriculeActif)) {
       boutons.push({ label: 'Administration', url: 'ADMINISTRATION' });
     }
     return boutons;
+  }
+
+  // Auto-rafraîchissement du menu de boutons : relit /boutons toutes les 15s
+  // et redessine juste la liste du menu de gauche, pour que les changements
+  // faits par un admin (Administration > Boutons du menu) apparaissent chez
+  // tout le monde sans avoir à recharger la page. Ne touche jamais au
+  // contenu actuellement affiché à droite (#contenuLienMDC).
+  let intervalleAutoRefreshBoutons = null;
+  const DUREE_AUTO_REFRESH_BOUTONS = 15000;
+  function demarrerAutoRefreshBoutons() {
+    if (intervalleAutoRefreshBoutons) return;
+    intervalleAutoRefreshBoutons = setInterval(async () => {
+      try {
+        boutonsActifs = await obtenirBoutonsPourUtilisateur(true);
+        rendreListeBoutonsSidebar();
+      } catch (erreur) {
+        console.warn('Auto-rafraîchissement du menu impossible.', erreur);
+      }
+    }, DUREE_AUTO_REFRESH_BOUTONS);
   }
   let intervalleAutoRefreshEffectif = null; // rafraîchit le tableau effectif tant qu'il est affiché
   const DUREE_AUTO_REFRESH_EFFECTIF = 15000; // 15s : le Sheet lui-même est mis en cache ~30s côté API
@@ -2128,105 +2389,30 @@ function construireInsigneGrade(grade) {
   // le monde, sur tous les appareils/navigateurs. Ne dépend plus du
   // localStorage, qui était propre à un seul navigateur et pouvait être vidé
   // (cache navigateur, navigateur NUI réinitialisé, etc.).
-  // Colonnes de l'onglet "Logs" : Date | Nom | Grade | Promo / retro / médaille | Remplie par
-  const SHEET_ONGLET_LOGS = 'Logs';
-  const SHEET_JSON_URL_LOGS = `https://opensheet.elk.sh/${SHEET_ID}/${encodeURIComponent(SHEET_ONGLET_LOGS)}`;
-
-  // Cache local de secours : uniquement utilisé si le Sheet est momentanément
-  // injoignable, pour ne jamais afficher un journal vide par erreur réseau.
-  const CLE_LOGS_CACHE = 'gdaLogsEffectifCache';
-  const CLE_LOGS_MASQUES_LOCAL = 'gdaLogsMasquesLocalement';
-
-  function cleLogLocale(log) {
-    return `${log.date || ''}|${log.matricule || ''}|${log.texte || ''}`;
-  }
-
-  function lireLogsMasquesLocalement() {
-    try { return new Set(JSON.parse(localStorage.getItem(CLE_LOGS_MASQUES_LOCAL) || '[]')); }
-    catch (e) { return new Set(); }
-  }
-
-  function lireCacheLogs() {
+  // MIGRATION : le Journal (onglet Logs) utilise maintenant l'API D1
+  // (/logs, /logs/ajouter, /logs/supprimer sur worker.js) au lieu de l'ancien
+  // Google Sheet + Apps Script. Plus de cache local ni de "non synchronisé" :
+  // la base D1 est la source unique et partagée par tout le monde.
+  async function chargerLogsEffectif() {
     try {
-      const brut = localStorage.getItem(CLE_LOGS_CACHE);
-      const logs = brut ? JSON.parse(brut) : [];
-      return Array.isArray(logs) ? logs : [];
+      const resultat = await appelerEffectifApi('/logs');
+      return resultat.logs || [];
     } catch (e) {
+      console.warn('Journal indisponible :', e);
       return [];
     }
   }
 
-  function ecrireCacheLogs(logs) {
-    try {
-      localStorage.setItem(CLE_LOGS_CACHE, JSON.stringify(logs.slice(0, 300)));
-    } catch (e) {
-      // Le cache est un simple confort ; une erreur ici n'est pas bloquante.
-    }
-  }
-
-  // Charge le journal complet depuis le Sheet (persistant, partagé). En cas
-  // d'échec réseau, retombe sur le dernier cache local connu pour éviter un
-  // écran vide, plutôt que de faire disparaître les entrées. Fusionne aussi
-  // avec le cache local même en cas de succès : si une entrée a été ajoutée
-  // localement mais que l'écriture côté Sheet a échoué (ex: action Apps
-  // Script manquante), elle reste visible et marquée "non synchronisée" au
-  // lieu de disparaître silencieusement au prochain chargement.
-  async function chargerLogsEffectif() {
-    try {
-      const reponse = await fetch(SHEET_JSON_URL_LOGS, { cache: 'no-store' });
-      if (!reponse.ok) throw new Error(`Statut HTTP ${reponse.status} pour l'onglet "${SHEET_ONGLET_LOGS}"`);
-      const lignes = await reponse.json();
-      const logsDistants = lignes
-        .map(ligne => ({
-          matricule: (ligne['Nom'] || '—').trim(),
-          grade: (ligne['Grade'] || '').trim(),
-          texte: (ligne['Promo / retro / médaille'] || '').trim(),
-          rempliPar: (ligne['Remplie par'] || '').trim(),
-          date: (ligne['Date'] || '').trim()
-        }))
-        .filter(l => l.texte.length > 0);
-
-      const clefDe = (l) => `${l.date}|${l.matricule}|${l.texte}`;
-      const clefsDistantes = new Set(logsDistants.map(clefDe));
-      const cache = lireCacheLogs();
-      const enAttente = cache
-        .filter(l => !clefsDistantes.has(clefDe(l)))
-        .map(l => ({ ...l, nonSynchronise: true }));
-
-      const masques = lireLogsMasquesLocalement();
-      const logs = [...enAttente, ...logsDistants]
-        .sort((a, b) => new Date(b.date) - new Date(a.date))
-        .filter(log => !masques.has(cleLogLocale(log)));
-      ecrireCacheLogs(logs);
-      return logs;
-    } catch (e) {
-      console.warn('Journal indisponible depuis le Sheet, utilisation du cache local :', e);
-      return lireCacheLogs();
-    }
-  }
-
-  // Ajoute une entrée au journal : écrite directement dans le Sheet (persiste
-  // pour tout le monde) via l'Apps Script existant. Le cache local est aussi
-  // mis à jour immédiatement pour un affichage instantané sans attendre un
-  // rechargement du Sheet. Retourne true/false selon que l'écriture côté
-  // Sheet a réellement réussi (utile pour prévenir l'utilisateur en cas
-  // d'échec silencieux, ex: action manquante côté Apps Script).
   async function ajouterLogEffectif(matricule, texte, grade) {
-    const entree = {
-      matricule: matricule || '—',
-      grade: grade || '',
-      texte,
-      rempliPar: matriculeActif || '—',
-      date: new Date().toISOString()
-    };
-    const cache = lireCacheLogs();
-    cache.unshift(entree);
-    ecrireCacheLogs(cache);
     try {
-      await appelerWebApp('ajouterLog', entree);
+      await appelerEffectifApi('/logs/ajouter', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'X-Api-Key': EFFECTIF_API_KEY },
+        body: JSON.stringify({ matricule: matricule || '—', grade: grade || '', texte, rempliPar: matriculeActif || '—' })
+      });
       return true;
     } catch (e) {
-      console.error('Le log n\'a PAS été écrit dans le Google Sheet (action "ajouterLog" manquante ou en erreur côté Apps Script) :', e);
+      console.error("Le log n'a pas pu être enregistré :", e);
       return false;
     }
   }
@@ -2444,7 +2630,7 @@ function construireInsigneGrade(grade) {
 
     if (msgEl) {
       msgEl.className = `log-add-msg ${ok ? 'ok' : 'fail'}`;
-      msgEl.textContent = ok ? 'Log ajouté.' : "Écrit localement mais pas encore synchronisé côté Sheet (vérifie l'Apps Script).";
+      msgEl.textContent = ok ? 'Log ajouté.' : "Échec de l'enregistrement — réessaie.";
     }
     if (raisonEl) raisonEl.value = '';
     setTimeout(() => afficherLogsAdmin(), 900);
@@ -2682,18 +2868,12 @@ function construireInsigneGrade(grade) {
     }
   }
 
-  const REGLEMENT_GDA = [
-    'Avant de pouvoir administrer des soins aux blessés, les médecins sont tenus de les évacuer du champ de tir. <span class="reglement-highlight">(A couvert)</span>',
-    'Il est défendu d\'administrer des soins aux blessés sur le terrain de combat, vous devez vous mettre à l\'écart/mettre une couverture (Bouclier/Fortification) devant la personne avant d\'entamer le traitement/réanimation du patient.',
-    'Il faut donner la priorité aux soins pour les membres les plus atteints, il faut soigner les patients selon l\'urgence de leur état.',
-    'Il est impératif pour les médecins de secourir les blessés, mais ils doivent <span class="reglement-highlight">d\'abord veiller à leur propre sécurité avant de s\'occuper des blessés.</span>',
-    'Il est interdit de manipuler un patient présentant des blessures ouvertes sans gants opératoires. <span class="reglement-highlight">(HRP la plupart des PM ont des gants)</span>',
-    'L\'utilisation du défibrillateur est limitée à trois fois au maximum par individu.',
-    'Vous devez respecter le RP donc pas de réanimation si celle-ci et létal (Un otage abattu ou scène rp le demandant) <span class="reglement-highlight">(Les réanimations des morts par SCP ont directement été bloqué par le serveur)</span>',
-    'Il est nécessaire de faire un compte rendu après chaque affrontement dans le canal rapport-mdc.'
-  ];
+  // Le règlement vit maintenant dans D1 (voir afficherReglementGDA ci-dessous).
 
-  function afficherReglementGDA() {
+  // Le contenu vient désormais de D1 (table textes_site, clé "reglement"),
+  // éditable depuis Administration > Textes du site. Une ligne du champ
+  // "contenu" = un point du règlement (même convention que côté admin).
+  async function afficherReglementGDA() {
     const zone = document.getElementById('contenuLienMDC');
     if (!zone) return;
     document.body.classList.add('lien-ouvert');
@@ -2701,57 +2881,47 @@ function construireInsigneGrade(grade) {
 
     zone.innerHTML = `
       <div class="reglement-wrap">
-        <div class="reglement-header">
-          <h2>Règlement GDA</h2>
-        </div>
-        <ol class="reglement-list">
-          ${REGLEMENT_GDA.map(regle => `<li>${regle}</li>`).join('')}
-        </ol>
+        <div class="reglement-header"><h2>Règlement GDA</h2></div>
+        <div class="admin-liste-vide">Chargement…</div>
       </div>
     `;
+
+    try {
+      const resultat = await appelerEffectifApi('/textes/reglement');
+      const titre = resultat.texte.titre || 'Règlement GDA';
+      const lignes = (resultat.texte.contenu || '').split('\n').map(l => l.trim()).filter(Boolean);
+      zone.innerHTML = `
+        <div class="reglement-wrap">
+          <div class="reglement-header"><h2>${echapperHtml(titre)}</h2></div>
+          <ol class="reglement-list">
+            ${lignes.map(regle => `<li>${regle}</li>`).join('')}
+          </ol>
+        </div>
+      `;
+    } catch (erreur) {
+      zone.innerHTML = `
+        <div class="reglement-wrap">
+          <div class="reglement-header"><h2>Règlement GDA</h2></div>
+          <div class="admin-liste-vide">Impossible de charger le règlement pour l'instant.</div>
+        </div>
+      `;
+    }
   }
 
-  const MATERIEL_MDC_GDA = [
-    {
-      titre: 'Trousses de premiers secours',
-      description: "Un ensemble de matériaux et d'outils utilisés pour prodiguer des soins d'urgence à une personne malade ou blessée.",
-      composition: [
-        'Des gants jetables et un masque de bouche-à-bouche ;',
-        'Un thermomètre ;',
-        'Des ciseaux, une pince à écharde et des épingles de sûreté ;',
-        'Des compresses stériles individuelles, en plusieurs tailles ;',
-        'Un rouleau de sparadrap ;',
-        'Des bandes extensibles et un bandage triangulaire (pour maintenir un bras en écharpe) ;',
-        'Des pansements adhésifs prédécoupés de différentes tailles ;',
-        'Une poche de froid instantané ;',
-        "Un coussin hémostatique d'urgence et des mèches hémostatiques (pour stopper les saignements de nez et dans la bouche) ;",
-        'Une couverture de survie ;',
-        'Des compresses antiseptiques ;'
-      ]
-    },
-    {
-      titre: 'Défibrillateur',
-      description: "Est un dispositif médical qui aide à la réanimation de victimes d'arrêt cardiaque. Accompagné d'un massage cardiaque, le défibrillateur contribue à augmenter significativement les chances de survie.",
-      utilisation: "Le Défibrillateur automatisé externe (DAE) s'utilise en parallèle du massage cardiaque. Il ne le remplace pas ! Les deux sont complémentaires pour aider la victime. S'il y en a un à proximité de la victime, il faut l'utiliser tout de suite."
-    },
-    {
-      titre: 'Kit de chirurgie de campagne',
-      description: "Kit d'instruments chirurgicaux destiné à réaliser des opérations d'urgence sur le terrain.",
-      utilisation: "En cas de blessure grave, les médecins peuvent effectuer des interventions chirurgicales d'urgence, comme des sutures ou des amputations en première ligne avant l'évacuation.",
-      composition: [
-        'Scalpels.',
-        'Lames de scalpel.',
-        'Manches de scalpel.',
-        'Couteaux chirurgicaux.',
-        'Ciseaux de chirurgie.',
-        'Micro-ciseaux de chirurgie.',
-        'Pinces chirurgicales.',
-        'Pinces endoscopiques.'
-      ]
-    }
-  ];
+  // Les fiches matériel viennent désormais de D1 (table materiel_items,
+  // gérable depuis Administration > Matériel) au lieu d'être codées en dur.
+  // "composition" est stocké comme du texte (une ligne = un sous-point),
+  // découpé ici au moment de l'affichage.
+  let CACHE_MATERIEL = null;
 
-  function afficherMaterielMenu() {
+  async function chargerMateriel(forcer = false) {
+    if (CACHE_MATERIEL && !forcer) return CACHE_MATERIEL;
+    const resultat = await appelerEffectifApi('/materiel');
+    CACHE_MATERIEL = resultat.materiel || [];
+    return CACHE_MATERIEL;
+  }
+
+  async function afficherMaterielMenu() {
     const zone = document.getElementById('contenuLienMDC');
     if (!zone) return;
     document.body.classList.add('lien-ouvert');
@@ -2759,27 +2929,48 @@ function construireInsigneGrade(grade) {
 
     zone.innerHTML = `
       <div class="materiel-wrap">
+        <div class="materiel-header"><h2>Matériel MDC GDA</h2></div>
+        <div class="admin-liste-vide">Chargement…</div>
+      </div>
+    `;
+
+    let items = [];
+    try {
+      items = await chargerMateriel(true);
+    } catch (erreur) {
+      zone.innerHTML = `
+        <div class="materiel-wrap">
+          <div class="materiel-header"><h2>Matériel MDC GDA</h2></div>
+          <div class="admin-liste-vide">Impossible de charger le matériel pour l'instant.</div>
+        </div>
+      `;
+      return;
+    }
+
+    zone.innerHTML = `
+      <div class="materiel-wrap">
         <div class="materiel-header">
           <h2>Matériel MDC GDA</h2>
         </div>
         <div class="materiel-menu">
-          ${MATERIEL_MDC_GDA.map((m, i) => `<button class="btn-materiel-item" onclick="afficherMaterielItem(${i})">${m.titre}</button>`).join('')}
+          ${items.map((m, i) => `<button class="btn-materiel-item" onclick="afficherMaterielItem(${i})">${echapperHtml(m.titre)}</button>`).join('')}
         </div>
       </div>
     `;
   }
 
   function afficherMaterielItem(index) {
-    const item = MATERIEL_MDC_GDA[index];
+    const item = (CACHE_MATERIEL || [])[index];
     const zone = document.getElementById('contenuLienMDC');
     if (!item || !zone) return;
 
-    const compositionHtml = item.composition && item.composition.length
+    const lignesComposition = (item.composition || '').split('\n').map(l => l.trim()).filter(Boolean);
+    const compositionHtml = lignesComposition.length
       ? `
         <div class="materiel-section">
           <div class="materiel-section-titre">Composition</div>
           <ul class="materiel-liste">
-            ${item.composition.map(c => `<li>${c}</li>`).join('')}
+            ${lignesComposition.map(c => `<li>${c}</li>`).join('')}
           </ul>
         </div>
       `
@@ -2801,7 +2992,7 @@ function construireInsigneGrade(grade) {
           <button class="btn-materiel-retour" onclick="afficherMaterielMenu()">← Retour</button>
         </div>
         <div class="materiel-card">
-          <div class="materiel-titre">${item.titre}</div>
+          <div class="materiel-titre">${echapperHtml(item.titre)}</div>
           <div class="materiel-section">
             <div class="materiel-section-titre">Description</div>
             <p class="materiel-texte">${item.description}</p>
@@ -2817,7 +3008,7 @@ function construireInsigneGrade(grade) {
   const URL_EFFECTIF_REEL = 'https://docs.google.com/spreadsheets/d/1dzJuItFv1XKjbhuyz-qkrWLdWkA-T1aY2vDWmCw36Ew/edit?usp=sharing';
 
   function marquerOngletAdminActif(idOnglet) {
-    ['ongletAdminEffectif', 'ongletAdminLogs', 'ongletAdminPermission'].forEach((id) => {
+    ['ongletAdminEffectif', 'ongletAdminLogs', 'ongletAdminGrades', 'ongletAdminBoutons', 'ongletAdminTextes', 'ongletAdminMateriel', 'ongletAdminPermission'].forEach((id) => {
       const el = document.getElementById(id);
       if (el) el.classList.toggle('actif', id === idOnglet);
     });
@@ -2838,9 +3029,17 @@ function construireInsigneGrade(grade) {
     // donne accès à tout). Voir aAccesOngletAdmin*() plus haut.
     const ongletEffectif = document.getElementById('ongletAdminEffectif');
     const ongletLogs = document.getElementById('ongletAdminLogs');
+    const ongletGrades = document.getElementById('ongletAdminGrades');
+    const ongletBoutons = document.getElementById('ongletAdminBoutons');
+    const ongletTextes = document.getElementById('ongletAdminTextes');
+    const ongletMateriel = document.getElementById('ongletAdminMateriel');
     const ongletPermission = document.getElementById('ongletAdminPermission');
     if (ongletEffectif) ongletEffectif.style.display = aAccesOngletAdminEffectif(matriculeActif) ? '' : 'none';
     if (ongletLogs) ongletLogs.style.display = aAccesOngletAdminLogs(matriculeActif) ? '' : 'none';
+    if (ongletGrades) ongletGrades.style.display = aAccesOngletAdminGrades(matriculeActif) ? '' : 'none';
+    if (ongletBoutons) ongletBoutons.style.display = aAccesOngletAdminBoutons(matriculeActif) ? '' : 'none';
+    if (ongletTextes) ongletTextes.style.display = aAccesOngletAdminTextes(matriculeActif) ? '' : 'none';
+    if (ongletMateriel) ongletMateriel.style.display = aAccesOngletAdminMateriel(matriculeActif) ? '' : 'none';
     if (ongletPermission) ongletPermission.style.display = aAccesOngletAdminPermission(matriculeActif) ? '' : 'none';
 
     zone.innerHTML = `
@@ -2855,6 +3054,10 @@ function construireInsigneGrade(grade) {
     // plutôt que de laisser un panneau vide si elle n'a qu'une seule permission.
     if (aAccesOngletAdminEffectif(matriculeActif)) afficherEffectifReelAdmin();
     else if (aAccesOngletAdminLogs(matriculeActif)) afficherLogsAdmin();
+    else if (aAccesOngletAdminGrades(matriculeActif)) afficherGradesAdmin();
+    else if (aAccesOngletAdminBoutons(matriculeActif)) afficherBoutonsAdmin();
+    else if (aAccesOngletAdminTextes(matriculeActif)) afficherTextesAdmin();
+    else if (aAccesOngletAdminMateriel(matriculeActif)) afficherMaterielAdmin();
     else if (aAccesOngletAdminPermission(matriculeActif)) afficherPermissionsAdmin();
   }
 
@@ -2909,7 +3112,7 @@ function construireInsigneGrade(grade) {
     const [logs, formulaireAjout] = await Promise.all([chargerLogsEffectif(), construireFormulaireAjoutLog()]);
 
     contenu.innerHTML = `
-      <div class="admin-liste-titre">Journal — UP de rapport &amp; médailles (${logs.length}) <button class="log-delete-btn" style="display:inline-block; margin-left:10px;" onclick="supprimerTousLogsLocalement()">Supprimer tous les logs localement</button></div>
+      <div class="admin-liste-titre">Journal — UP de rapport &amp; médailles (${logs.length})</div>
       ${formulaireAjout}
       <ul class="admin-liste" id="adminLogsListe">
         ${logs.length ? logs.map(l => {
@@ -2917,16 +3120,16 @@ function construireInsigneGrade(grade) {
           const badge = action ? `<span class="log-action-badge ${classeActionLog(action)}">${action}</span>` : '';
           const initiale = (l.matricule || '?').trim().charAt(0).toUpperCase() || '?';
           return `
-          <li class="log-entry" onclick="basculerLogOuvert(this, event)" data-date="${echapperAttr(l.date)}" data-nom="${echapperAttr(l.matricule)}" data-texte="${echapperAttr(l.texte)}" data-non-synchronise="${l.nonSynchronise ? 'true' : 'false'}">
+          <li class="log-entry" onclick="basculerLogOuvert(this, event)" data-id="${l.id}">
             <div class="log-entry-main">
               <span class="log-avatar" aria-hidden="true">${initiale}</span>
               <div class="log-details">
-                <span class="log-texte"><strong>${l.matricule}</strong>${l.grade ? ` (${l.grade})` : ''} — ${badge}${reste}${l.nonSynchronise ? ' <span class="log-non-sync" title="Écriture Google Sheet en échec — vérifie l\'action \'ajouterLog\' côté Apps Script">⚠ non synchronisé</span>' : ''}</span>
+                <span class="log-texte"><strong>${l.matricule}</strong>${l.grade ? ` (${l.grade})` : ''} — ${badge}${reste}</span>
                 <span class="log-meta">${l.rempliPar ? `par ${l.rempliPar} · ` : ''}${formaterDateLog(l.date)}</span>
               </div>
               <span class="log-expand" aria-hidden="true">⌄</span>
             </div>
-            <button class="log-delete-btn" onclick="event.stopPropagation(); supprimerLogClique(this)">${l.nonSynchronise ? 'Supprimer localement' : 'Supprimer'}</button>
+            <button class="log-delete-btn" onclick="event.stopPropagation(); supprimerLogClique(this)">Supprimer</button>
           </li>
         `;
         }).join('') : '<li class="admin-liste-vide">Rien pour le moment.</li>'}
@@ -2936,14 +3139,12 @@ function construireInsigneGrade(grade) {
   }
 
   // === Panneau Administration > Permission ===
-  // Le backend (DoubleVerif.gs) n'expose pas de liste globale de toutes les
-  // permissions de tout le monde — seulement une lecture/écriture PAR
-  // matricule (aPermissionDoubleVerif_ / definirPermissionDoubleVerif_, une
-  // ligne "DoubleVerifSite" par personne). Le panneau fonctionne donc en
-  // mode recherche : on tape un matricule, on charge SES permissions
-  // actuelles, on coche/décoche, puis on enregistre. Pour ajouter une
-  // NOUVELLE fonction protégée, ajoute-la simplement dans FONCTIONS_PERMISSION
-  // (plus haut dans le fichier) : elle apparaîtra ici automatiquement.
+  // Migré vers l'API D1 (worker mdc-effectif-api) : la liste des matricules
+  // éligibles vient de GET /permissions/eligibles (tous les grades <= au
+  // grade minimum configuré dans config_generale), et le catalogue des
+  // fonctions vient de GET /permissions (table permissions_disponibles,
+  // gérable désormais depuis un onglet dédié — voir plus bas "Boutons du
+  // menu"/"Textes du site"/"Grades" pour le même principe).
   let matriculeEnEditionPermission = '';
 
   async function afficherPermissionsAdmin() {
@@ -2955,14 +3156,28 @@ function construireInsigneGrade(grade) {
     arreterAutoRefreshEffectif();
     if (boiteAdmin) boiteAdmin.classList.remove('admin-wrap-large');
 
+    contenu.innerHTML = `<div class="admin-liste-titre">Permission</div><div class="admin-liste-vide">Chargement…</div>`;
+
+    let eligibles = [];
+    try {
+      const resultat = await appelerEffectifApi('/permissions/eligibles');
+      eligibles = resultat.eligibles || [];
+    } catch (erreur) {
+      contenu.innerHTML = `<div class="admin-liste-titre">Permission</div><div class="admin-liste-vide">Impossible de charger la liste des matricules éligibles.</div>`;
+      return;
+    }
+
     contenu.innerHTML = `
       <div class="admin-liste-titre">Permission</div>
-      <div class="admin-liste-vide" style="margin-bottom:14px;">Cherche un matricule pour voir et modifier ses fonctions activées. Les grades Lieutenant-Colonel, Commandant, Vice-Commandant, Gérant Médecin et Co-Gérant Médecin ont toujours accès à tout, automatiquement (géré côté serveur, indépendamment des cases ci-dessous).</div>
+      <div class="admin-liste-vide" style="margin-bottom:14px;">Choisis un matricule pour voir et modifier ses fonctions activées. Les grades avec "Accès complet" (voir onglet Grades) ont toujours accès à tout, automatiquement, indépendamment des cases ci-dessous.</div>
       <div class="rapport-validation" style="margin-bottom:14px;">
-        <div class="rapport-validation-head">Rechercher un matricule</div>
+        <div class="rapport-validation-head">Choisir un matricule</div>
         <div class="rapport-validation-item">
           <div class="log-add-form" style="margin:0;">
-            <input type="text" id="permissionMatriculeRecherche" placeholder="matricule" value="${echapperAttr(matriculeEnEditionPermission)}">
+            <select id="permissionMatriculeRecherche">
+              <option value="">— sélectionner —</option>
+              ${eligibles.map(e => `<option value="${echapperAttr(e.matricule)}" ${e.matricule === matriculeEnEditionPermission ? 'selected' : ''}>${echapperHtml(e.matricule)} (${echapperHtml(e.grade || '')})</option>`).join('')}
+            </select>
             <button class="btn-cell-action enregistrer" onclick="chargerPermissionsMatricule()">Charger</button>
           </div>
         </div>
@@ -2985,24 +3200,24 @@ function construireInsigneGrade(grade) {
 
     zone.innerHTML = '<div class="admin-liste-vide">Chargement…</div>';
     try {
-      const droits = await lireDroitsMatricule(matricule);
-      zone.innerHTML = construireBlocDroitsMatricule(matricule, droits);
+      const [droits, catalogue] = await Promise.all([lireDroitsMatricule(matricule), chargerCataloguePermissions()]);
+      zone.innerHTML = construireBlocDroitsMatricule(matricule, droits, catalogue);
     } catch (erreur) {
-      zone.innerHTML = `<div class="admin-liste-vide">Impossible de charger les permissions. Vérifie que l'action 'lireDoubleVerifSite' est bien déployée côté Apps Script.</div>`;
+      zone.innerHTML = `<div class="admin-liste-vide">Impossible de charger les permissions de ce matricule.</div>`;
     }
   }
 
-  function construireBlocDroitsMatricule(matricule, droits) {
+  function construireBlocDroitsMatricule(matricule, droits, catalogue) {
     return `
       <div class="rapport-validation">
         <div class="rapport-validation-head">Fonctions de ${echapperHtml(matricule)}</div>
         <div class="rapport-validation-item">
-          ${FONCTIONS_PERMISSION.map((f) => {
+          ${catalogue.map((f) => {
             const actif = droits[f.cle] === true;
             return `
-              <label style="display:flex; align-items:flex-start; gap:8px; margin-top:10px; font:600 12px 'JetBrains Mono', monospace; color:#dbe9f0;">
+              <label style="display:flex; align-items:flex-start; gap:8px; margin-top:10px; font:600 12px 'IBM Plex Mono', monospace; color:#dbe9f0;">
                 <input type="checkbox" id="permissionCase_${f.cle}" ${actif ? 'checked' : ''}>
-                <span>${f.label}<br><span style="font-weight:400; color:#9fb4bd; text-transform:none; letter-spacing:0;">${f.description}</span></span>
+                <span>${echapperHtml(f.label)}<br><span style="font-weight:400; color:#9fb4bd; text-transform:none; letter-spacing:0;">${echapperHtml(f.description || '')}</span></span>
               </label>
             `;
           }).join('')}
@@ -3015,8 +3230,9 @@ function construireInsigneGrade(grade) {
   }
 
   async function enregistrerPermissionsMatricule(matricule) {
+    const catalogue = await chargerCataloguePermissions();
     const permissions = {};
-    FONCTIONS_PERMISSION.forEach((f) => {
+    catalogue.forEach((f) => {
       const case_ = document.getElementById(`permissionCase_${f.cle}`);
       if (case_ && !case_.disabled) permissions[f.cle] = case_.checked;
     });
@@ -3024,18 +3240,477 @@ function construireInsigneGrade(grade) {
       await enregistrerDroitsMatricule(matricule, permissions);
       chargerPermissionsMatricule();
     } catch (erreur) {
-      alert(erreur.message || "Impossible d'enregistrer ces permissions pour l'instant. Vérifie que l'action 'majDoubleVerifSite' est bien déployée côté Apps Script.");
+      alert(erreur.message || "Impossible d'enregistrer ces permissions pour l'instant.");
     }
   }
 
-  // Masque seulement le journal dans ce navigateur. Le Google Sheet reste intact.
-  function supprimerTousLogsLocalement() {
-    if (!confirm('Masquer tous les logs sur cet appareil ? Le Google Sheet ne sera pas modifié.')) return;
-    const masques = lireLogsMasquesLocalement();
-    lireCacheLogs().forEach(log => masques.add(cleLogLocale(log)));
-    localStorage.setItem(CLE_LOGS_MASQUES_LOCAL, JSON.stringify([...masques]));
-    localStorage.removeItem(CLE_LOGS_CACHE);
-    afficherLogsAdmin();
+  // === Panneau Administration > Grades ===
+  async function afficherGradesAdmin() {
+    if (!aAccesOngletAdminGrades(matriculeActif)) return;
+    marquerOngletAdminActif('ongletAdminGrades');
+    const contenu = document.getElementById('adminContenu');
+    const boiteAdmin = document.getElementById('adminWrapBox');
+    if (!contenu) return;
+    arreterAutoRefreshEffectif();
+    if (boiteAdmin) boiteAdmin.classList.remove('admin-wrap-large');
+
+    contenu.innerHTML = `<div class="admin-liste-titre">Grades</div><div class="admin-liste-vide">Chargement…</div>`;
+    let grades = [];
+    try {
+      grades = await chargerGrades(true);
+    } catch (erreur) {
+      contenu.innerHTML = `<div class="admin-liste-titre">Grades</div><div class="admin-liste-vide">Impossible de charger les grades.</div>`;
+      return;
+    }
+
+    contenu.innerHTML = `
+      <div class="admin-liste-titre">Grades (${grades.length})</div>
+      <ul class="admin-liste" id="adminGradesListe">
+        ${grades.map(g => `
+          <li class="log-entry" data-nom="${echapperAttr(g.nom)}">
+            <div class="log-entry-main" style="cursor:default;">
+              <div class="log-details" style="width:100%;">
+                <div class="log-add-form" style="margin:0 0 6px 0;">
+                  <input type="text" class="grade-champ-nom" value="${echapperAttr(g.nom)}" placeholder="nom">
+                  <input type="number" class="grade-champ-ordre" value="${g.ordre}" placeholder="ordre" style="max-width:80px;">
+                  <select class="grade-champ-classe">
+                    <option value="" ${g.classe === '' ? 'selected' : ''}>Standard</option>
+                    <option value="grade-commandement" ${g.classe === 'grade-commandement' ? 'selected' : ''}>Commandement</option>
+                    <option value="grade-direction" ${g.classe === 'grade-direction' ? 'selected' : ''}>Direction</option>
+                  </select>
+                  <label style="display:flex; align-items:center; gap:6px; font:600 12px 'IBM Plex Mono', monospace; color:#dbe9f0; white-space:nowrap;">
+                    <input type="checkbox" class="grade-champ-acces" ${g.accesComplet ? 'checked' : ''}> Accès complet
+                  </label>
+                </div>
+              </div>
+            </div>
+            <button class="btn-cell-action enregistrer" onclick="enregistrerGradeClique(this, '${echapperAttr(g.nom)}')">Enregistrer</button>
+            <button class="log-delete-btn" onclick="supprimerGradeClique('${echapperAttr(g.nom)}')">Supprimer</button>
+          </li>
+        `).join('')}
+      </ul>
+      <div class="rapport-validation" style="margin-top:16px;">
+        <div class="rapport-validation-head">Ajouter un grade</div>
+        <div class="rapport-validation-item">
+          <div class="log-add-form" style="margin:0;">
+            <input type="text" id="nouveauGradeNom" placeholder="nom">
+            <input type="number" id="nouveauGradeOrdre" placeholder="ordre" style="max-width:80px;">
+            <select id="nouveauGradeClasse">
+              <option value="">Standard</option>
+              <option value="grade-commandement">Commandement</option>
+              <option value="grade-direction">Direction</option>
+            </select>
+            <label style="display:flex; align-items:center; gap:6px; font:600 12px 'IBM Plex Mono', monospace; color:#dbe9f0; white-space:nowrap;">
+              <input type="checkbox" id="nouveauGradeAcces"> Accès complet
+            </label>
+            <button class="btn-cell-action enregistrer" onclick="ajouterGradeClique()">Ajouter</button>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  async function enregistrerGradeClique(bouton, nomActuel) {
+    const li = bouton.closest('li');
+    const nom = li.querySelector('.grade-champ-nom').value.trim();
+    const ordre = Number(li.querySelector('.grade-champ-ordre').value);
+    const classe = li.querySelector('.grade-champ-classe').value;
+    const accesComplet = li.querySelector('.grade-champ-acces').checked;
+    if (!nom) { alert('Le nom du grade est requis.'); return; }
+    bouton.disabled = true;
+    try {
+      await appelerEffectifApi('/grades/modifier', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'X-Api-Key': EFFECTIF_API_KEY },
+        body: JSON.stringify({ nomActuel, champs: { nom, ordre, classe, accesComplet } })
+      });
+      afficherGradesAdmin();
+    } catch (erreur) {
+      alert(erreur.message || 'Impossible de modifier ce grade.');
+      bouton.disabled = false;
+    }
+  }
+
+  async function supprimerGradeClique(nom) {
+    if (!confirm(`Supprimer le grade "${nom}" ?`)) return;
+    try {
+      await appelerEffectifApi('/grades/supprimer', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'X-Api-Key': EFFECTIF_API_KEY },
+        body: JSON.stringify({ nom })
+      });
+      afficherGradesAdmin();
+    } catch (erreur) {
+      alert(erreur.message || 'Impossible de supprimer ce grade.');
+    }
+  }
+
+  async function ajouterGradeClique() {
+    const nom = document.getElementById('nouveauGradeNom').value.trim();
+    const ordre = Number(document.getElementById('nouveauGradeOrdre').value);
+    const classe = document.getElementById('nouveauGradeClasse').value;
+    const accesComplet = document.getElementById('nouveauGradeAcces').checked;
+    if (!nom || Number.isNaN(ordre)) { alert('Nom et ordre requis.'); return; }
+    try {
+      await appelerEffectifApi('/grades/ajouter', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'X-Api-Key': EFFECTIF_API_KEY },
+        body: JSON.stringify({ nom, ordre, classe, accesComplet })
+      });
+      afficherGradesAdmin();
+    } catch (erreur) {
+      alert(erreur.message || 'Impossible d\'ajouter ce grade.');
+    }
+  }
+
+  // === Panneau Administration > Boutons du menu ===
+  async function afficherBoutonsAdmin() {
+    if (!aAccesOngletAdminBoutons(matriculeActif)) return;
+    marquerOngletAdminActif('ongletAdminBoutons');
+    const contenu = document.getElementById('adminContenu');
+    const boiteAdmin = document.getElementById('adminWrapBox');
+    if (!contenu) return;
+    arreterAutoRefreshEffectif();
+    if (boiteAdmin) boiteAdmin.classList.remove('admin-wrap-large');
+
+    contenu.innerHTML = `<div class="admin-liste-titre">Boutons du menu</div><div class="admin-liste-vide">Chargement…</div>`;
+    let boutons = [];
+    let catalogue = [];
+    try {
+      [boutons, catalogue] = await Promise.all([
+        appelerEffectifApi('/boutons').then(r => r.boutons || []),
+        chargerCataloguePermissions()
+      ]);
+    } catch (erreur) {
+      contenu.innerHTML = `<div class="admin-liste-titre">Boutons du menu</div><div class="admin-liste-vide">Impossible de charger les boutons.</div>`;
+      return;
+    }
+
+    const optionsPermission = (valeurActuelle) => `
+      <option value="" ${!valeurActuelle ? 'selected' : ''}>Visible par tous</option>
+      ${catalogue.map(p => `<option value="${echapperAttr(p.cle)}" ${p.cle === valeurActuelle ? 'selected' : ''}>${echapperHtml(p.label)}</option>`).join('')}
+    `;
+    // Dossiers = boutons marqués estDossier. Un bouton peut être assigné dans
+    // un dossier (parentId) ; un dossier ne peut pas être assigné dans un
+    // autre dossier (pas d'imbrication à plusieurs niveaux).
+    const dossiers = boutons.filter(b => b.estDossier);
+    const optionsDossierParent = (idExclu, valeurActuelle) => `
+      <option value="" ${!valeurActuelle ? 'selected' : ''}>— niveau racine —</option>
+      ${dossiers.filter(d => d.id !== idExclu).map(d => `<option value="${d.id}" ${valeurActuelle === d.id ? 'selected' : ''}>${echapperHtml(d.label)}</option>`).join('')}
+    `;
+
+    contenu.innerHTML = `
+      <div class="admin-liste-titre">Boutons du menu (${boutons.length})</div>
+      <div class="admin-liste-vide" style="margin-bottom:10px;">Coche "Dossier" pour un bouton qui doit contenir d'autres boutons (ex: "Gérance spé"). Assigne un bouton existant dans un dossier via "Dossier parent", puis "Enregistrer".</div>
+      <ul class="admin-liste" id="adminBoutonsListe">
+        ${boutons.map(b => `
+          <li class="log-entry" data-id="${b.id}">
+            <div class="log-entry-main" style="cursor:default;">
+              <div class="log-details" style="width:100%;">
+                <div class="log-add-form" style="margin:0 0 6px 0; flex-wrap:wrap;">
+                  <input type="text" class="bouton-champ-label" value="${echapperAttr(b.label)}" placeholder="label">
+                  <input type="text" class="bouton-champ-url" value="${echapperAttr(b.url)}" placeholder="url" style="min-width:220px;">
+                  <input type="number" class="bouton-champ-ordre" value="${b.ordre}" placeholder="ordre" style="max-width:80px;">
+                  <select class="bouton-champ-permission">${optionsPermission(b.permission)}</select>
+                  <label style="display:flex; align-items:center; gap:6px; font:600 12px 'IBM Plex Mono', monospace; color:#dbe9f0;">
+                    <input type="checkbox" class="bouton-champ-dossier" ${b.estDossier ? 'checked' : ''}> Dossier
+                  </label>
+                  <select class="bouton-champ-parent">${optionsDossierParent(b.id, b.parentId)}</select>
+                </div>
+              </div>
+            </div>
+            <button class="btn-cell-action enregistrer" onclick="enregistrerBoutonClique(this, ${b.id})">Enregistrer</button>
+            <button class="log-delete-btn" onclick="supprimerBoutonClique(${b.id})">Supprimer</button>
+          </li>
+        `).join('')}
+      </ul>
+      <div class="rapport-validation" style="margin-top:16px;">
+        <div class="rapport-validation-head">Ajouter un bouton</div>
+        <div class="rapport-validation-item">
+          <div class="log-add-form" style="margin:0; flex-wrap:wrap;">
+            <input type="text" id="nouveauBoutonLabel" placeholder="label">
+            <input type="text" id="nouveauBoutonUrl" placeholder="url" style="min-width:220px;">
+            <input type="number" id="nouveauBoutonOrdre" placeholder="ordre" style="max-width:80px;">
+            <select id="nouveauBoutonPermission">${optionsPermission('')}</select>
+            <label style="display:flex; align-items:center; gap:6px; font:600 12px 'IBM Plex Mono', monospace; color:#dbe9f0;">
+              <input type="checkbox" id="nouveauBoutonDossier"> Dossier
+            </label>
+            <select id="nouveauBoutonParent">${optionsDossierParent(null, null)}</select>
+            <button class="btn-cell-action enregistrer" onclick="ajouterBoutonClique()">Ajouter</button>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  async function enregistrerBoutonClique(bouton, id) {
+    const li = bouton.closest('li');
+    const label = li.querySelector('.bouton-champ-label').value.trim();
+    const url = li.querySelector('.bouton-champ-url').value.trim();
+    const ordre = Number(li.querySelector('.bouton-champ-ordre').value);
+    const permission = li.querySelector('.bouton-champ-permission').value;
+    const estDossier = li.querySelector('.bouton-champ-dossier').checked;
+    const parentValeur = li.querySelector('.bouton-champ-parent').value;
+    const parentId = parentValeur ? Number(parentValeur) : null;
+    if (!label) { alert('Le label est requis.'); return; }
+    bouton.disabled = true;
+    try {
+      await appelerEffectifApi('/boutons/modifier', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'X-Api-Key': EFFECTIF_API_KEY },
+        body: JSON.stringify({ id, champs: { label, url, ordre, permission, estDossier, parentId } })
+      });
+      CACHE_BOUTONS_MENU = null;
+      await afficherBoutonsAdmin(); // FIX : sans "await", une erreur ici restait invisible et le bouton restait bloqué sur "désactivé".
+    } catch (erreur) {
+      console.error('Enregistrement du bouton :', erreur);
+      alert(erreur.message || 'Impossible de modifier ce bouton.');
+      bouton.disabled = false;
+    }
+  }
+
+  async function supprimerBoutonClique(id) {
+    if (!confirm('Supprimer ce bouton du menu ?')) return;
+    try {
+      await appelerEffectifApi('/boutons/supprimer', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'X-Api-Key': EFFECTIF_API_KEY },
+        body: JSON.stringify({ id })
+      });
+      CACHE_BOUTONS_MENU = null;
+      await afficherBoutonsAdmin();
+    } catch (erreur) {
+      console.error('Suppression du bouton :', erreur);
+      alert(erreur.message || 'Impossible de supprimer ce bouton.');
+    }
+  }
+
+  async function ajouterBoutonClique() {
+    const label = document.getElementById('nouveauBoutonLabel').value.trim();
+    const url = document.getElementById('nouveauBoutonUrl').value.trim();
+    const ordre = Number(document.getElementById('nouveauBoutonOrdre').value);
+    const permission = document.getElementById('nouveauBoutonPermission').value;
+    const estDossier = document.getElementById('nouveauBoutonDossier').checked;
+    const parentValeur = document.getElementById('nouveauBoutonParent').value;
+    const parentId = parentValeur ? Number(parentValeur) : null;
+    if (!label || Number.isNaN(ordre)) { alert('Label et ordre requis.'); return; }
+    try {
+      await appelerEffectifApi('/boutons/ajouter', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'X-Api-Key': EFFECTIF_API_KEY },
+        body: JSON.stringify({ label, url, ordre, permission, estDossier, parentId })
+      });
+      CACHE_BOUTONS_MENU = null;
+      await afficherBoutonsAdmin();
+    } catch (erreur) {
+      console.error('Ajout du bouton :', erreur);
+      alert(erreur.message || "Impossible d'ajouter ce bouton.");
+    }
+  }
+
+  // === Panneau Administration > Textes du site ===
+  async function afficherTextesAdmin() {
+    if (!aAccesOngletAdminTextes(matriculeActif)) return;
+    marquerOngletAdminActif('ongletAdminTextes');
+    const contenu = document.getElementById('adminContenu');
+    const boiteAdmin = document.getElementById('adminWrapBox');
+    if (!contenu) return;
+    arreterAutoRefreshEffectif();
+    if (boiteAdmin) boiteAdmin.classList.remove('admin-wrap-large');
+
+    contenu.innerHTML = `<div class="admin-liste-titre">Textes du site</div><div class="admin-liste-vide">Chargement…</div>`;
+    let textes = [];
+    try {
+      textes = await appelerEffectifApi('/textes').then(r => r.textes || []);
+    } catch (erreur) {
+      contenu.innerHTML = `<div class="admin-liste-titre">Textes du site</div><div class="admin-liste-vide">Impossible de charger les textes.</div>`;
+      return;
+    }
+
+    contenu.innerHTML = `
+      <div class="admin-liste-titre">Textes du site (${textes.length})</div>
+      <div class="admin-liste-vide" style="margin-bottom:14px;">Sélectionne une clé existante ou tape-en une nouvelle pour créer un texte.</div>
+      <div class="rapport-validation" style="margin-bottom:14px;">
+        <div class="rapport-validation-item">
+          <div class="log-add-form" style="margin:0;">
+            <select id="texteSelectCle">
+              <option value="">— nouveau texte —</option>
+              ${textes.map(t => `<option value="${echapperAttr(t.cle)}">${echapperHtml(t.titre || t.cle)} (${echapperHtml(t.cle)})</option>`).join('')}
+            </select>
+            <button class="btn-cell-action enregistrer" onclick="chargerTexteAdmin()">Charger</button>
+          </div>
+        </div>
+      </div>
+      <div id="texteZoneEdition"></div>
+    `;
+  }
+
+  async function chargerTexteAdmin() {
+    const select = document.getElementById('texteSelectCle');
+    const cle = select.value;
+    const zone = document.getElementById('texteZoneEdition');
+    if (!cle) {
+      zone.innerHTML = construireFormulaireTexte('', '', '');
+      return;
+    }
+    zone.innerHTML = '<div class="admin-liste-vide">Chargement…</div>';
+    try {
+      const resultat = await appelerEffectifApi(`/textes/${encodeURIComponent(cle)}`);
+      const t = resultat.texte;
+      zone.innerHTML = construireFormulaireTexte(t.cle, t.titre, t.contenu);
+    } catch (erreur) {
+      zone.innerHTML = `<div class="admin-liste-vide">Impossible de charger ce texte.</div>`;
+    }
+  }
+
+  function construireFormulaireTexte(cle, titre, contenu) {
+    return `
+      <div class="rapport-validation">
+        <div class="rapport-validation-head">${cle ? 'Modifier' : 'Créer'} un texte</div>
+        <div class="rapport-validation-item">
+          <div class="log-add-form" style="margin:0 0 8px 0;">
+            <input type="text" id="texteChampCle" value="${echapperAttr(cle)}" placeholder="clé (ex: reglement)" ${cle ? 'readonly' : ''} style="max-width:220px;">
+            <input type="text" id="texteChampTitre" value="${echapperAttr(titre || '')}" placeholder="titre">
+          </div>
+          <textarea id="texteChampContenu" rows="10" style="width:100%; box-sizing:border-box; font:500 13px 'IBM Plex Mono', monospace; background:#0e1a1f; color:#dbe9f0; border:1px solid #2b3f47; border-radius:6px; padding:10px;" placeholder="contenu (une ligne = un point, comme sur le site)">${echapperHtml(contenu || '')}</textarea>
+          <div style="margin-top:14px;">
+            <button class="rapport-validation-btn" onclick="enregistrerTexteAdmin()">Enregistrer</button>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  async function enregistrerTexteAdmin() {
+    const cle = document.getElementById('texteChampCle').value.trim();
+    const titre = document.getElementById('texteChampTitre').value.trim();
+    const contenu = document.getElementById('texteChampContenu').value;
+    if (!cle) { alert('La clé est requise.'); return; }
+    try {
+      await appelerEffectifApi('/textes/modifier', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'X-Api-Key': EFFECTIF_API_KEY },
+        body: JSON.stringify({ cle, titre, contenu })
+      });
+      afficherTextesAdmin();
+    } catch (erreur) {
+      alert(erreur.message || 'Impossible d\'enregistrer ce texte.');
+    }
+  }
+
+  // === Panneau Administration > Matériel ===
+  // Chaque fiche a une description (texte simple) et deux zones "sous-texte"
+  // (une ligne = un sous-point) : composition et utilisation. On peut ajouter
+  // autant de sous-textes que voulu simplement en ajoutant des lignes dans la
+  // zone de texte correspondante — même convention que Textes du site.
+  async function afficherMaterielAdmin() {
+    if (!aAccesOngletAdminMateriel(matriculeActif)) return;
+    marquerOngletAdminActif('ongletAdminMateriel');
+    const contenu = document.getElementById('adminContenu');
+    const boiteAdmin = document.getElementById('adminWrapBox');
+    if (!contenu) return;
+    arreterAutoRefreshEffectif();
+    if (boiteAdmin) boiteAdmin.classList.remove('admin-wrap-large');
+
+    contenu.innerHTML = `<div class="admin-liste-titre">Matériel</div><div class="admin-liste-vide">Chargement…</div>`;
+    let items = [];
+    try {
+      items = await chargerMateriel(true);
+    } catch (erreur) {
+      contenu.innerHTML = `<div class="admin-liste-titre">Matériel</div><div class="admin-liste-vide">Impossible de charger le matériel.</div>`;
+      return;
+    }
+
+    contenu.innerHTML = `
+      <div class="admin-liste-titre">Matériel (${items.length})</div>
+      <div class="admin-liste-vide" style="margin-bottom:14px;">Sélectionne une fiche existante ou choisis "— nouvelle fiche —" pour en créer une.</div>
+      <div class="rapport-validation" style="margin-bottom:14px;">
+        <div class="rapport-validation-item">
+          <div class="log-add-form" style="margin:0;">
+            <select id="materielSelectId">
+              <option value="">— nouvelle fiche —</option>
+              ${items.map((m, i) => `<option value="${i}">${echapperHtml(m.titre)}</option>`).join('')}
+            </select>
+            <button class="btn-cell-action enregistrer" onclick="chargerMaterielAdminItem()">Charger</button>
+          </div>
+        </div>
+      </div>
+      <div id="materielZoneEdition"></div>
+    `;
+  }
+
+  function chargerMaterielAdminItem() {
+    const select = document.getElementById('materielSelectId');
+    const index = select.value;
+    const zone = document.getElementById('materielZoneEdition');
+    const item = index === '' ? null : (CACHE_MATERIEL || [])[Number(index)];
+    zone.innerHTML = construireFormulaireMateriel(item);
+  }
+
+  function construireFormulaireMateriel(item) {
+    const id = item ? item.id : '';
+    return `
+      <div class="rapport-validation">
+        <div class="rapport-validation-head">${item ? 'Modifier' : 'Créer'} une fiche matériel</div>
+        <div class="rapport-validation-item">
+          <div class="log-add-form" style="margin:0 0 8px 0; flex-wrap:wrap;">
+            <input type="text" id="materielChampTitre" value="${echapperAttr(item ? item.titre : '')}" placeholder="titre">
+            <input type="number" id="materielChampOrdre" value="${item ? item.ordre : 0}" placeholder="ordre" style="max-width:80px;">
+          </div>
+          <label style="display:block; font:600 12px 'IBM Plex Mono', monospace; color:#9fb4bd; margin-bottom:4px;">Description</label>
+          <textarea id="materielChampDescription" rows="3" style="width:100%; box-sizing:border-box; font:500 13px 'IBM Plex Mono', monospace; background:#0e1a1f; color:#dbe9f0; border:1px solid #2b3f47; border-radius:6px; padding:10px; margin-bottom:10px;">${echapperHtml(item ? item.description : '')}</textarea>
+          <label style="display:block; font:600 12px 'IBM Plex Mono', monospace; color:#9fb4bd; margin-bottom:4px;">Composition (une ligne = un sous-texte, laisse vide si aucune)</label>
+          <textarea id="materielChampComposition" rows="6" style="width:100%; box-sizing:border-box; font:500 13px 'IBM Plex Mono', monospace; background:#0e1a1f; color:#dbe9f0; border:1px solid #2b3f47; border-radius:6px; padding:10px; margin-bottom:10px;">${echapperHtml(item ? item.composition : '')}</textarea>
+          <label style="display:block; font:600 12px 'IBM Plex Mono', monospace; color:#9fb4bd; margin-bottom:4px;">Utilisation</label>
+          <textarea id="materielChampUtilisation" rows="3" style="width:100%; box-sizing:border-box; font:500 13px 'IBM Plex Mono', monospace; background:#0e1a1f; color:#dbe9f0; border:1px solid #2b3f47; border-radius:6px; padding:10px;">${echapperHtml(item ? item.utilisation : '')}</textarea>
+          <div style="margin-top:14px; display:flex; gap:10px;">
+            <button class="rapport-validation-btn" onclick="enregistrerMaterielAdmin(${id ? id : 'null'})">Enregistrer</button>
+            ${id ? `<button class="log-delete-btn" onclick="supprimerMaterielAdmin(${id})">Supprimer</button>` : ''}
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  async function enregistrerMaterielAdmin(id) {
+    const titre = document.getElementById('materielChampTitre').value.trim();
+    const ordre = Number(document.getElementById('materielChampOrdre').value) || 0;
+    const description = document.getElementById('materielChampDescription').value;
+    const composition = document.getElementById('materielChampComposition').value;
+    const utilisation = document.getElementById('materielChampUtilisation').value;
+    if (!titre) { alert('Le titre est requis.'); return; }
+    try {
+      if (id) {
+        await appelerEffectifApi('/materiel/modifier', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'X-Api-Key': EFFECTIF_API_KEY },
+          body: JSON.stringify({ id, champs: { titre, ordre, description, composition, utilisation } })
+        });
+      } else {
+        await appelerEffectifApi('/materiel/ajouter', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'X-Api-Key': EFFECTIF_API_KEY },
+          body: JSON.stringify({ titre, ordre, description, composition, utilisation })
+        });
+      }
+      afficherMaterielAdmin();
+    } catch (erreur) {
+      alert(erreur.message || "Impossible d'enregistrer cette fiche.");
+    }
+  }
+
+  async function supprimerMaterielAdmin(id) {
+    if (!confirm('Supprimer cette fiche matériel ?')) return;
+    try {
+      await appelerEffectifApi('/materiel/supprimer', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'X-Api-Key': EFFECTIF_API_KEY },
+        body: JSON.stringify({ id })
+      });
+      afficherMaterielAdmin();
+    } catch (erreur) {
+      alert(erreur.message || 'Impossible de supprimer cette fiche.');
+    }
   }
 
   // Clique sur une entrée du journal : révèle/masque son bouton "Supprimer".
@@ -3050,26 +3725,16 @@ function construireInsigneGrade(grade) {
   async function supprimerLogClique(bouton) {
     const li = bouton.closest('.log-entry');
     if (!li) return;
-    const estNonSynchronise = li.dataset.nonSynchronise === 'true';
-    const confirmation = estNonSynchronise
-      ? 'Supprimer ce log non synchronisé de cet appareil ? Il n’est pas présent dans Google Sheet.'
-      : 'Supprimer définitivement cette ligne du journal ?';
-    if (!confirm(confirmation)) return;
-
-    const date = li.dataset.date;
-    const nom = li.dataset.nom;
-    const texte = li.dataset.texte;
+    if (!confirm('Supprimer définitivement cette ligne du journal ?')) return;
 
     bouton.disabled = true;
     bouton.textContent = '…';
     try {
-      // Un log non synchronisé n'existe que dans le cache de ce navigateur :
-      // aucun appel Google Sheet n'est nécessaire (ni possible) pour l'effacer.
-      if (!estNonSynchronise) {
-        await appelerWebApp('supprimerLog', { date, matricule: nom, texte });
-      }
-      const cache = lireCacheLogs().filter(l => !(l.date === date && l.matricule === nom && l.texte === texte));
-      ecrireCacheLogs(cache);
+      await appelerEffectifApi('/logs/supprimer', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'X-Api-Key': EFFECTIF_API_KEY },
+        body: JSON.stringify({ id: Number(li.dataset.id) })
+      });
       afficherLogsAdmin();
     } catch (e) {
       console.error('Suppression du log impossible :', e);
@@ -3232,7 +3897,6 @@ function construireInsigneGrade(grade) {
   // suggestion. Tout le monde voit les 3 files ; seuls les comptes ayant la
   // permission 'gererSuggestions' voient les boutons Valider/Refuser sur les
   // suggestions en attente. ===
-  const CLE_SUGGESTIONS_MDC_CACHE = 'gdaSuggestionsMdcCache';
   const CLE_SUGGESTIONS_MASQUEES_LOCAL = 'gdaSuggestionsMdcMasqueesLocalement';
 
   function aAccesGestionSuggestions(matricule) {
@@ -3249,23 +3913,12 @@ function construireInsigneGrade(grade) {
   }
 
   function masquerSuggestionLocalement(id, bouton) {
-    if (!confirm('Masquer cette suggestion sur cet appareil ? Elle restera dans le Google Sheet.')) return;
+    if (!confirm('Masquer cette suggestion sur cet appareil ? Elle reste dans la base pour les autres.')) return;
     const masquees = lireSuggestionsMasqueesLocalement();
     masquees.add(String(id));
     localStorage.setItem(CLE_SUGGESTIONS_MASQUEES_LOCAL, JSON.stringify([...masquees]));
     const ligne = bouton && bouton.closest('.rapport-validation-item');
     if (ligne) ligne.remove();
-  }
-
-  function lireSuggestionsMdc() {
-    try {
-      const suggestions = JSON.parse(localStorage.getItem(CLE_SUGGESTIONS_MDC_CACHE) || '[]');
-      return Array.isArray(suggestions) ? suggestions : [];
-    } catch { return []; }
-  }
-
-  function ecrireSuggestionsMdc(suggestions) {
-    localStorage.setItem(CLE_SUGGESTIONS_MDC_CACHE, JSON.stringify(suggestions.slice(0, 200)));
   }
 
   function classeStatutSuggestion(statut) {
@@ -3291,19 +3944,7 @@ function construireInsigneGrade(grade) {
   // 'attente' | 'validees' | 'refusees' | 'form'
   let vueSuggestionActive = 'attente';
 
-  // Actions Web App attendues côté Apps Script pour chaque file (mêmes
-  // conventions que 'listeSuggestionsEnAttente', déjà utilisée) :
-  //   - listeSuggestionsEnAttente { validateur } -> { ok, suggestions: [...] }
-  //   - listeSuggestionsValidees  { validateur } -> { ok, suggestions: [...] }
-  //   - listeSuggestionsRefusees  { validateur } -> { ok, suggestions: [...] }
-  // Si 'listeSuggestionsValidees' / 'listeSuggestionsRefusees' n'existent pas
-  // encore côté Apps Script, la vue affiche un message d'indisponibilité au
-  // lieu de planter (comme pour les autres files du dashboard).
-  const ACTIONS_SUGGESTIONS_PAR_VUE = {
-    attente: 'listeSuggestionsEnAttente',
-    validees: 'listeSuggestionsValidees',
-    refusees: 'listeSuggestionsRefusees'
-  };
+  // MIGRATION : GET /suggestions?statut=attente|validees|refusees sur l'API D1.
 
   function marquerBoutonSuggestionActif(vue) {
     ['boutonSuggestionPoster', 'boutonSuggestionAttente', 'boutonSuggestionValidees', 'boutonSuggestionRefusees'].forEach((id) => {
@@ -3367,9 +4008,8 @@ function construireInsigneGrade(grade) {
     if (!contenu) return;
     contenu.innerHTML = '<div class="rapport-history-empty">Chargement…</div>';
 
-    const action = ACTIONS_SUGGESTIONS_PAR_VUE[vue];
     try {
-      const resultat = await appelerWebApp(action, { validateur: matriculeActif });
+      const resultat = await appelerEffectifApi(`/suggestions?statut=${vue}`);
       const suggestions = (Array.isArray(resultat.suggestions) ? resultat.suggestions : []).filter(s => !suggestionEstMasqueeLocalement(s));
       const total = document.getElementById('suggestionTotal');
       if (total) total.textContent = suggestions.length;
@@ -3388,7 +4028,7 @@ function construireInsigneGrade(grade) {
       console.warn('Liste des suggestions indisponible :', erreur);
       const total = document.getElementById('suggestionTotal');
       if (total) total.textContent = '0';
-      contenu.innerHTML = `<div class="rapport-history-empty"><strong>Liste indisponible</strong><br>Publiez la nouvelle version Apps Script (action '${action}').</div>`;
+      contenu.innerHTML = `<div class="rapport-history-empty"><strong>Liste indisponible</strong><br>${echapperHtml(erreur.message || '')}</div>`;
     }
   }
 
@@ -3397,7 +4037,11 @@ function construireInsigneGrade(grade) {
     bouton.disabled = true;
     bouton.textContent = 'Validation…';
     try {
-      await appelerWebApp('validerSuggestion', { id, validateur: matriculeActif });
+      await appelerEffectifApi('/suggestions/valider', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'X-Api-Key': EFFECTIF_API_KEY },
+        body: JSON.stringify({ id, validateur: matriculeActif })
+      });
       await dessinerListeSuggestionsGlobale(vueSuggestionActive);
     } catch (erreur) {
       bouton.disabled = false;
@@ -3411,7 +4055,11 @@ function construireInsigneGrade(grade) {
     bouton.disabled = true;
     bouton.textContent = 'Refus…';
     try {
-      await appelerWebApp('refuserSuggestion', { id, validateur: matriculeActif });
+      await appelerEffectifApi('/suggestions/refuser', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'X-Api-Key': EFFECTIF_API_KEY },
+        body: JSON.stringify({ id, validateur: matriculeActif })
+      });
       await dessinerListeSuggestionsGlobale(vueSuggestionActive);
     } catch (erreur) {
       bouton.disabled = false;
@@ -3464,23 +4112,22 @@ function construireInsigneGrade(grade) {
       feedback.textContent = 'Renseigne un titre et le détail de ta suggestion.';
       return;
     }
-    const suggestion = { matricule: matriculeActif, grade: gradeActif, titre, texte, date: new Date().toISOString(), statut: 'En attente' };
-    const suggestions = lireSuggestionsMdc();
-    suggestions.unshift(suggestion);
-    ecrireSuggestionsMdc(suggestions);
+    const suggestion = { matricule: matriculeActif, grade: gradeActif, titre, texte, date: new Date().toISOString() };
     bouton.disabled = true;
     bouton.textContent = 'Envoi…';
     try {
-      await appelerWebApp('soumettreSuggestion', suggestion);
+      await appelerEffectifApi('/suggestions/ajouter', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(suggestion)
+      });
       feedback.className = 'rapport-feedback ok';
       feedback.textContent = 'Suggestion envoyée : en attente de traitement.';
-    } catch (erreur) {
-      suggestion.nonSynchronise = true;
-      ecrireSuggestionsMdc(suggestions);
-      feedback.className = 'rapport-feedback fail';
-      feedback.textContent = 'Suggestion conservée sur cet appareil, en attente de synchronisation.';
-    } finally {
       event.currentTarget.reset();
+    } catch (erreur) {
+      feedback.className = 'rapport-feedback fail';
+      feedback.textContent = erreur.message || "Échec de l'envoi — réessaie.";
+    } finally {
       bouton.disabled = false;
       bouton.textContent = 'Envoyer la suggestion';
     }
@@ -3490,7 +4137,6 @@ function construireInsigneGrade(grade) {
   // (3 files : attente / validées / refusées + formulaire de dépôt). Seuls
   // les comptes ayant la permission 'gererEntrainements' voient les boutons
   // Valider/Refuser sur les demandes en attente. ===
-  const CLE_ENTRAINEMENTS_MDC_CACHE = 'gdaEntrainementsMdcCache';
   const CLE_ENTRAINEMENTS_MASQUES_LOCAL = 'gdaEntrainementsMdcMasquesLocalement';
 
   function aAccesGestionEntrainements(matricule) {
@@ -3507,23 +4153,12 @@ function construireInsigneGrade(grade) {
   }
 
   function masquerEntrainementLocalement(id, bouton) {
-    if (!confirm('Masquer cette demande sur cet appareil ? Elle restera dans le Google Sheet.')) return;
+    if (!confirm('Masquer cette demande sur cet appareil ? Elle reste dans la base pour les autres.')) return;
     const masques = lireEntrainementsMasquesLocalement();
     masques.add(String(id));
     localStorage.setItem(CLE_ENTRAINEMENTS_MASQUES_LOCAL, JSON.stringify([...masques]));
     const ligne = bouton && bouton.closest('.rapport-validation-item');
     if (ligne) ligne.remove();
-  }
-
-  function lireEntrainementsMdc() {
-    try {
-      const entrainements = JSON.parse(localStorage.getItem(CLE_ENTRAINEMENTS_MDC_CACHE) || '[]');
-      return Array.isArray(entrainements) ? entrainements : [];
-    } catch { return []; }
-  }
-
-  function ecrireEntrainementsMdc(entrainements) {
-    localStorage.setItem(CLE_ENTRAINEMENTS_MDC_CACHE, JSON.stringify(entrainements.slice(0, 200)));
   }
 
   function boutonsActionsEntrainement(entrainement) {
@@ -3542,19 +4177,7 @@ function construireInsigneGrade(grade) {
   // Vue actuellement affichée : 'attente' | 'validees' | 'refusees' | 'form'
   let vueEntrainementActive = 'attente';
 
-  // Actions Web App attendues côté Apps Script (mêmes conventions que pour
-  // les suggestions) :
-  //   - listeEntrainementsEnAttente { validateur } -> { ok, entrainements: [...] }
-  //   - listeEntrainementsValidees  { validateur } -> { ok, entrainements: [...] }
-  //   - listeEntrainementsRefusees  { validateur } -> { ok, entrainements: [...] }
-  //   - soumettreEntrainement { matricule, grade, type, dateHeure, description, roles, lieu, invites }
-  //   - validerEntrainement { id, validateur }
-  //   - refuserEntrainement { id, validateur }
-  const ACTIONS_ENTRAINEMENTS_PAR_VUE = {
-    attente: 'listeEntrainementsEnAttente',
-    validees: 'listeEntrainementsValidees',
-    refusees: 'listeEntrainementsRefusees'
-  };
+  // MIGRATION : GET /entrainements?statut=attente|validees|refusees sur l'API D1.
 
   const TYPES_ENTRAINEMENT = ['Médecin'];
   const GROUPES_INVITES_ENTRAINEMENT = ['BPM', 'MDC AIT', 'MDC GI', 'MDC FIM'];
@@ -3608,7 +4231,7 @@ function construireInsigneGrade(grade) {
               <label>Personnel invité</label>
               <div style="display:flex; flex-wrap:wrap; gap:14px; margin-top:6px;">
                 ${GROUPES_INVITES_ENTRAINEMENT.map(g => `
-                  <label style="display:flex; align-items:center; gap:7px; font:600 12.5px 'JetBrains Mono', monospace; color:#dbe9f0; cursor:pointer;">
+                  <label style="display:flex; align-items:center; gap:7px; font:600 12.5px 'IBM Plex Mono', monospace; color:#dbe9f0; cursor:pointer;">
                     <input type="checkbox" class="entrainement-invite-case" value="${g}"> ${g}
                   </label>
                 `).join('')}
@@ -3640,9 +4263,9 @@ function construireInsigneGrade(grade) {
     if (!contenu) return;
     contenu.innerHTML = '<div class="rapport-history-empty">Chargement…</div>';
 
-    const action = ACTIONS_ENTRAINEMENTS_PAR_VUE[vue];
+    const action = vue;
     try {
-      const resultat = await appelerWebApp(action, { validateur: matriculeActif });
+      const resultat = await appelerEffectifApi(`/entrainements?statut=${vue}`);
       const entrainements = (Array.isArray(resultat.entrainements) ? resultat.entrainements : []).filter(e => !entrainementEstMasqueLocalement(e));
       const total = document.getElementById('entrainementTotal');
       if (total) total.textContent = entrainements.length;
@@ -3663,7 +4286,7 @@ function construireInsigneGrade(grade) {
       console.warn('Liste des entraînements indisponible :', erreur);
       const total = document.getElementById('entrainementTotal');
       if (total) total.textContent = '0';
-      contenu.innerHTML = `<div class="rapport-history-empty"><strong>Liste indisponible</strong><br>Publiez la nouvelle version Apps Script (action '${action}').</div>`;
+      contenu.innerHTML = `<div class="rapport-history-empty"><strong>Liste indisponible</strong><br>${echapperHtml(erreur.message || '')}</div>`;
     }
   }
 
@@ -3672,7 +4295,11 @@ function construireInsigneGrade(grade) {
     bouton.disabled = true;
     bouton.textContent = 'Validation…';
     try {
-      await appelerWebApp('validerEntrainement', { id, validateur: matriculeActif });
+      await appelerEffectifApi('/entrainements/valider', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'X-Api-Key': EFFECTIF_API_KEY },
+        body: JSON.stringify({ id, validateur: matriculeActif })
+      });
       await dessinerListeEntrainementsGlobale(vueEntrainementActive);
     } catch (erreur) {
       bouton.disabled = false;
@@ -3686,7 +4313,11 @@ function construireInsigneGrade(grade) {
     bouton.disabled = true;
     bouton.textContent = 'Refus…';
     try {
-      await appelerWebApp('refuserEntrainement', { id, validateur: matriculeActif });
+      await appelerEffectifApi('/entrainements/refuser', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'X-Api-Key': EFFECTIF_API_KEY },
+        body: JSON.stringify({ id, validateur: matriculeActif })
+      });
       await dessinerListeEntrainementsGlobale(vueEntrainementActive);
     } catch (erreur) {
       bouton.disabled = false;
@@ -4059,11 +4690,51 @@ function construireInsigneGrade(grade) {
     }
   }
 
+  // Ouvre un dossier de boutons : le menu de gauche n'affiche plus que les
+  // boutons qui lui sont assignés (parentId), et le bouton "Administration"
+  // en bas à gauche est remplacé par "← Retour" tant que le dossier est ouvert.
+  function ouvrirDossierMenu(idDossier) {
+    dossierOuvertId = idDossier;
+    document.body.classList.add('dossier-ouvert');
+    rendreListeBoutonsSidebar();
+  }
+
+  function fermerDossierMenu() {
+    dossierOuvertId = null;
+    document.body.classList.remove('dossier-ouvert');
+    rendreListeBoutonsSidebar();
+  }
+
+  // Ne reconstruit que la liste de boutons du menu de gauche (pas tout
+  // #contenuLienMDC, qui garde son contenu actuellement affiché).
+  function rendreListeBoutonsSidebar() {
+    const zoneMenu = document.querySelector('.menu-boutons');
+    if (!zoneMenu) return;
+    const niveauActuel = boutonsActifs
+      .map((b, i) => ({ ...b, i }))
+      .filter(b => b.label !== 'Administration' && (b.parentId || null) === dossierOuvertId);
+    const retourHtml = dossierOuvertId
+      ? `<button class="btn-lien-mdc btn-lien-retour-dossier" onclick="fermerDossierMenu()"><span class="btn-lien-icone">←</span><span>Retour</span></button>`
+      : '';
+    zoneMenu.innerHTML = retourHtml + niveauActuel.map(b => `<button class="btn-lien-mdc${b.estDossier ? ' btn-lien-dossier' : ''}" data-index="${b.i}" onclick="ouvrirLienMDC(${b.i})"><span class="btn-lien-icone">${b.estDossier ? '📁' : obtenirIconeMenu(b.label)}</span><span>${b.label}</span></button>`).join('');
+  }
+
   function ouvrirLienMDC(index) {
     const bouton = boutonsActifs[index];
     if (!bouton) return;
     const zone = document.getElementById('contenuLienMDC');
     if (!zone) return;
+
+    // Un "dossier" ne s'ouvre pas comme un lien : il remplace juste la liste
+    // du menu de gauche par les boutons qu'il contient.
+    if (bouton.estDossier) {
+      ouvrirDossierMenu(bouton.id);
+      return;
+    }
+
+    document.querySelectorAll('.btn-lien-mdc[data-index]').forEach(btn => {
+      btn.classList.toggle('actif', Number(btn.getAttribute('data-index')) === index);
+    });
 
     arreterAutoRefreshEffectif();
 
@@ -4127,13 +4798,60 @@ function construireInsigneGrade(grade) {
     `;
   }
 
-  function construireMenuBoutons() {
-    boutonsActifs = obtenirBoutonsPourUtilisateur();
+  // Icônes du menu latéral : une icône dédiée pour les libellés connus, une
+  // icône générique (point) pour tout bouton personnalisé ajouté depuis
+  // Administration > Boutons du menu.
+  const ICONES_MENU_MDC = {
+    'effectif mdc gda': '📋',
+    'réglement gda': '📖',
+    'reglement gda': '📖',
+    'matériel mdc gda': '🩺',
+    'materiel mdc gda': '🩺',
+    'rapport mdc gda': '📝',
+    'suggestion mdc': '💡',
+    "demande d'entraînement": '🎯',
+    "demande d'entrainement": '🎯',
+    'classement': '🏆',
+    'administration': '⚙️',
+  };
+  function obtenirIconeMenu(label) {
+    const cle = (label || '').trim().toLowerCase();
+    return ICONES_MENU_MDC[cle] || '●';
+  }
+
+  async function construireMenuBoutons() {
+    boutonsActifs = await obtenirBoutonsPourUtilisateur();
+    dossierOuvertId = null;
+    document.body.classList.remove('dossier-ouvert');
+    const indexAdmin = boutonsActifs.findIndex(b => b.label === 'Administration');
+    const niveauRacine = boutonsActifs.map((b, i) => ({ ...b, i })).filter(b => b.label !== 'Administration' && !b.parentId);
+    const adminBtnHtml = indexAdmin >= 0
+      ? `<button class="btn-lien-mdc btn-lien-admin btn-admin-corner" onclick="afficherAdministration()"><span class="btn-lien-icone">${obtenirIconeMenu('Administration')}</span><span>Administration</span></button>`
+      : '';
     return `
       <div class="menu-boutons">
-        ${boutonsActifs.map((b, i) => `<button class="btn-lien-mdc ${b.label === 'Administration' ? 'btn-lien-admin' : ''}" onclick="ouvrirLienMDC(${i})">${b.label}</button>`).join('')}
+        ${niveauRacine.map(b => `<button class="btn-lien-mdc${b.estDossier ? ' btn-lien-dossier' : ''}" data-index="${b.i}" onclick="ouvrirLienMDC(${b.i})"><span class="btn-lien-icone">${b.estDossier ? '📁' : obtenirIconeMenu(b.label)}</span><span>${b.label}</span></button>`).join('')}
       </div>
+      ${adminBtnHtml}
       <div id="contenuLienMDC"></div>
+    `;
+  }
+
+  function afficherAccueilMDCGDA() {
+    document.body.classList.remove('mode-admin', 'lien-ouvert');
+    document.querySelectorAll('.btn-lien-mdc.actif').forEach(btn => btn.classList.remove('actif'));
+    const zone = document.getElementById('contenuLienMDC');
+    if (!zone) return;
+    zone.innerHTML = `
+      <div class="rapport-mdc-wrap">
+        <div class="rapport-mdc-header">
+          <div>
+            <div class="rapport-mdc-kicker">Garde M.D.C — G.D.A</div>
+            <h2>Bienvenue, ${echapperHtml(gradeActif || 'Membre')}</h2>
+            <div class="rapport-mdc-subtitle">Sélectionnez une section dans le menu de gauche.</div>
+          </div>
+        </div>
+      </div>
     `;
   }
 
@@ -4163,19 +4881,21 @@ function construireInsigneGrade(grade) {
       `
       : '';
 
-    const zonePrincipaleHtml = construireMenuBoutons();
+    const zonePrincipaleHtml = await construireMenuBoutons();
 
     actionZone.innerHTML = `
       <div class="zone-principale">${zonePrincipaleHtml}</div>
       ${docsHtml}
     `;
     actionZone.classList.add('open');
+    demarrerAutoRefreshBoutons();
 
     badgeMatricule.textContent = valeur;
     badgeGrade.textContent = grade || '—';
     if (badgeInsigne) badgeInsigne.innerHTML = construireInsigneGrade(grade);
     badgeCorner.classList.add('visible');
     document.getElementById('btnRefreshCorner')?.classList.add('visible');
+    afficherAccueilMDCGDA();
   }
 
   const DUREE_TOTALE = 5000;
@@ -4288,38 +5008,8 @@ function construireInsigneGrade(grade) {
       });
   }
 
-  function verifierDiscordId() {
-    if (!contexteEnAttente) return;
-    const saisie = discordInput.value.trim();
-
-    if (!saisie) {
-      setStatus('fail', 'Entrez votre identifiant Discord.');
-      return;
-    }
-
-    if (saisie === contexteEnAttente.discordIdAttendu) {
-      const valeur = contexteEnAttente.valeur;
-      const grade = contexteEnAttente.grade;
-      discordRow.style.display = 'none';
-      setStatus('ok', 'Identifiant Discord confirmé, accès complet accordé.');
-      setBigStatus('ok', 'Autorisé');
-      setTimeout(() => {
-        statusZone.classList.remove('active');
-        statusZone.innerHTML = '';
-        bigStatus.innerHTML = '';
-        continuerPhase2(valeur, grade);
-      }, 1200);
-    } else {
-      scanBar.style.display = 'none';
-      setStatus('fail', 'Identifiant Discord incorrect. Accès refusé.');
-      setBigStatus('fail', 'Refusé');
-    }
-  }
-
   verifyBtn.addEventListener('click', verifier);
   input.addEventListener('keydown', (e) => { if (e.key === 'Enter') verifier(); });
-  discordVerifyBtn.addEventListener('click', verifierDiscordId);
-  discordInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') verifierDiscordId(); });
 
   // Le Worker revient ici après la connexion Discord avec un jeton signé,
   // valable 10 minutes. /verify contrôle sa signature avant tout accès.
@@ -4398,15 +5088,15 @@ function construireInsigneGrade(grade) {
   // et légèrement assombries, derrière la face avant. Le tout tourne ensemble
   // (voir .coin { animation: spinY }), ce qui donne une tranche visible
   // pendant la rotation, comme la tranche d'une pièce.
-  (function construireEpaisseurLogo() {
-    const coin = document.getElementById('coinLogo');
+  function construireEpaisseurLogo(idCoin, pasZ) {
+    const coin = document.getElementById(idCoin);
     if (!coin) return;
     const front = coin.querySelector('.coin-front');
     if (!front) return;
     const src = front.querySelector('img').getAttribute('src');
     const alt = front.querySelector('img').getAttribute('alt') || '';
     const NB_COUCHES = 9;
-    const PAS_Z = 1.4; // px entre chaque couche -> épaisseur totale ≈ NB_COUCHES * PAS_Z
+    const PAS_Z = pasZ || 1.4; // px entre chaque couche -> épaisseur totale ≈ NB_COUCHES * PAS_Z
     for (let i = 1; i <= NB_COUCHES; i++) {
       const couche = document.createElement('div');
       couche.className = 'coin-layer coin-tranche';
@@ -4418,7 +5108,9 @@ function construireInsigneGrade(grade) {
       couche.appendChild(img);
       coin.insertBefore(couche, front);
     }
-  })();
+  }
+  construireEpaisseurLogo('coinLogo', 1.4);
+  construireEpaisseurLogo('coinLogoTopbar', 0.3);
 </script>
 
 </body>
